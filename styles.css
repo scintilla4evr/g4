@@ -1,0 +1,77 @@
+@font-face {
+    font-family: "VCR OSD Mono";
+    src: url("VCR_OSD_MONO_1.001.ttf");
+}
+
+body {
+    background: #1c1b1a;
+    color: #dbb986;
+    font-family: "VCR OSD Mono", monospace, sans-serif;
+    transition: background-color 0.2s;
+}
+
+body.hit {
+    background: #2b1616;
+}
+
+canvas {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+header {
+    display: flex;
+    justify-content: space-around;
+    opacity: 0.5
+}
+
+header div {
+    margin: 16px;
+    text-transform: uppercase;
+}
+header div:last-child {
+    text-align: right;
+}
+
+header div h1, header div h2 {
+    margin: 0;
+}
+
+footer {
+    position: fixed;
+    left: 50%;
+    bottom: 32px;
+    transform: translate(-50%, 0%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+button {
+    background: transparent;
+    color: #dbb986;
+    padding: 8px 16px;
+    margin-bottom: 8px;
+    font-family: "VCR OSD Mono", monospace, sans-serif;
+    font-size: 16pt;
+    text-transform: uppercase;
+    border: none;
+    display: none;
+}
+
+button.checked {
+    background: #dbb986;
+    color: #1c1b1a;
+}
+
+a {
+    color: #ff523b;
+    text-decoration: none;
+}
+
+a:hover {
+    background: #ff523b;
+    color: #1c1b1a;
+}

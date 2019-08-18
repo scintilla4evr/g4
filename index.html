@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>G4</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <audio src="music.mp3" loop></audio>
+
+        <header>
+            <div>
+                <h2>Level</h2>
+                <h1 id="levelNum">0</h1>
+            </div>
+            <div>
+                <h2>Record</h2>
+                <h1 id="recordNum">0</h1>
+            </div>
+        </header>
+
+        <canvas id="main" width="900" height="900"></canvas>
+
+        <footer>
+            <button id="muteMusic" class="checked">Unmute music</button>
+            <a href="https://twitter.com/scintilla4evr" target="_blank">@scintilla4evr</a>
+        </footer>
+
+        <script src="game.js"></script>
+    </body>
+</html>
