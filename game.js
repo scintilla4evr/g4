@@ -269,20 +269,20 @@
             var level = new Level(16.25)
 
             var innerRing = new Ring(level, 1)
-            innerRing.elements = generateInnerRing(difficulties[0])
+            innerRing.elements = level.generateInnerRing(difficulties[0])
             level.rings.push(innerRing)
 
+            var middleRing = new Ring(level, 0.5)
             if (difficulties[1]) {
-                var middleRing = new Ring(level, 0.5)
-                middleRing.elements = generateMiddleRing(difficulties[1])
-                level.rings.push(middleRing)
+                middleRing.elements = level.generateMiddleRing(difficulties[1])
             }
+            level.rings.push(middleRing)
 
+            var outerRing = new Ring(level, 0.25)
             if (difficulties[2]) {
-                var outerRing = new Ring(level, 0.25)
-                outerRing.elements = generateOuterRing(difficulties[2])
-                level.rings.push(outerRing)
+                outerRing.elements = level.generateOuterRing(difficulties[2])
             }
+            level.rings.push(outerRing)
 
             return level
         }
@@ -314,10 +314,155 @@
             }
             return null
         }
+
+        generateAngleArrangement(n) {
+            var angleBetween = 1 / n
+            var shiftAngle = angleBetween / 3
+            var isShifted = Math.random() >= 0.5
+            var shiftSign = (Math.random() >= 0.5) ? 1 : -1
+    
+            var angles = []
+    
+            for (var i = 0; i < n; i++) {
+                var angle = i * angleBetween
+    
+                if (isShifted && n == 4 && i % 2) {
+                    angle += shiftSign * shiftAngle
+                } else if (isShifted && n == 6) {
+                    if (i % 3 == 0) angle += shiftSign * shiftAngle
+                    if (i % 3 == 1) angle -= shiftSign * shiftAngle
+                }
+    
+                angles.push(angle)
+            }
+    
+            return angles
+        }
+
+        generateInnerRing(difficulty) {
+            var n = 2
+            if (difficulty == 2) n = Math.floor(Math.random() * 2) + 2
+            if (difficulty == 3) n = 4
+    
+            n += Math.round(Math.random())
+    
+            var elements = []
+            var angles = this.generateAngleArrangement(n)
+    
+            for (var i = 0; i < n; i++) {
+                var isBall = Math.random() >= 0.5
+    
+                if (isBall || (!isBall && i == 0)) {
+                    elements.push(
+                        new RingBall(angles[i], 200, 50)
+                    )
+    
+                    if (Math.random() >= 0.5 && difficulty > 1) {
+                        elements.push(
+                            new RingBall(
+                                angles[i] + 0.08, 200, 20
+                            ),
+                            new RingBall(
+                                angles[i] - 0.08, 200, 20
+                            )
+                        )
+    
+                    }
+                } else if (!isBall && i > 0) {
+                    var angleStart = angles[i]
+                    var angleLength = angles[(i + 1) % angles.length] - angleStart
+                    if (angleLength < 0) angleLength += 1
+    
+                    elements.push(
+                        new RingBar(
+                            angleStart, angleLength, 200, 10
+                        )
+                    )
+    
+                    if (Math.random() >= 0.5) {
+                        elements.push(
+                            new RingBall(
+                                angleStart, 200, 30
+                            ),
+                            new RingBall(
+                                angleStart + angleLength, 200, 30
+                            )
+                        )
+                    }
+                }
+            }
+    
+            return elements
+        }
+
+        generateMiddleRing(difficulty) {
+            if (difficulty == 1) return []
+            var n = (difficulty - 1) * 2
+            if (difficulty == 3 && Math.random() >= 0.6) n = 6
+    
+            var angles = this.generateAngleArrangement(n)
+            var elements = []
+    
+            for (var i = 0; i < n / 2; i++) {
+                var angleStart = angles[2 * i]
+                var angleLength = angles[2 * i + 1] - angleStart
+    
+                if (difficulty == 3 && Math.random() >= 0.5) {
+                    elements.push(
+                        new RingMarqueeBar(angleStart, angleLength, 300, 10, 1)
+                    )
+                } else {
+                    elements.push(
+                        new RingBar(angleStart, angleLength, 300, 10)
+                    )
+                }
+            }
+    
+            return elements
+        }
+
+        generateOuterRing(difficulty) {
+            if (difficulty == 1 && Math.random() >= 0.5) return []
+            var n = 3 + Math.round(1.2 * difficulty * Math.random())
+            var isPulsing = Math.random() >= 0.5 && difficulty > 1
+            var willGenerateBars = difficulty > 2
+    
+            var elements = []
+    
+            var angles = this.generateAngleArrangement(n)
+            angles.forEach((angle, i) => {
+                if (isPulsing && i % 2) {
+                    elements.push(
+                        new RingPulsingBall(angle, 400, 20, 2)
+                    )
+                } else {
+                    elements.push(
+                        new RingBall(angle, 400, 20)
+                    )
+                }
+            })
+    
+            if (willGenerateBars) {
+                for (var i = 0; i < n/2; i++) {
+                    var angle1 = angles[i * 2]
+                    var angle2 = angles[(i * 2 + 1) % angles.length]
+                    if (angle2 < angle1) angle2 += 1
+    
+                    var angleLength = (angle2 - angle1) * (Math.random() * 0.4 + 0.2)
+                    var angleStart = (angle1 + angle2) / 2 - angleLength / 2
+    
+                    elements.push(
+                        new RingBar(angleStart, angleLength, 400, 10)
+                    )
+                }
+            }
+    
+            return elements
+        }
     }
 
     class Game {
-        constructor(difficulty) {
+        constructor() {
             /**
              * @type {Level}
              */
@@ -333,10 +478,19 @@
              */
             this.playerAngle = 0
 
-            this.difficulty = difficulty
-
+            /**
+             * @type {Number}
+             */
             this.progressionLevel = 0
 
+            /**
+             * @type {Number}
+             */
+            this.gameTime = 0
+
+            /**
+             * @type {Number[][]}
+             */
             this.staticProgression = [
                 [1, 0, 0],
                 [1, 0, 0],
@@ -351,6 +505,10 @@
                 [2, 1, 2],
                 [2, 1, 2]
             ]
+
+            /**
+             * @type {Number[][]}
+             */
             this.loopedProgression = [
                 [3, 1, 2],
                 [2, 2, 2],
@@ -374,6 +532,8 @@
         }
 
         advance(time) {
+            this.gameTime += time
+
             this.level.advance(time)
 
             if (this.bullet) {
@@ -469,6 +629,8 @@
 
         start() {
             this.level = Level.create(this.getProgression())
+            this.level.advance(this.gameTime)
+
             document.querySelector("#levelNum").textContent = this.progressionLevel
             this.updateRecord()
             resizeCanvas()
@@ -500,149 +662,123 @@
         }
     }
 
-    function generateAngleArrangement(n) {
-        var angleBetween = 1 / n
-        var shiftAngle = angleBetween / 3
-        var isShifted = Math.random() >= 0.5
-        var shiftSign = (Math.random() >= 0.5) ? 1 : -1
-
-        var angles = []
-
-        for (var i = 0; i < n; i++) {
-            var angle = i * angleBetween
-
-            if (isShifted && n == 4 && i % 2) {
-                angle += shiftSign * shiftAngle
-            } else if (isShifted && n == 6) {
-                if (i % 3 == 0) angle += shiftSign * shiftAngle
-                if (i % 3 == 1) angle -= shiftSign * shiftAngle
-            }
-
-            angles.push(angle)
+    class GameHardMode extends Game {
+        constructor() {
+            super()
         }
 
-        return angles
-    }
-
-    function generateInnerRing(difficulty) {
-        var n = 2
-        if (difficulty == 2) n = Math.floor(Math.random() * 2) + 2
-        if (difficulty == 3) n = 4
-
-        n += Math.round(Math.random())
-
-        var elements = []
-        var angles = generateAngleArrangement(n)
-
-        for (var i = 0; i < n; i++) {
-            var isBall = Math.random() >= 0.5
-
-            if (isBall || (!isBall && i == 0)) {
-                elements.push(
-                    new RingBall(angles[i], 200, 50)
-                )
-
-                if (Math.random() >= 0.5 && difficulty > 1) {
-                    elements.push(
-                        new RingBall(
-                            angles[i] + 0.08, 200, 20
-                        ),
-                        new RingBall(
-                            angles[i] - 0.08, 200, 20
-                        )
-                    )
-
-                }
-            } else if (!isBall && i > 0) {
-                var angleStart = angles[i]
-                var angleLength = angles[(i + 1) % angles.length] - angleStart
-                if (angleLength < 0) angleLength += 1
-
-                elements.push(
-                    new RingBar(
-                        angleStart, angleLength, 200, 10
-                    )
-                )
-
-                if (Math.random() >= 0.5) {
-                    elements.push(
-                        new RingBall(
-                            angleStart, 200, 30
-                        ),
-                        new RingBall(
-                            angleStart + angleLength, 200, 30
-                        )
-                    )
-                }
-            }
+        advance(time) {
+            super.advance(time)
         }
 
-        return elements
-    }
+        getCannonPosition() {
+            return [
+                Math.cos(-this.playerAngle * Math.PI) * 40,
+                Math.sin(-this.playerAngle * Math.PI) * 40
+            ]
+        }
 
-    function generateMiddleRing(difficulty) {
-        if (difficulty == 1) return []
-        var n = (difficulty - 1) * 2
-        if (difficulty == 3 && Math.random() >= 0.6) n = 6
+        /**
+         * 
+         * @param {CanvasRenderingContext2D} context
+         */
+        render(context) {
+            context.fillStyle = "#9bd1ba"
+            context.strokeStyle = "#9bd1ba"
 
-        var angles = generateAngleArrangement(n)
-        var elements = []
+            context.clearRect(
+                0, 0,
+                context.canvas.width, context.canvas.height
+            )
 
-        for (var i = 0; i < n / 2; i++) {
-            var angleStart = angles[2 * i]
-            var angleLength = angles[2 * i + 1] - angleStart
+            this.level.render(context)
 
-            if (difficulty == 3 && Math.random() >= 0.5) {
-                elements.push(
-                    new RingMarqueeBar(angleStart, angleLength, 300, 10, 1)
+            context.lineWidth = 1
+
+            var cannonX = context.canvas.width / 2
+            var cannonY = context.canvas.height / 2
+
+            var cannonPos = this.getCannonPosition()
+            cannonX += cannonPos[0]
+            cannonY += cannonPos[1]
+        
+            context.beginPath()
+            context.moveTo(
+                20 * Math.cos(2 * Math.PI * this.playerAngle) + cannonX,
+                20 * Math.sin(2 * Math.PI * this.playerAngle) + cannonY
+            )
+            context.lineTo(
+                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + cannonX,
+                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + cannonY
+            )
+            context.lineTo(
+                10 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI) + cannonX,
+                10 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI) + cannonY
+            )
+            context.lineTo(
+                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + cannonX,
+                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + cannonY
+            )
+            context.closePath()
+
+            context.fill()
+
+            context.beginPath()
+            
+            context.arc(
+                10 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI) + cannonX,
+                10 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI) + cannonY,
+                6, 0, Math.PI * 2
+            )
+
+            context.fillStyle = "#151523"
+            context.fill()
+
+            if (this.bullet) {
+                context.beginPath()
+
+                context.arc(
+                    this.bullet.x + context.canvas.width / 2,
+                    this.bullet.y + context.canvas.height / 2,
+                    10,
+                    0, 2 * Math.PI
                 )
-            } else {
-                elements.push(
-                    new RingBar(angleStart, angleLength, 300, 10)
-                )
+
+                context.fillStyle = "#ffcb3b"
+                context.fill()
             }
         }
 
-        return elements
-    }
+        shoot() {
+            var cannonPos = this.getCannonPosition()
 
-    function generateOuterRing(difficulty) {
-        if (difficulty == 1 && Math.random() >= 0.5) return []
-        var n = 3 + Math.round(1.2 * difficulty * Math.random())
-        var isPulsing = Math.random() >= 0.5 && difficulty > 1
-        var willGenerateBars = difficulty > 2
+            var bullet = new Projectile(
+                20 * Math.cos(2 * Math.PI * this.playerAngle) + cannonPos[0],
+                20 * Math.sin(2 * Math.PI * this.playerAngle) + cannonPos[1],
+                7,
+                750 * Math.cos(2 * Math.PI * this.playerAngle),
+                750 * Math.sin(2 * Math.PI * this.playerAngle)
+            )
 
-        var elements = []
-
-        var angles = generateAngleArrangement(n)
-        angles.forEach((angle, i) => {
-            if (isPulsing && i % 2) {
-                elements.push(
-                    new RingPulsingBall(angle, 400, 20, 2)
-                )
-            } else {
-                elements.push(
-                    new RingBall(angle, 400, 20)
-                )
-            }
-        })
-
-        if (willGenerateBars) {
-            for (var i = 0; i < n/2; i++) {
-                var angle1 = angles[i * 2]
-                var angle2 = angles[(i * 2 + 1) % angles.length]
-                if (angle2 < angle1) angle2 += 1
-
-                var angleLength = (angle2 - angle1) * (Math.random() * 0.4 + 0.2)
-                var angleStart = (angle1 + angle2) / 2 - angleLength / 2
-
-                elements.push(
-                    new RingBar(angleStart, angleLength, 400, 10)
-                )
-            }
+            this.bullet = bullet
         }
 
-        return elements
+        getProgression() {
+            if (this.progressionLevel < this.staticProgression.length) return this.staticProgression[this.progressionLevel].map(x => x ? 3 : 0)
+
+            var level = (this.progressionLevel - this.staticProgression.length) % this.loopedProgression.length
+            return this.loopedProgression[level].map(x => x ? 3 : 0)
+        }
+ 
+        updateRecord() {
+            var record = 0
+            if (localStorage.getItem("g4game_recordHard")) record = localStorage.getItem("g4game_recordHard")
+
+            if (this.progressionLevel > record) record = this.progressionLevel
+            localStorage.setItem("g4game_recordHard", record)
+
+            document.querySelector("#recordNum").textContent = record
+        }
     }
 
     var game = new Game()
@@ -672,12 +808,12 @@
     })
 
     function resizeCanvas() {
-        var minSize = Math.min(innerHeight, innerWidth) - 24
+        var minSize = Math.min(innerHeight - 64, innerWidth) - 24
 
-        if (game.level.rings.length < 3 || !game.level.rings[2].elements.length) {
+        if (!game.level.rings[2].elements.length) {
             minSize += 150
 
-            if (game.level.rings.length < 2 || !game.level.rings[1].elements.length) {
+            if (!game.level.rings[1].elements.length) {
                 minSize += 80
             }
         }
@@ -709,6 +845,27 @@
             audio.play()
         }
     })
+
+    document.querySelector("#switchModes").addEventListener("click", function() {
+        if (game instanceof GameHardMode) {
+            game = new Game()
+            game.start()
+            game.updateRecord()
+
+            document.body.classList.remove("hard")
+
+            this.textContent = "Switch to hard mode"
+        } else {
+            game = new GameHardMode()
+            game.start()
+            game.updateRecord()
+
+            document.body.classList.add("hard")
+
+            this.textContent = "Switch to normal mode"
+        }
+    })
+
 
     render()
 })()

@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="styles.css">
         <link rel="shortcut icon" href="favicon.png">
     </head>
-    <body>
+    <body class="">
         <audio src="music.mp3" loop></audio>
 
         <header>
@@ -26,8 +26,9 @@
         <canvas id="main" width="900" height="900"></canvas>
 
         <footer>
-            <button id="muteMusic" class="checked">Unmute music</button>
-            <a href="https://twitter.com/scintilla4evr" target="_blank">@scintilla4evr</a>
+            <button id="muteMusic" class="checked" style="display: none">Unmute music</button>
+            <button id="switchModes">Switch to hard mode</button>
+            <span>G4.1 | <a href="https://twitter.com/scintilla4evr" target="_blank">@scintilla4evr</a></span>
         </footer>
 
         <script src="game.js"></script>
