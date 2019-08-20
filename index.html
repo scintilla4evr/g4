@@ -25,10 +25,19 @@
 
         <canvas id="main" width="900" height="900"></canvas>
 
+        <div class="slowdown">
+            <div class="slowProgress">
+                <div style="width: 50%"></div>
+            </div>
+            <button id="initSlowDown" class="checked">Slow down for 5s</button>
+        </div>
+
         <footer>
-            <button id="muteMusic" class="checked" style="display: none">Unmute music</button>
-            <button id="switchModes">Switch to hard mode</button>
-            <span>G4.1 | <a href="https://twitter.com/scintilla4evr" target="_blank">@scintilla4evr</a></span>
+            <div>
+                <button id="muteMusic" class="checked" style="display: none">Unmute music</button>
+                <button id="switchModes">Hard mode</button>
+            </div>
+            <span>G4.2 | <a href="https://twitter.com/scintilla4evr" target="_blank">@scintilla4evr</a></span>
         </footer>
 
         <script src="game.js"></script>

@@ -344,7 +344,7 @@
             if (difficulty == 2) n = Math.floor(Math.random() * 2) + 2
             if (difficulty == 3) n = 4
     
-            n += Math.round(Math.random())
+            n += Math.round(Math.random() * 2)
     
             var elements = []
             var angles = this.generateAngleArrangement(n)
@@ -357,7 +357,7 @@
                         new RingBall(angles[i], 200, 50)
                     )
     
-                    if (Math.random() >= 0.5 && difficulty > 1) {
+                    if (Math.random() >= 0.5 && difficulty > 1 && i > 0) {
                         elements.push(
                             new RingBall(
                                 angles[i] + 0.08, 200, 20
@@ -489,6 +489,16 @@
             this.gameTime = 0
 
             /**
+             * @type {Number}
+             */
+            this.slowTime = 0
+
+            /**
+             * @type {Boolean}
+             */
+            this.isSlow = false
+
+            /**
              * @type {Number[][]}
              */
             this.staticProgression = [
@@ -532,9 +542,12 @@
         }
 
         advance(time) {
-            this.gameTime += time
+            var dTime = time
+            if (this.isSlow) dTime /= 2
 
-            this.level.advance(time)
+            this.gameTime += dTime
+
+            this.level.advance(dTime)
 
             if (this.bullet) {
                 if (Math.hypot(this.bullet.x, this.bullet.y) >= 600) {
@@ -550,9 +563,20 @@
             }
 
             if (this.bullet) 
-                this.bullet.advance(time)
+                this.bullet.advance(dTime)
 
-            this.playerAngle -= time * 0.461538461
+            this.playerAngle -= dTime * 0.461538461
+
+            document.querySelector("#initSlowDown").textContent = `Slow down for ${Math.round(this.slowTime*10)/10}s`
+            document.querySelector("div.slowProgress div").style.width = `${this.slowTime * 10}%`
+
+            if (this.isSlow) {
+                this.slowTime = Math.max(0, this.slowTime - time)
+                if (this.slowTime == 0) {
+                    document.body.classList.remove("slow")
+                    this.isSlow = false
+                }
+            }
         }
 
         /**
@@ -638,11 +662,13 @@
 
         nextLevel() {
             this.progressionLevel++
+            this.slowTime = Math.min(this.slowTime + 0.2, 10)
             this.start()
         }
 
         resetProgress() {
             this.progressionLevel = 0
+            this.slowTime = Math.min(this.slowTime, 0.6)
             this.start()
 
             document.body.classList.add("hit")
@@ -802,6 +828,10 @@
     addEventListener("keydown", (e) => {
         if (e.code == "Space" && !game.bullet)
             game.shoot()
+        else if (e.code = "KeyS" && !game.isSlow && game.slowTime) {
+            game.isSlow = true
+            document.body.classList.add("slow")
+        }
     })
     gameCanvas.addEventListener("click", () => {
         if (!game.bullet) game.shoot()
@@ -854,7 +884,7 @@
 
             document.body.classList.remove("hard")
 
-            this.textContent = "Switch to hard mode"
+            this.textContent = "Hard mode"
         } else {
             game = new GameHardMode()
             game.start()
@@ -862,10 +892,16 @@
 
             document.body.classList.add("hard")
 
-            this.textContent = "Switch to normal mode"
+            this.textContent = "Normal mode"
         }
     })
 
+    document.querySelector("#initSlowDown").addEventListener("click", () => {
+        if (!game.isSlow && game.slowTime) {
+            game.isSlow = true
+            document.body.classList.add("slow")
+        }
+    })
 
     render()
 })()
