@@ -826,9 +826,10 @@
     }
 
     addEventListener("keydown", (e) => {
+        console.log(e)
         if (e.code == "Space" && !game.bullet)
             game.shoot()
-        else if (e.code = "KeyS" && !game.isSlow && game.slowTime) {
+        else if (e.code == "KeyS" && !game.isSlow && game.slowTime) {
             game.isSlow = true
             document.body.classList.add("slow")
         }
