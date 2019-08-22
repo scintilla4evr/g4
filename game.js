@@ -315,7 +315,7 @@
             return null
         }
 
-        generateAngleArrangement(n) {
+        generateAngleArrangement(n, isSmall) {
             var angleBetween = 1 / n
             var shiftAngle = angleBetween / 3
             var isShifted = Math.random() >= 0.5
@@ -328,7 +328,7 @@
     
                 if (isShifted && n == 4 && i % 2) {
                     angle += shiftSign * shiftAngle
-                } else if (isShifted && n == 6) {
+                } else if (isShifted && n == 6 && !isSmall) {
                     if (i % 3 == 0) angle += shiftSign * shiftAngle
                     if (i % 3 == 1) angle -= shiftSign * shiftAngle
                 }
@@ -347,7 +347,7 @@
             n += Math.round(Math.random() * 2)
     
             var elements = []
-            var angles = this.generateAngleArrangement(n)
+            var angles = this.generateAngleArrangement(n, true)
     
             for (var i = 0; i < n; i++) {
                 var isBall = Math.random() >= 0.5
@@ -539,6 +539,13 @@
                 [3, 1, 2],
                 [2, 1, 2]
             ]
+
+            this.leaderboardIDs = {
+                "public": "5d5d8021e6a81b07f0df9c2a",
+                "private": "kcvbg2gSL0-B7TCgJE0-UgizsZxIUix0e6QuPjT9OCxQ",
+                "storageID": "g4game_player",
+                "recordStorage": "g4game_record"
+            }
         }
 
         advance(time) {
@@ -679,18 +686,133 @@
 
         updateRecord() {
             var record = 0
-            if (localStorage.getItem("g4game_record")) record = localStorage.getItem("g4game_record")
+            if (localStorage.getItem(this.leaderboardIDs.recordStorage)) record = localStorage.getItem(this.leaderboardIDs.recordStorage)
 
-            if (this.progressionLevel > record) record = this.progressionLevel
-            localStorage.setItem("g4game_record", record)
+            if (this.progressionLevel > record) {
+                record = this.progressionLevel
+                localStorage.setItem(this.leaderboardIDs.recordStorage, record)
+            }
 
             document.querySelector("#recordNum").textContent = record
+
+            this.setLeaderboard().then(() => {
+                this.updateLeaderboard()
+            })
+        }
+
+        async updateLeaderboard() {
+            var rank = 0
+
+            var data = await this.getLeaderboard()
+            if (data) {
+                rank = data.rank
+            }
+
+            document.querySelector("#recordRank").textContent = `#${rank}`
+        }
+
+        async setLeaderboard() {
+            if (!localStorage.getItem(this.leaderboardIDs.storageID)) return false
+
+            var player = localStorage.getItem(this.leaderboardIDs.storageID)
+            var record = localStorage.getItem(this.leaderboardIDs.recordStorage)
+
+            await fetch(`http://dreamlo.com/lb/${this.leaderboardIDs.private}/add/${player}/${record}`)
+
+            return true
+        }
+
+        async getLeaderboard() {
+            if (!localStorage.getItem(this.leaderboardIDs.storageID)) return false
+
+            var player = localStorage.getItem(this.leaderboardIDs.storageID)
+            var fetchData = await fetch(`http://dreamlo.com/lb/${this.leaderboardIDs.public}/json`)
+            fetchData = await fetchData.text()
+
+            if (!fetchData) return false
+            var data = JSON.parse(fetchData)
+            var entries = data.dreamlo.leaderboard.entry
+            if (!entries.length) entries = [entries]
+
+            var index = entries.findIndex(entry => entry.name == player)
+            if (index == -1) return false
+
+            return {
+                rank: index + 1,
+                score: entries[index].score,
+                name: player
+            }
+        }
+
+        async loadLeaderboard() {
+            var player = localStorage.getItem(this.leaderboardIDs.storageID)
+            var fetchData = await fetch(`http://dreamlo.com/lb/${this.leaderboardIDs.public}/json`)
+            fetchData = await fetchData.text()
+
+            if (!fetchData) return false
+            var data = JSON.parse(fetchData)
+            var entries = data.dreamlo.leaderboard.entry
+            if (!entries.length) entries = [entries]
+
+            var htmlData = ""
+
+            for (var i = 0; i < entries.length; i++) {
+                htmlData += `<div class="item ${entries[i].name == player ? "self" : ""}"><h1>#${i+1}</h1><h2>${entries[i].name.replace(/\</g, "&lt;")}</h2><h1>${entries[i].score}</h1></div>` 
+            }
+
+            document.querySelector("#leaderboard").innerHTML = htmlData
+            document.querySelector("article.leaderboard header h1").textContent = "G4 LEADERBOARD (NORMAL)"
+        }
+
+        async setLeaderboardNickname(name) {
+            var errorBar = document.querySelector("#duplicateName")
+            errorBar.style.display = "none"
+
+            if (!name) {
+                errorBar.style.display = "block"
+                errorBar.textContent = "Nickname cannot be blank."
+                return
+            } else if (name.includes("*")) {
+                errorBar.style.display = "block"
+                errorBar.textContent = "Nickname cannot contain asterisks (*)."
+                return
+            }
+
+            var fetchData = await fetch(`http://dreamlo.com/lb/${this.leaderboardIDs.public}/json`)
+            fetchData = await fetchData.text()
+
+            if (!fetchData) return false
+            var data = JSON.parse(fetchData)
+            var entries = data.dreamlo.leaderboard.entry
+            if (!entries.length) entries = [entries]
+
+            var playerExists = entries.find(entry => entry.name == name)
+
+            if (playerExists) {
+                errorBar.style.display = "block"
+                errorBar.textContent = name + " has already been taken."
+                return
+            } else {
+                localStorage.setItem("g4game_player", name)
+
+                this.updateRecord()
+                document.querySelector("article.setName").classList.remove("visible")
+                document.querySelector("article.leaderboard").classList.remove("visible")
+                document.querySelector("#addToLeaderboard").style.display = "none"
+            }
         }
     }
 
     class GameHardMode extends Game {
         constructor() {
             super()
+
+            this.leaderboardIDs = {
+                "public": "5d5f13d6e6a81b07f0e84c90",
+                "private": "GHwQB06p6ESxAn8IQ5NRfgl8MruCEQb0u2vgC2oeUIBA",
+                "storageID": "g4game_player",
+                "recordStorage": "g4game_recordHard"
+            }
         }
 
         advance(time) {
@@ -795,15 +917,11 @@
             var level = (this.progressionLevel - this.staticProgression.length) % this.loopedProgression.length
             return this.loopedProgression[level].map(x => x ? 3 : 0)
         }
- 
-        updateRecord() {
-            var record = 0
-            if (localStorage.getItem("g4game_recordHard")) record = localStorage.getItem("g4game_recordHard")
 
-            if (this.progressionLevel > record) record = this.progressionLevel
-            localStorage.setItem("g4game_recordHard", record)
-
-            document.querySelector("#recordNum").textContent = record
+        async loadLeaderboard() {
+            await super.loadLeaderboard()
+            
+            document.querySelector("article.leaderboard header h1").textContent = "G4 LEADERBOARD (HARD)"
         }
     }
 
@@ -814,7 +932,7 @@
 
 
     game.start()
-    game.updateRecord()
+    game.loadLeaderboard()
 
     setInterval(() => {
         game.advance(1/90)
@@ -826,7 +944,7 @@
     }
 
     addEventListener("keydown", (e) => {
-        console.log(e)
+        if (e.target != document.body) return
         if (e.code == "Space" && !game.bullet)
             game.shoot()
         else if (e.code == "KeyS" && !game.isSlow && game.slowTime) {
@@ -902,6 +1020,30 @@
             game.isSlow = true
             document.body.classList.add("slow")
         }
+    })
+
+    document.querySelector("#showLeaderboard").addEventListener("click", () => {
+        game.loadLeaderboard().then(() => {
+            document.querySelector("article.leaderboard").classList.add("visible")
+        })
+    })
+
+    document.querySelector("#closeLeaderboard").addEventListener("click", () => {
+        document.querySelector("article.leaderboard").classList.remove("visible")
+    })
+
+    if (localStorage.getItem("g4game_player")) document.querySelector("#addToLeaderboard").style.display = "none"
+
+    document.querySelector("#addToLeaderboard").addEventListener("click", () => {
+        document.querySelector("article.setName").classList.add("visible")
+    })
+
+    document.querySelector("#closeNaming").addEventListener("click", () => {
+        document.querySelector("article.setName").classList.remove("visible")
+    })
+
+    document.querySelector("#setNickname").addEventListener("click", () => {
+        game.setLeaderboardNickname(document.querySelector("#nicknameInput").value)
     })
 
     render()

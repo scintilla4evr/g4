@@ -1,16 +1,13 @@
-@font-face {
-    font-family: "VCR OSD Mono";
-    src: url("VCR_OSD_MONO_1.001.ttf");
-}
-
 body {
     --var-background: #1c1b1a;
     --var-primary: #dbb986;
     --var-secondary: #ff523b;
 
+    --var-font: "Lexend Deca", "Segoe UI", sans-serif;
+
     background: var(--var-background);
     color: var(--var-primary);
-    font-family: "VCR OSD Mono", monospace, sans-serif;
+    font-family: var(--var-font);
     transition: background-color 0.2s;
 }
 
@@ -64,7 +61,6 @@ div.slowProgress div {
 header {
     display: flex;
     justify-content: space-around;
-    opacity: 0.5
 }
 
 header div {
@@ -77,6 +73,14 @@ header div:last-child {
 
 header div h1, header div h2 {
     margin: 0;
+}
+
+span#recordRank {
+    color: var(--var-secondary);
+}
+
+header div h2 {
+    opacity: 0.5;
 }
 
 footer {
@@ -100,10 +104,15 @@ button {
     color: var(--var-primary);
     padding: 8px 16px;
     margin-bottom: 8px;
-    font-family: "VCR OSD Mono", monospace, sans-serif;
+    font-family: var(--var-font);
     font-size: 16pt;
     text-transform: uppercase;
     border: none;
+}
+
+button:hover {
+    background: var(--var-secondary);
+    color: var(--var-background);
 }
 
 button.checked {
@@ -142,4 +151,124 @@ body.slow button#initSlowDown {
     button {
         font-size: 13pt;
     }
+
+    article header div {
+        margin-top: 8px;
+    }
+}
+
+article {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: var(--var-background);
+    color: var(--var-secondary);
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+    opacity: 0;
+}
+
+article.visible {
+    pointer-events: all;
+    opacity: 1;
+}
+
+article button {
+    color: var(--var-secondary);
+}
+
+article button:hover {
+    background: var(--var-secondary);
+    color: var(--var-background);
+}
+
+article header {
+    position: sticky;
+    top: 0;
+    width: calc(100% - 32px);
+    max-width: 800px;
+    margin: 8px auto;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+article header button {
+    margin: 0px 12px 0px 0px;
+}
+
+article header button:last-child {
+    margin: 0px;
+}
+
+article header h1 {
+    flex-grow: 1;
+}
+
+article div#leaderboard, article content {
+    width: calc(100% - 32px);
+    max-width: 800px;
+    margin: 8px auto;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+
+div.item {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--var-background);
+}
+
+div.item:last-child {
+    border-bottom: none;
+}
+
+div.item h1 {
+    font-size: 20pt;
+    margin: 0px 16px;
+    white-space: nowrap;
+}
+
+div.item h2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+}
+
+div.item.self {
+    background: var(--var-primary);
+    color: var(--var-background);
+}
+
+article content {
+    display: flex;
+    flex-direction: column;
+}
+
+article content h1 {
+    color: var(--var-primary);
+    font-size: 36pt;
+    margin: 0;
+}
+
+article content p {
+    margin: 0;
+    font-size: 18pt;
+}
+
+article content input {
+    background: var(--var-secondary);
+    color: var(--var-background);
+    font-family: var(--var-font);
+    font-size: 24pt;
+    margin: 16px 0px;
+    padding: 16px;
+    border: none;
+}
+
+article content input::placeholder {
+    color: #00000050;
 }
