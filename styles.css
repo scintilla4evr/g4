@@ -192,6 +192,10 @@ body.slow button#initSlowDown {
         text-transform: uppercase;
     }
 
+    body.hell header div {
+        margin-top: 0px;
+    }
+
     button {
         font-size: 13pt;
     }
