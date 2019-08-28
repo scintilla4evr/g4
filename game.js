@@ -315,7 +315,7 @@
             return null
         }
 
-        generateAngleArrangement(n) {
+        generateAngleArrangement(n, isSmall) {
             var angleBetween = 1 / n
             var shiftAngle = angleBetween / 3
             var isShifted = Math.random() >= 0.5
@@ -328,7 +328,7 @@
     
                 if (isShifted && n == 4 && i % 2) {
                     angle += shiftSign * shiftAngle
-                } else if (isShifted && n == 6) {
+                } else if (isShifted && n == 6 && !isSmall) {
                     if (i % 3 == 0) angle += shiftSign * shiftAngle
                     if (i % 3 == 1) angle -= shiftSign * shiftAngle
                 }
@@ -347,7 +347,7 @@
             n += Math.round(Math.random() * 2)
     
             var elements = []
-            var angles = this.generateAngleArrangement(n)
+            var angles = this.generateAngleArrangement(n, true)
     
             for (var i = 0; i < n; i++) {
                 var isBall = Math.random() >= 0.5

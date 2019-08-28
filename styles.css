@@ -1,16 +1,13 @@
-@font-face {
-    font-family: "VCR OSD Mono";
-    src: url("VCR_OSD_MONO_1.001.ttf");
-}
-
 body {
     --var-background: #1c1b1a;
     --var-primary: #dbb986;
     --var-secondary: #ff523b;
 
+    --var-font: "Lexend Deca", "Segoe UI", sans-serif;
+
     background: var(--var-background);
     color: var(--var-primary);
-    font-family: "VCR OSD Mono", monospace, sans-serif;
+    font-family: var(--var-font);
     transition: background-color 0.2s;
 }
 
@@ -64,7 +61,6 @@ div.slowProgress div {
 header {
     display: flex;
     justify-content: space-around;
-    opacity: 0.5
 }
 
 header div {
@@ -77,6 +73,14 @@ header div:last-child {
 
 header div h1, header div h2 {
     margin: 0;
+}
+
+span#recordRank {
+    color: var(--var-secondary);
+}
+
+header div h2 {
+    opacity: 0.5;
 }
 
 footer {
@@ -100,10 +104,15 @@ button {
     color: var(--var-primary);
     padding: 8px 16px;
     margin-bottom: 8px;
-    font-family: "VCR OSD Mono", monospace, sans-serif;
+    font-family: var(--var-font);
     font-size: 16pt;
     text-transform: uppercase;
     border: none;
+}
+
+button:hover {
+    background: var(--var-secondary);
+    color: var(--var-background);
 }
 
 button.checked {
@@ -141,5 +150,9 @@ body.slow button#initSlowDown {
 
     button {
         font-size: 13pt;
+    }
+
+    article header div {
+        margin-top: 8px;
     }
 }
