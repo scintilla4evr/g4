@@ -35,11 +35,21 @@
         </div>
 
         <footer>
-            <div>
-                <button id="muteMusic" class="checked" style="display: none">Unmute music</button>
-                <button id="switchModes">Hard mode</button>
+            <button id="muteMusic" class="checked" style="display: none">Unmute music</button>
+            <div id="modeSwitches">
+                <h1>Mode:</h1>
+                <button id="modeNormal" class="checked">Normal</button>
+                <button id="modeHard">Hard</button>
+                <button id="modeHell">Hell</button>
             </div>
-            <span>G4.2 | <a href="https://twitter.com/scintilla4evr" target="_blank">@scintilla4evr</a></span>
+
+            <a href="https://twitter.com/scintilla4evr" target="_blank">
+                <svg id="g4logo" viewBox="0 0 400 288">
+                    <path d="M224,112V263.74a143.0544,143.0544,0,0,1-64,23.38,145.6907,145.6907,0,0,1-16,.88A144,144,0,0,1,144,0a145.6907,145.6907,0,0,1,16,.88V65.61a80,80,0,1,0,0,156.78V176H128V112Z"/>
+                    <polygon points="400 112 400 176 352 176 352 288 288 288 288 112 400 112"/>
+                    <rect x="224" width="64" height="112"/>
+                </svg>
+            </a>
         </footer>
 
         <script src="game.js?v=3"></script>

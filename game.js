@@ -287,6 +287,32 @@
             return level
         }
 
+        static createHell() {
+            var level = new Level(16.25)
+
+            var innerRing = new Ring(level, 1)
+            innerRing.elements = level.generateInnerRing(2)
+            level.rings.push(innerRing)
+
+            var innerRing2 = new Ring(level, 0.5)
+            innerRing2.elements = level.generateInnerRing(2)
+            level.rings.push(innerRing2)
+
+            var middleRing = new Ring(level, 0.5)
+            middleRing.elements = level.generateMiddleRing(3)
+            level.rings.push(middleRing)
+
+            var outerRing = new Ring(level, 0.25)
+            outerRing.elements = level.generateOuterRing(3)
+            level.rings.push(outerRing)
+
+            var outerRing2 = new Ring(level, 0.125)
+            outerRing2.elements = level.generateOuterRing(3)
+            level.rings.push(outerRing2)
+
+            return level
+        }
+
         advance(time) {
             var beatTime = 60 / this.bpm
             this.rotation += time / beatTime
@@ -688,6 +714,8 @@
         }
     }
 
+    class GameNormalMode extends Game {}
+
     class GameHardMode extends Game {
         constructor() {
             super()
@@ -807,7 +835,129 @@
         }
     }
 
-    var game = new Game()
+    class GameHellMode extends Game {
+        getCannonPosition() {
+            return [
+                Math.cos(-this.playerAngle * Math.PI) * 40,
+                Math.sin(-this.playerAngle * Math.PI) * 40
+            ]
+        }
+
+        /**
+         * 
+         * @param {CanvasRenderingContext2D} context
+         */
+        render(context) {
+            context.fillStyle = "#000000"
+            context.strokeStyle = "#000000"
+
+            context.clearRect(
+                0, 0,
+                context.canvas.width, context.canvas.height
+            )
+
+            this.level.render(context)
+
+            context.lineWidth = 1
+
+            var cannonX = context.canvas.width / 2
+            var cannonY = context.canvas.height / 2
+
+            var cannonPos = this.getCannonPosition()
+            cannonX += cannonPos[0]
+            cannonY += cannonPos[1]
+        
+            context.beginPath()
+            context.moveTo(
+                20 * Math.cos(2 * Math.PI * this.playerAngle) + cannonX,
+                20 * Math.sin(2 * Math.PI * this.playerAngle) + cannonY
+            )
+            context.lineTo(
+                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + cannonX,
+                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + cannonY
+            )
+            context.lineTo(
+                10 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI) + cannonX,
+                10 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI) + cannonY
+            )
+            context.lineTo(
+                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + cannonX,
+                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + cannonY
+            )
+            context.closePath()
+
+            context.fill()
+
+            context.beginPath()
+            context.arc(
+                cannonX, cannonY, 30, 2 * Math.PI * this.playerAngle + 0.8, 2 * Math.PI * this.playerAngle + 2 * Math.PI - 0.8
+            )
+
+            context.lineWidth = 4
+            context.stroke()
+
+            context.beginPath()
+            
+            context.arc(
+                10 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI) + cannonX,
+                10 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI) + cannonY,
+                6, 0, Math.PI * 2
+            )
+
+
+            context.fillStyle = "#780000"
+            context.fill()
+
+            if (this.bullet) {
+                context.beginPath()
+
+                context.arc(
+                    this.bullet.x + context.canvas.width / 2,
+                    this.bullet.y + context.canvas.height / 2,
+                    10,
+                    0, 2 * Math.PI
+                )
+
+                context.fillStyle = "#ffa600"
+                context.fill()
+            }
+        }
+
+        shoot() {
+            var cannonPos = this.getCannonPosition()
+
+            var bullet = new Projectile(
+                20 * Math.cos(2 * Math.PI * this.playerAngle) + cannonPos[0],
+                20 * Math.sin(2 * Math.PI * this.playerAngle) + cannonPos[1],
+                7,
+                750 * Math.cos(2 * Math.PI * this.playerAngle),
+                750 * Math.sin(2 * Math.PI * this.playerAngle)
+            )
+
+            this.bullet = bullet
+        }
+
+        start() {
+            this.level = Level.createHell()
+            this.level.advance(this.gameTime)
+
+            document.querySelector("#levelNum").textContent = this.progressionLevel
+            this.updateRecord()
+            resizeCanvas()
+        }
+ 
+        updateRecord() {
+            var record = 0
+            if (localStorage.getItem("g4game_recordHell")) record = localStorage.getItem("g4game_recordHell")
+
+            if (this.progressionLevel > record) record = this.progressionLevel
+            localStorage.setItem("g4game_recordHell", record)
+
+            document.querySelector("#recordNum").textContent = record
+        }
+    }
+
+    var game = new GameNormalMode()
 
     var gameCanvas = document.querySelector("canvas")
     var gameCanvasContext = gameCanvas.getContext("2d")
@@ -829,7 +979,7 @@
         console.log(e)
         if (e.code == "Space" && !game.bullet)
             game.shoot()
-        else if (e.code == "KeyS" && !game.isSlow && game.slowTime) {
+        else if (e.code == "KeyS" && !game.isSlow && game.slowTime && !(game instanceof GameHellMode)) {
             game.isSlow = true
             document.body.classList.add("slow")
         }
@@ -877,30 +1027,73 @@
         }
     })
 
-    document.querySelector("#switchModes").addEventListener("click", function() {
-        if (game instanceof GameHardMode) {
-            game = new Game()
-            game.start()
-            game.updateRecord()
+    // document.querySelector("#switchModes").addEventListener("click", function() {
+        // if (game instanceof GameHardMode) {
+        //     game = new Game()
+        //     game.start()
+        //     game.updateRecord()
 
-            document.body.classList.remove("hard")
+        //     document.body.classList.remove("hard")
 
-            this.textContent = "Hard mode"
-        } else {
-            game = new GameHardMode()
-            game.start()
-            game.updateRecord()
+        //     this.textContent = "Hard mode"
+        // } else {
+        //     game = new GameHardMode()
+        //     game.start()
+        //     game.updateRecord()
 
-            document.body.classList.add("hard")
+        //     document.body.classList.add("hard")
 
-            this.textContent = "Normal mode"
-        }
+        //     this.textContent = "Normal mode"
+        // }
+    // })
+
+    document.querySelector("#modeNormal").addEventListener("click", function() {
+        if (game instanceof GameNormalMode) return
+
+        game = new GameNormalMode()
+        game.start()
+        game.updateRecord()
+
+        document.body.classList.remove("hard")
+        document.body.classList.remove("hell")
+
+        document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
+        this.classList.add("checked")
+    })
+
+    document.querySelector("#modeHard").addEventListener("click", function() {
+        if (game instanceof GameHardMode) return
+
+        game = new GameHardMode()
+        game.start()
+        game.updateRecord()
+
+        document.body.classList.add("hard")
+        document.body.classList.remove("hell")
+
+        document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
+        this.classList.add("checked")
+    })
+
+    document.querySelector("#modeHell").addEventListener("click", function() {
+        if (game instanceof GameHellMode) return
+
+        game = new GameHellMode()
+        game.start()
+        game.updateRecord()
+
+        document.body.classList.remove("hard")
+        document.body.classList.add("hell")
+
+        document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
+        this.classList.add("checked")
     })
 
     document.querySelector("#initSlowDown").addEventListener("click", () => {
         if (!game.isSlow && game.slowTime) {
             game.isSlow = true
             document.body.classList.add("slow")
+
         }
     })
 
