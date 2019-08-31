@@ -11,6 +11,12 @@ body {
     transition: background-color 0.2s;
 }
 
+body.easy {
+    --var-background: #070f0e;
+    --var-primary: #4c7d45;
+    --var-secondary: #e5ff00;
+}
+
 body.hard {
     --var-background: #151523;
     --var-primary: #9bd1ba;
@@ -23,7 +29,14 @@ body.hell {
     --var-secondary: #ffa600;
 }
 
-body.hell div.slowdown {
+body.hades {
+    --var-background: #000000;
+    --var-primary: #302f35;
+    --var-secondary: #227892;
+}
+
+body.hell div.slowdown,
+body.hades div.slowdown {
     display: none;
 }
 
@@ -35,12 +48,21 @@ body.hit {
     background: #2b1616;
 }
 
+body.easy.hit {
+    background: #0c0f07;
+}
+
 body.hard.hit {
     background: #271620;
 }
 
 body.hell.hit {
     background: #a0230e;
+}
+
+body.hades.hit {
+    background: #000;
+    --var-primary: #851919;
 }
 
 canvas {
@@ -73,8 +95,11 @@ div.slowProgress div {
 }
 
 header {
+    position: fixed;
+    width: 100%;
     display: flex;
     justify-content: space-around;
+    z-index: 100;
 }
 
 header div {
@@ -196,11 +221,19 @@ body.slow button#initSlowDown {
         margin-top: 0px;
     }
 
+    body.hades header div {
+        margin-top: 0px;
+    }
+
     button {
         font-size: 13pt;
     }
 
     article header div {
         margin-top: 8px;
+    }
+
+    footer a {
+        display: none;
     }
 }

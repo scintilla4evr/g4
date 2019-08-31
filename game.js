@@ -196,7 +196,8 @@
     class Ring {
         constructor(
             level,
-            speedMult
+            speedMult,
+            isDistraction
         ) {
             /**
              * @type {Level}
@@ -217,13 +218,21 @@
              * @type {RingElement[]}
              */
             this.elements = []
+
+            /**
+             * @type {Boolean}
+             */
+            this.isDistraction = isDistraction
         }
         /**
          * 
          * @param {CanvasRenderingContext2D} context
          */
         render(context) {
+            context.globalAlpha = 1
+            if (this.isDistraction) context.globalAlpha = 0.4
             this.elements.forEach(element => element.render(context))
+            context.globalAlpha = 1
         }
 
         advance(time) {
@@ -313,6 +322,44 @@
             return level
         }
 
+        static createHades() {
+            var level = new Level(16.25)
+
+            var innerRing = new Ring(level, 1)
+            innerRing.elements = level.generateInnerRing(1, 100)
+            level.rings.push(innerRing)
+
+            var middleRing = new Ring(level, 0.5)
+            middleRing.elements = level.generateInnerRing(3, 300)
+            level.rings.push(middleRing)
+
+            var outerRing1 = new Ring(level, 0.25)
+            outerRing1.elements = level.generateOuterRing(3)
+            level.rings.push(outerRing1)
+
+            var outerRing2 = new Ring(level, 0.125)
+            outerRing2.elements = level.generateOuterRing(3)
+            level.rings.push(outerRing2)
+
+            // Distractions
+            var middleRing = new Ring(level, 1)
+            middleRing.isDistraction = true
+            middleRing.elements = level.generateMiddleRing(3)
+            level.rings.push(middleRing)
+
+            var outerRing3 = new Ring(level, 0.5)
+            outerRing3.isDistraction = true
+            outerRing3.elements = level.generateOuterRing(3)
+            level.rings.push(outerRing3)
+
+            var innerRing2 = new Ring(level, 0.75)
+            innerRing2.isDistraction = true
+            innerRing2.elements = level.generateInnerRing(2, 150)
+            level.rings.push(innerRing2)
+
+            return level
+        }
+
         advance(time) {
             var beatTime = 60 / this.bpm
             this.rotation += time / beatTime
@@ -335,16 +382,18 @@
          */
         getCollidingObject(projectile) {
             for (var ring of this.rings) {
+                if (ring.isDistraction) continue
                 var element = ring.getCollidingObject(projectile)
                 if (element) return element
             }
             return null
         }
 
-        generateAngleArrangement(n, isSmall) {
+        generateAngleArrangement(n, isSmall, isEasy) {
             var angleBetween = 1 / n
             var shiftAngle = angleBetween / 3
             var isShifted = Math.random() >= 0.5
+            if (isEasy) isShifted = false
             var shiftSign = (Math.random() >= 0.5) ? 1 : -1
     
             var angles = []
@@ -365,31 +414,32 @@
             return angles
         }
 
-        generateInnerRing(difficulty) {
+        generateInnerRing(difficulty, radius) {
             var n = 2
+            if (!radius) radius = 200
             if (difficulty == 2) n = Math.floor(Math.random() * 2) + 2
             if (difficulty == 3) n = 4
     
             n += Math.round(Math.random() * 2)
     
             var elements = []
-            var angles = this.generateAngleArrangement(n, true)
+            var angles = this.generateAngleArrangement(n, true, difficulty < 3)
     
             for (var i = 0; i < n; i++) {
                 var isBall = Math.random() >= 0.5
     
                 if (isBall || (!isBall && i == 0)) {
                     elements.push(
-                        new RingBall(angles[i], 200, 50)
+                        new RingBall(angles[i], radius, 50)
                     )
     
-                    if (Math.random() >= 0.5 && difficulty > 1 && i > 0) {
+                    if (Math.random() >= 0.7 && difficulty > 1 && i > 0) {
                         elements.push(
                             new RingBall(
-                                angles[i] + 0.08, 200, 20
+                                angles[i] + 0.08, radius, 20
                             ),
                             new RingBall(
-                                angles[i] - 0.08, 200, 20
+                                angles[i] - 0.08, radius, 20
                             )
                         )
     
@@ -401,17 +451,17 @@
     
                     elements.push(
                         new RingBar(
-                            angleStart, angleLength, 200, 10
+                            angleStart, angleLength, radius, 10
                         )
                     )
     
                     if (Math.random() >= 0.5) {
                         elements.push(
                             new RingBall(
-                                angleStart, 200, 30
+                                angleStart, radius, 30
                             ),
                             new RingBall(
-                                angleStart + angleLength, 200, 30
+                                angleStart + angleLength, radius, 30
                             )
                         )
                     }
@@ -716,6 +766,104 @@
 
     class GameNormalMode extends Game {}
 
+    class GameEasyMode extends Game {
+        constructor() {
+            super()
+        }
+
+        /**
+         * 
+         * @param {CanvasRenderingContext2D} context
+         */
+        render(context) {
+            context.fillStyle = "#4c7d45"
+            context.strokeStyle = "#4c7d45"
+
+            context.clearRect(
+                0, 0,
+                context.canvas.width, context.canvas.height
+            )
+
+            this.level.render(context)
+
+            context.lineWidth = 1
+
+            var cannonX = context.canvas.width / 2
+            var cannonY = context.canvas.height / 2
+        
+            context.beginPath()
+            context.moveTo(
+                20 * Math.cos(2 * Math.PI * this.playerAngle) + cannonX,
+                20 * Math.sin(2 * Math.PI * this.playerAngle) + cannonY
+            )
+            context.lineTo(
+                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + cannonX,
+                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + cannonY
+            )
+            context.lineTo(
+                10 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI) + cannonX,
+                10 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI) + cannonY
+            )
+            context.lineTo(
+                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + cannonX,
+                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + cannonY
+            )
+            context.closePath()
+
+            context.fill()
+
+            if (this.bullet) {
+                context.beginPath()
+
+                context.arc(
+                    this.bullet.x + context.canvas.width / 2,
+                    this.bullet.y + context.canvas.height / 2,
+                    10,
+                    0, 2 * Math.PI
+                )
+
+                context.fillStyle = "#e5ff00"
+                context.fill()
+            }
+        }
+
+        shoot() {
+            var cannonPos = [0, 0]
+
+            var bullet = new Projectile(
+                20 * Math.cos(2 * Math.PI * this.playerAngle) + cannonPos[0],
+                20 * Math.sin(2 * Math.PI * this.playerAngle) + cannonPos[1],
+                7,
+                750 * Math.cos(2 * Math.PI * this.playerAngle),
+                750 * Math.sin(2 * Math.PI * this.playerAngle)
+            )
+
+            this.bullet = bullet
+        }
+
+        
+
+        getProgression() {
+            var progression = super.getProgression()
+            
+            progression[0] = Math.max(progression[0], 2)
+            progression[1] = 0
+            progression[2] = 0
+
+            return progression
+        }
+ 
+        updateRecord() {
+            var record = 0
+            if (localStorage.getItem("g4game_recordEasy")) record = localStorage.getItem("g4game_recordEasy")
+
+            if (this.progressionLevel > record) record = this.progressionLevel
+            localStorage.setItem("g4game_recordEasy", record)
+
+            document.querySelector("#recordNum").textContent = record
+        }
+    }
+
     class GameHardMode extends Game {
         constructor() {
             super()
@@ -957,6 +1105,134 @@
         }
     }
 
+    class GameHadesMode extends Game {
+        getCannonPosition() {
+            return [
+                Math.cos(-this.playerAngle * Math.PI) * 200,
+                Math.sin(-this.playerAngle * Math.PI) * 200
+            ]
+        }
+
+        /**
+         * 
+         * @param {CanvasRenderingContext2D} context
+         */
+        render(context) {
+            context.fillStyle = "#000"
+            context.fillRect(
+                0, 0,
+                context.canvas.width, context.canvas.height
+            )
+
+            context.fillStyle = "#302f35"
+            context.strokeStyle = "#302f35"
+            this.level.render(context)
+
+            context.lineWidth = 1
+
+            var cannonX = context.canvas.width / 2
+            var cannonY = context.canvas.height / 2
+
+            var cannonPos = this.getCannonPosition()
+            cannonX += cannonPos[0]
+            cannonY += cannonPos[1]
+
+            var spotlight = context.createRadialGradient(
+                cannonX, cannonY, 900, cannonX, cannonY, 0
+            )
+            spotlight.addColorStop(0, "#000")
+            spotlight.addColorStop(1, "#fff")
+
+            context.globalCompositeOperation = "multiply"
+            context.fillStyle = spotlight
+            context.fillRect(
+                0, 0,
+                context.canvas.width, context.canvas.height
+            )
+
+            var glow = context.createRadialGradient(
+                cannonX, cannonY, 100, cannonX, cannonY, 0
+            )
+            glow.addColorStop(0, "#000")
+            glow.addColorStop(0.6, "#111")
+            glow.addColorStop(1, "#222")
+
+            context.globalCompositeOperation = "screen"
+            context.fillStyle = glow
+            context.fillRect(
+                0, 0,
+                context.canvas.width, context.canvas.height
+            )
+
+            context.globalCompositeOperation = "source-over"
+        
+            context.beginPath()
+            context.moveTo(
+                20 * Math.cos(2 * Math.PI * this.playerAngle) + cannonX,
+                20 * Math.sin(2 * Math.PI * this.playerAngle) + cannonY
+            )
+            context.lineTo(
+                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + cannonX,
+                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + cannonY
+            )
+            context.lineTo(
+                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + cannonX,
+                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + cannonY
+            )
+            context.closePath()
+
+            context.fillStyle = "#fff"
+            context.fill()
+
+            if (this.bullet) {
+                context.beginPath()
+
+                context.arc(
+                    this.bullet.x + context.canvas.width / 2,
+                    this.bullet.y + context.canvas.height / 2,
+                    10,
+                    0, 2 * Math.PI
+                )
+
+                context.fillStyle = "#227892"
+                context.fill()
+            }
+        }
+
+        shoot() {
+            var cannonPos = this.getCannonPosition()
+
+            var bullet = new Projectile(
+                20 * Math.cos(2 * Math.PI * this.playerAngle) + cannonPos[0],
+                20 * Math.sin(2 * Math.PI * this.playerAngle) + cannonPos[1],
+                7,
+                750 * Math.cos(2 * Math.PI * this.playerAngle),
+                750 * Math.sin(2 * Math.PI * this.playerAngle)
+            )
+
+            this.bullet = bullet
+        }
+
+        start() {
+            this.level = Level.createHades()
+            this.level.advance(this.gameTime)
+
+            document.querySelector("#levelNum").textContent = this.progressionLevel
+            this.updateRecord()
+            resizeCanvas()
+        }
+ 
+        updateRecord() {
+            var record = 0
+            if (localStorage.getItem("g4game_recordHades")) record = localStorage.getItem("g4game_recordHades")
+
+            if (this.progressionLevel > record) record = this.progressionLevel
+            localStorage.setItem("g4game_recordHades", record)
+
+            document.querySelector("#recordNum").textContent = record
+        }
+    }
+
     var game = new GameNormalMode()
 
     var gameCanvas = document.querySelector("canvas")
@@ -979,7 +1255,7 @@
         console.log(e)
         if (e.code == "Space" && !game.bullet)
             game.shoot()
-        else if (e.code == "KeyS" && !game.isSlow && game.slowTime && !(game instanceof GameHellMode)) {
+        else if (e.code == "KeyS" && !game.isSlow && game.slowTime && !(game instanceof GameHellMode) && !(game instanceof GameHadesMode)) {
             game.isSlow = true
             document.body.classList.add("slow")
         }
@@ -1047,6 +1323,22 @@
         // }
     // })
 
+    document.querySelector("#modeEasy").addEventListener("click", function() {
+        if (game instanceof GameEasyMode) return
+
+        game = new GameEasyMode()
+        game.start()
+        game.updateRecord()
+
+        document.body.classList.add("easy")
+        document.body.classList.remove("hard")
+        document.body.classList.remove("hell")
+        document.body.classList.remove("hades")
+
+        document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
+        this.classList.add("checked")
+    })
+
     document.querySelector("#modeNormal").addEventListener("click", function() {
         if (game instanceof GameNormalMode) return
 
@@ -1054,8 +1346,10 @@
         game.start()
         game.updateRecord()
 
+        document.body.classList.remove("easy")
         document.body.classList.remove("hard")
         document.body.classList.remove("hell")
+        document.body.classList.remove("hades")
 
         document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
         this.classList.add("checked")
@@ -1068,8 +1362,10 @@
         game.start()
         game.updateRecord()
 
+        document.body.classList.remove("easy")
         document.body.classList.add("hard")
         document.body.classList.remove("hell")
+        document.body.classList.remove("hades")
 
         document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
         this.classList.add("checked")
@@ -1082,8 +1378,26 @@
         game.start()
         game.updateRecord()
 
+        document.body.classList.remove("easy")
         document.body.classList.remove("hard")
         document.body.classList.add("hell")
+        document.body.classList.remove("hades")
+
+        document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
+        this.classList.add("checked")
+    })
+
+    document.querySelector("#modeHades").addEventListener("click", function() {
+        if (game instanceof GameHadesMode) return
+
+        game = new GameHadesMode()
+        game.start()
+        game.updateRecord()
+
+        document.body.classList.remove("easy")
+        document.body.classList.remove("hard")
+        document.body.classList.remove("hell")
+        document.body.classList.add("hades")
 
         document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
         this.classList.add("checked")
