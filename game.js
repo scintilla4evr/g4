@@ -1172,12 +1172,12 @@
                 20 * Math.sin(2 * Math.PI * this.playerAngle) + cannonY
             )
             context.lineTo(
-                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + cannonX,
-                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + cannonY
+                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI - 0.6) + cannonX,
+                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI - 0.6) + cannonY
             )
             context.lineTo(
-                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + cannonX,
-                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + cannonY
+                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI + 0.6) + cannonX,
+                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI + 0.6) + cannonY
             )
             context.closePath()
 
