@@ -1,4 +1,6 @@
 (() => {
+    var legacyMode = false
+
     class Projectile {
         constructor(
             x, y, radius,
@@ -1293,34 +1295,36 @@
             cannonX += cannonPos[0]
             cannonY += cannonPos[1]
 
-            var spotlight = context.createRadialGradient(
-                cannonX, cannonY, 900, cannonX, cannonY, 0
-            )
-            spotlight.addColorStop(0, "#000")
-            spotlight.addColorStop(1, "#fff")
+            if (!legacyMode) {
+                var spotlight = context.createRadialGradient(
+                    cannonX, cannonY, 900, cannonX, cannonY, 0
+                )
+                spotlight.addColorStop(0, "#000")
+                spotlight.addColorStop(1, "#fff")
 
-            context.globalCompositeOperation = "multiply"
-            context.fillStyle = spotlight
-            context.fillRect(
-                0, 0,
-                context.canvas.width, context.canvas.height
-            )
+                context.globalCompositeOperation = "multiply"
+                context.fillStyle = spotlight
+                context.fillRect(
+                    0, 0,
+                    context.canvas.width, context.canvas.height
+                )
 
-            var glow = context.createRadialGradient(
-                cannonX, cannonY, 100, cannonX, cannonY, 0
-            )
-            glow.addColorStop(0, "#000")
-            glow.addColorStop(0.6, "#111")
-            glow.addColorStop(1, "#222")
+                var glow = context.createRadialGradient(
+                    cannonX, cannonY, 100, cannonX, cannonY, 0
+                )
+                glow.addColorStop(0, "#000")
+                glow.addColorStop(0.6, "#111")
+                glow.addColorStop(1, "#222")
 
-            context.globalCompositeOperation = "screen"
-            context.fillStyle = glow
-            context.fillRect(
-                0, 0,
-                context.canvas.width, context.canvas.height
-            )
+                context.globalCompositeOperation = "screen"
+                context.fillStyle = glow
+                context.fillRect(
+                    0, 0,
+                    context.canvas.width, context.canvas.height
+                )
 
-            context.globalCompositeOperation = "source-over"
+                context.globalCompositeOperation = "source-over"
+            }
         
             context.beginPath()
             context.moveTo(
@@ -1587,6 +1591,10 @@
             document.body.classList.add("slow")
 
         }
+    })
+
+    document.querySelector("#levelNum").addEventListener("click", () => {
+        legacyMode = !legacyMode
     })
 
     render()
