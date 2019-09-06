@@ -296,6 +296,30 @@
             return level
         }
 
+        static createDenise() {
+            var level = new Level(16.25)
+
+            let difficulties = Array(3).fill(0).map(x => Math.floor(Math.random() * 2 + 2))
+
+            var innerRing = new Ring(level, 1)
+            innerRing.elements = level.generateDeniseRing(4, 200)
+            level.rings.push(innerRing)
+
+            var middleRing = new Ring(level, 0.5)
+            middleRing.elements = level.generateDeniseRing(4, 266)
+            level.rings.push(middleRing)
+
+            var outerRing = new Ring(level, 0.25)
+            outerRing.elements = level.generateDeniseRing(4, 333)
+            level.rings.push(outerRing)
+
+            var outerRing2 = new Ring(level, 0.25)
+            outerRing2.elements = level.generateDeniseRing(4, 400)
+            level.rings.push(outerRing2)
+
+            return level
+        }
+
         static createHell() {
             var level = new Level(16.25)
 
@@ -490,6 +514,50 @@
                 } else {
                     elements.push(
                         new RingBar(angleStart, angleLength, 300, 10)
+                    )
+                }
+            }
+    
+            return elements
+        }
+
+        generateDeniseRing(difficulty, radius) {
+            if (difficulty == 1) return []
+            var n = (difficulty - 1) * 2
+            if (difficulty == 3 && Math.random() >= 0.6) n = 6
+            if (difficulty == 4) n = Math.floor(Math.random() * 2)*4 + 4
+    
+            var angles = this.generateAngleArrangement(n)
+            var elements = []
+    
+            for (var i = 0; i < n / 2; i++) {
+                var angleStart = angles[2 * i]
+                var angleLength = angles[2 * i + 1] - angleStart
+    
+                if (difficulty >= 3 && Math.random() >= 0.5) {
+                    elements.push(
+                        new RingMarqueeBar(angleStart, angleLength, radius, 2, 1)
+                    )
+                } else {
+                    elements.push(
+                        new RingBar(angleStart, angleLength, radius, 2)
+                    )
+                }
+            }
+
+            for (var i = 1; i < n; i += 2) {
+                var angleStart = angles[i]
+                var angleLength = angles[(i + 1) % n] - angleStart
+
+                var numOfBalls = Math.round(Math.random() * 2 + 1)
+
+                for (var j = 1; j <= (numOfBalls + 1); j++) {
+                    elements.push(
+                        new RingBall(
+                            angleStart + (j/(numOfBalls+2)) * angleLength,
+                            radius,
+                            4
+                        )
                     )
                 }
             }
@@ -763,6 +831,94 @@
             document.querySelector("#recordNum").textContent = record
         }
     }
+
+    class GameDeniseMode extends Game {
+        /**
+         * 
+         * @param {CanvasRenderingContext2D} context 
+         */
+        render(context) {
+
+            context.clearRect(
+                0, 0,
+                context.canvas.width, context.canvas.height
+            )
+
+            //this.level.render(context)
+            for (var i = 0; i < this.level.rings.length; i++) {
+                let color = i % 2 ? "#67d387" : "#929292"
+                context.fillStyle = color
+                context.strokeStyle = color
+                
+                this.level.rings[i].render(context)
+            }
+
+            context.lineWidth = 1
+
+            var drawCannon = (radius) => {
+                context.beginPath()
+                context.moveTo(
+                    radius * Math.cos(2 * Math.PI * this.playerAngle) + context.canvas.width / 2,
+                    radius * Math.sin(2 * Math.PI * this.playerAngle) + context.canvas.height / 2
+                )
+                context.lineTo(
+                    radius * Math.cos(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + context.canvas.width / 2,
+                    radius * Math.sin(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + context.canvas.height / 2
+                )
+                context.lineTo(
+                    (radius / 2) * Math.cos(2 * Math.PI * this.playerAngle + Math.PI) + context.canvas.width / 2,
+                    (radius / 2) * Math.sin(2 * Math.PI * this.playerAngle + Math.PI) + context.canvas.height / 2
+                )
+                context.lineTo(
+                    radius * Math.cos(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + context.canvas.width / 2,
+                    radius * Math.sin(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + context.canvas.height / 2
+                )
+                context.closePath()
+
+                context.stroke()
+            }
+
+            context.lineWidth = 4
+            context.lineJoin = "round"
+            drawCannon(20)
+            context.setLineDash([5, 8, 10, 6])
+            context.strokeStyle = "#929292"
+            drawCannon(40)
+            context.setLineDash([])
+
+            if (this.bullet) {
+                context.beginPath()
+
+                context.arc(
+                    this.bullet.x + context.canvas.width / 2,
+                    this.bullet.y + context.canvas.height / 2,
+                    10,
+                    0, 2 * Math.PI
+                )
+
+                context.fillStyle = "#67d387"
+                context.fill()
+            }
+        }
+
+        start() {
+            this.level = Level.createDenise()
+            this.level.advance(this.gameTime)
+
+            document.querySelector("#levelNum").textContent = this.progressionLevel
+            this.updateRecord()
+            resizeCanvas()
+        }
+ 
+        updateRecord() {
+            var record = 0
+            if (localStorage.getItem("g4game_recordDenise")) record = localStorage.getItem("g4game_recordDenise")
+
+            if (this.progressionLevel > record) record = this.progressionLevel
+            localStorage.setItem("g4game_recordDenise", record)
+
+            document.querySelector("#recordNum").textContent = record
+        }}
 
     class GameNormalMode extends Game {}
 
@@ -1295,10 +1451,10 @@
         this.classList.toggle("checked")
 
         if (this.classList.contains("checked")) {
-            this.textContent = "Unmute music"
+            this.textContent = "Unmute"
             audio.pause()
         } else {
-            this.textContent = "Mute music"
+            this.textContent = "Mute"
             audio.play()
         }
     })
@@ -1334,6 +1490,7 @@
         document.body.classList.remove("hard")
         document.body.classList.remove("hell")
         document.body.classList.remove("hades")
+        document.body.classList.remove("denise")
 
         document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
         this.classList.add("checked")
@@ -1350,6 +1507,7 @@
         document.body.classList.remove("hard")
         document.body.classList.remove("hell")
         document.body.classList.remove("hades")
+        document.body.classList.remove("denise")
 
         document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
         this.classList.add("checked")
@@ -1366,6 +1524,7 @@
         document.body.classList.add("hard")
         document.body.classList.remove("hell")
         document.body.classList.remove("hades")
+        document.body.classList.remove("denise")
 
         document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
         this.classList.add("checked")
@@ -1382,6 +1541,7 @@
         document.body.classList.remove("hard")
         document.body.classList.add("hell")
         document.body.classList.remove("hades")
+        document.body.classList.remove("denise")
 
         document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
         this.classList.add("checked")
@@ -1398,6 +1558,24 @@
         document.body.classList.remove("hard")
         document.body.classList.remove("hell")
         document.body.classList.add("hades")
+        document.body.classList.remove("denise")
+
+        document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
+        this.classList.add("checked")
+    })
+
+    document.querySelector("#modeDenise").addEventListener("click", function() {
+        if (game instanceof GameDeniseMode) return
+
+        game = new GameDeniseMode()
+        game.start()
+        game.updateRecord()
+
+        document.body.classList.remove("easy")
+        document.body.classList.remove("hard")
+        document.body.classList.remove("hell")
+        document.body.classList.remove("hades")
+        document.body.classList.add("denise")
 
         document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
         this.classList.add("checked")

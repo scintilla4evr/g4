@@ -35,6 +35,12 @@ body.hades {
     --var-secondary: #227892;
 }
 
+body.denise {
+    --var-background: #1e1e1e;
+    --var-primary: #929292;
+    --var-secondary: #67d387;
+}
+
 body.hell div.slowdown,
 body.hades div.slowdown {
     display: none;
@@ -58,6 +64,10 @@ body.hard.hit {
 
 body.hell.hit {
     background: #a0230e;
+}
+
+body.denise.hit {
+    background: #292425;
 }
 
 body.hades.hit {
