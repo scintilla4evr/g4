@@ -5,10 +5,10 @@ const DATA_CACHE_NAME = 'data-cache-v1';
 
 const FILES_TO_CACHE = [
     '/',
-    '/index.html',
-    '/assets/music.mp3',
-    '/scripts/game.js',
-    '/styles/styles.css',
+    'index.html',
+    'assets/music.mp3',
+    'scripts/game.js',
+    'styles/styles.css',
   ];
 
 self.addEventListener('install', (evt) => {
