@@ -556,4 +556,18 @@ class Game {
             Leaderboard.updateLeaderboard(this.data.mode)
         })
     }
+
+    /**
+     * @param {KeyboardEvent} event 
+     */
+    handleKeyboardEvent(event) {
+        if (this.isSpectated) return
+
+        if (event.code == "Space" && !this.data.projectile)
+            this.shoot()
+        else if (event.code == "KeyS" && !this.data.slow.isSlow && this.data.slow.time) {
+            this.data.slow.isSlow = true
+            this.dom.classList.add("slow")
+        }
+    }
 }

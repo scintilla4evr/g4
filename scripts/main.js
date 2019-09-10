@@ -89,4 +89,8 @@
     })
 
     addEventListener("g4statechange", (e) => console.log(e))
+
+    addEventListener("keyup", (e) => {
+        games.forEach(game => game.handleKeyboardEvent(e))
+    })
 })()
