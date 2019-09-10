@@ -87,4 +87,6 @@
             button.classList.add("active")
         })
     })
+
+    addEventListener("g4statechange", (e) => console.log(e))
 })()

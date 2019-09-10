@@ -498,6 +498,22 @@ class Game {
         this.advanceLevel(this.gameTime)
 
         this.updateRecord()
+        this.sendStateChange()
+    }
+
+    sendStateChange() {
+        window.dispatchEvent(
+            new CustomEvent(
+                "g4statechange",
+                {
+                    detail: {
+                        mode: this.data.mode,
+                        levelIndex: this.data.levelIndex,
+                        record: this.data.userRecord
+                    }
+                }
+            )
+        )
     }
 
     nextLevel() {
