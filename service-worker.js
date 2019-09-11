@@ -11,6 +11,7 @@ const FILES_TO_CACHE = [
     'scripts/leaderboard.js',
     'scripts/levelgen.js',
     'scripts/main.js',
+    'scripts/ui.js',
     'scripts/install.js',
     'styles/build/layout.css',
   ];
