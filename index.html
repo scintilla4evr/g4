@@ -1,11 +1,20 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
     <head>
         <title>G4</title>
 
         <meta charset="utf-8">
-
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="G4">
+        <meta name="description" content="A distraction-less version of The Theorist Gateway gate 4 minigame.">
+        <meta name="theme-color" content="#2F3BA2" />
+        
+        <link rel="apple-touch-icon" href="res/icons/icon-152x152.png">
+        <link rel="manifest" href="manifest.json">
+        <link rel="shortcut icon" href="res/icons/favicon.png">
         <link rel="stylesheet" href="styles/build/layout.css">
     </head>
 
@@ -19,7 +28,7 @@
                     <polygon points="400 112 400 176 352 176 352 288 288 288 288 112 400 112"/>
                     <rect x="224" width="64" height="112"/>
                 </svg>
-
+                <button id="butInstall" aria-label="Install" hidden>Click to Install</button>
                 <div style="flex-grow: 1"></div>
 
                 <button>
@@ -93,7 +102,7 @@
             </section>
 
             <footer>
-                G4.6 by <a href="https://www.twitter.com/scintilla4evr" target=_blank">@scintilla4evr</a> | Frame rate: <span class="fpsCounter"></span>
+                G4.6 by <a href="https://www.twitter.com/scintilla4evr" target=_blank" rel="noopener" aria-label="@scintilla4evr on Twitter">@scintilla4evr</a> | Frame rate: <span class="fpsCounter"></span>
             </footer>
         </aside>
 
@@ -105,5 +114,14 @@
         <script src="scripts/leaderboard.js"></script>
         <script src="scripts/game.js"></script>
         <script src="scripts/main.js"></script>
+        <script src="scripts/install.js"></script>
+        <script>if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+              navigator.serviceWorker.register('service-worker.js')
+                  .then((reg) => {
+                    console.log('Service worker registered.', reg);
+                  });
+            });
+          }</script>
     </body>
 </html>
