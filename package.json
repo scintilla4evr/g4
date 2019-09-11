@@ -1,0 +1,31 @@
+{
+  "name": "g4-pwa",
+  "version": "1.0.0",
+  "description": "A distraction-less version of The Theorist Gateway gate 4 minigame.",
+  "homepage": "https://github.com/scintilla4evr/g4",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-http-to-https": "^1.1.4",
+    "node-fetch": "^2.3.0"
+  },
+  "engines": {
+    "node": "8.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/scintilla4evr/g4.git"
+  },
+  "bugs": {
+    "url": "https://github.com/scintilla4evr/g4/issues"
+  },
+  "license": "Apache2",
+  "keywords": [
+    "progressive-web-app",
+    "pwa",
+    "installable web app"
+  ]
+}
