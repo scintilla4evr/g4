@@ -28,13 +28,24 @@
                     <polygon points="400 112 400 176 352 176 352 288 288 288 288 112 400 112"/>
                     <rect x="224" width="64" height="112"/>
                 </svg>
-                <button id="butInstall" aria-label="Install" hidden>Click to Install</button>
                 <div style="flex-grow: 1"></div>
 
                 <button>
                     Music: ON
                 </button>
             </header>
+
+            <section class="pwaInstall hidden">
+                <header>
+                    Install G4 locally
+                    <button id="butInstall" aria-label="Install">
+                        Click to Install
+                    </button>
+                </header>
+                <content>
+                    You can install G4 on your device as a Progressive Web App to play it without an internet connection.
+                </content>
+            </section>
 
             <section class="gameMode">
                 <header>Game mode</header>

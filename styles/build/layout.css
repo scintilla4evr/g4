@@ -430,6 +430,12 @@ aside section.leaderboard content table tr.me {
   background: var(--g4-app-accent);
   color: var(--g4-app-background);
 }
+aside section.pwaInstall content {
+  padding: 8px 16px;
+}
+aside section.hidden {
+  display: none;
+}
 aside footer {
   height: 33px;
   max-height: 33px;

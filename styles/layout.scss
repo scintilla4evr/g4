@@ -531,6 +531,16 @@ aside {
         }
     }
 
+    section.pwaInstall {
+        content {
+            padding: 8px 16px;
+        }
+    }
+
+    section.hidden {
+        display: none;
+    }
+
     footer {
         height: 33px;
         max-height: 33px;
