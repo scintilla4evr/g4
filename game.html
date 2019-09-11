@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>G4 | Dev-4.6 Build Sep 10th 2019</title>
+
+        <meta charset="utf-8">
+
+        <link rel="stylesheet" href="styles/build/layout.css">
+    </head>
+
+    <body class="">
+        <main class="one">
+        </main>
+        <aside>
+            <header>
+                <svg id="g4logo" viewBox="0 0 400 288">
+                    <path d="M224,112V263.74a143.0544,143.0544,0,0,1-64,23.38,145.6907,145.6907,0,0,1-16,.88A144,144,0,0,1,144,0a145.6907,145.6907,0,0,1,16,.88V65.61a80,80,0,1,0,0,156.78V176H128V112Z"/>
+                    <polygon points="400 112 400 176 352 176 352 288 288 288 288 112 400 112"/>
+                    <rect x="224" width="64" height="112"/>
+                </svg>
+
+                <div style="flex-grow: 1"></div>
+            </header>
+
+            <section class="gameMode">
+                <header>Game mode</header>
+                <content>
+                    <button data-mode="easy" class="mode">
+                        <p class="name">Easy</p>
+                    </button>
+                    <button data-mode="normal" class="mode active">
+                        <p class="name">Normal</p>
+                    </button>
+                    <button data-mode="hard" class="mode">
+                        <p class="name">Hard</p>
+                    </button>
+                    <button data-mode="hell" class="mode">
+                        <p class="name">Hell</p>
+                    </button>
+                    <button data-mode="hades" class="mode">
+                        <p class="name">Hades</p>
+                    </button>
+                    <button data-mode="denise" class="mode">
+                        <p class="name">Chaos</p>
+                    </button>
+                    <button data-mode="reverse" class="mode">
+                        <p class="name">Reverse</p>
+                    </button>
+                </content>
+            </section>
+
+            <section class="spectating">
+                <header>
+                    Split-screen
+                    <button>
+                        Add player
+                    </button>
+                </header>
+                <content>
+                    <div class="player me">
+                        <p class="name">scintilla4evr</p>
+                        <p class="level">Level: 16</p>
+                        <p class="mode">Normal mode</p>
+                    </div>
+                </content>
+            </section>
+
+            <section class="leaderboard">
+                <header>
+                    Leaderboard
+                    <button>
+                        Set nickname
+                    </button>
+                </header>
+                <content>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Player</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </content>
+            </section>
+
+            <footer>
+                G4.6 by <a href="https://www.twitter.com/scintilla4evr" target=_blank">@scintilla4evr</a> | Frame rate: <span class="fpsCounter"></span>
+            </footer>
+        </aside>
+
+        <dialog id="setNickname">
+            <h1>Set leaderboard nickname</h1>
+        </dialog>
+
+        <div id="title-bar">
+            <div id="title">
+                <span style="vertical-align: middle;">
+                    <img src="./alt_icon.png" style="width:20px;height:20px;"/>
+                </span>
+                G4 | Build 4.6-Dev-9/10/19
+            </div>
+             <div id="title-bar-btns">
+                  <button id="min-btn">-</button>
+                  <button id="max-btn">+</button>
+                  <button id="close-btn">x</button>
+             </div>
+        </div>
+
+        <style>
+            #title-bar {
+                -webkit-app-region: drag;
+                height: 32px;
+                text-align: center;
+                line-height: 40px;
+                vertical-align: middle;
+                background-color: #03a9f4;
+                padding: none;
+                margin: 0px;
+            }
+
+            #title {
+                position: fixed;
+                top: 0px;
+                left: 6px;
+                color:white;
+
+            }
+
+            #title-bar-btns {
+                -webkit-app-region: no-drag;
+                position: fixed;
+                top: 0px;
+                right: 6px;
+            }
+        </style>
+
+        <script>
+            (function () {
+                // Retrieve remote BrowserWindow
+                const {BrowserWindow} = require('electron').remote
+
+                function init() {
+                    // Minimize task
+                    document.getElementById("min-btn").addEventListener("click", (e) => {
+                        var window = BrowserWindow.getFocusedWindow();
+                        window.minimize();
+                    });
+
+                    // Maximize window
+                    document.getElementById("max-btn").addEventListener("click", (e) => {
+                        var window = BrowserWindow.getFocusedWindow();
+                        if(window.isMaximized()){
+                            window.unmaximize();
+                        }else{
+                            window.maximize();
+                        }
+                    });
+
+                    // Close app
+                    document.getElementById("close-btn").addEventListener("click", (e) => {
+                        var window = BrowserWindow.getFocusedWindow();
+                        window.close();
+                    });
+                };
+
+                document.onreadystatechange =  () => {
+                    if (document.readyState == "complete") {
+                        init();
+                    }
+                };
+            })();
+        </script>
+
+        <script src="scripts/levelgen.js"></script>
+        <script src="scripts/leaderboard.js"></script>
+        <script src="scripts/game.js"></script>
+        <script src="scripts/main.js"></script>
+    </body>
+</html>
