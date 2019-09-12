@@ -324,6 +324,51 @@ aside header svg#g4logo {
   width: auto;
   margin: 8px 16px;
 }
+aside header button.daynight {
+  background: transparent;
+}
+aside header button.daynight div {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  background: var(--g4-app-foreground);
+  border: 2px solid var(--g4-app-background);
+  border-radius: 12px;
+}
+aside header button.daynight div:before {
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background: var(--g4-app-background);
+  content: "";
+  border-radius: 10px;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+aside header button.daynight div:after {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background: var(--g4-app-foreground);
+  content: "";
+  border-radius: 10px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  z-index: -1;
+}
+aside header button.daynight:active {
+  background: var(--g4-app-foreground);
+}
+aside header button.daynight:active div {
+  background: var(--g4-app-background);
+  border: 2px solid var(--g4-app-foreground);
+}
+aside header button.daynight:active div:before, aside header button.daynight:active div:after {
+  display: none;
+}
 aside svg {
   fill: var(--g4-app-accent);
 }
@@ -439,6 +484,29 @@ aside footer {
 aside footer a {
   color: var(--g4-app-accent);
   text-decoration: none;
+}
+
+body.light button.daynight div:before {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  background: var(--g4-app-foreground);
+  border-radius: 0px;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+body.light button.daynight div:after {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  background: var(--g4-app-foreground);
+  border-radius: 0px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  z-index: -1;
 }
 
 /*# sourceMappingURL=layout.css.map */

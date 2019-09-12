@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
     <head>
-        <title>G4 | Dev-4.6 Build Sep 10th 2019</title>
+        <title>G4</title>
 
         <meta charset="utf-8">
-
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="G4">
+        <meta name="description" content="A distraction-less version of The Theorist Gateway gate 4 minigame.">
+        <meta name="theme-color" content="#2F3BA2" />
+        
+        <link rel="apple-touch-icon" href="res/icons/icon-152x152.png">
+        <link rel="manifest" href="manifest.json">
+        <link rel="shortcut icon" href="res/icons/favicon.png">
         <link rel="stylesheet" href="styles/build/layout.css">
     </head>
 
-    <body class="">
-        <main class="one">
+    <body style="user-select: none">
+        <main class="one" style="padding-top: 48px;">
         </main>
-        <aside>
+        <aside style="padding-top: 48px;">
             <header>
                 <svg id="g4logo" viewBox="0 0 400 288">
                     <path d="M224,112V263.74a143.0544,143.0544,0,0,1-64,23.38,145.6907,145.6907,0,0,1-16,.88A144,144,0,0,1,144,0a145.6907,145.6907,0,0,1,16,.88V65.61a80,80,0,1,0,0,156.78V176H128V112Z"/>
@@ -20,7 +29,12 @@
                     <rect x="224" width="64" height="112"/>
                 </svg>
 
-                <div style="flex-grow: 1"></div>
+                <button>
+                    Music: ON
+                </button>
+                <button class="daynight">
+                    <div></div>
+                </button>
             </header>
 
             <section class="gameMode">
@@ -89,7 +103,7 @@
             </section>
 
             <footer>
-                G4.6 by <a href="https://www.twitter.com/scintilla4evr" target=_blank">@scintilla4evr</a> | Frame rate: <span class="fpsCounter"></span>
+                G4.6 by <a href="https://www.twitter.com/scintilla4evr" target=_blank" rel="noopener" aria-label="@scintilla4evr on Twitter">@scintilla4evr</a> | Frame rate: <span class="fpsCounter"></span>
             </footer>
         </aside>
 
@@ -98,39 +112,45 @@
         </dialog>
 
         <div id="title-bar">
-            <div id="title">
+            <div id="title" style="vertical-align: middle">
                 <span style="vertical-align: middle;">
-                    <img src="./alt_icon.png" style="width:20px;height:20px;"/>
+                        <svg id="g4logo" viewBox="0 0 400 288" style="width:auto ;height:20px; vertical-align: middle; margin-right: 6px; fill: var(--g4-app-accent);">
+                                <path d="M224,112V263.74a143.0544,143.0544,0,0,1-64,23.38,145.6907,145.6907,0,0,1-16,.88A144,144,0,0,1,144,0a145.6907,145.6907,0,0,1,16,.88V65.61a80,80,0,1,0,0,156.78V176H128V112Z"/>
+                                <polygon points="400 112 400 176 352 176 352 288 288 288 288 112 400 112"/>
+                                <rect x="224" width="64" height="112"/>
+                            </svg>
                 </span>
                 G4 Electron | Build 4.6-Dev-HiItsDevin_
             </div>
-             <div id="title-bar-btns">
+            <div id="title-bar-btns">
                   <button id="min-btn">-</button>
                   <button id="max-btn">+</button>
                   <button id="close-btn">x</button>
-             </div>
+            </div>
         </div>
 
         <style>
             #title-bar {
                 -webkit-app-region: drag;
-                height: 32px;
+                height: 40px;
                 text-align: center;
                 line-height: 40px;
                 vertical-align: middle;
-                background-color: #03a9f4;
                 padding: none;
                 margin: 0px;
             }
-
+    
             #title {
                 position: fixed;
                 top: 0px;
                 left: 6px;
-                color:white;
-
+                height: 48px;
+                color: var(--g4-app-foreground);
+                vertical-align: middle;
+                display: flex;
+                align-items: center;
             }
-
+    
             #title-bar-btns {
                 -webkit-app-region: no-drag;
                 position: fixed;
@@ -141,10 +161,10 @@
 
         <script>
             (function () {
-                // Retrieve remote BrowserWindow
-                const {BrowserWindow} = require('electron').remote
+                    // Retrieve remote BrowserWindow
+                    const {BrowserWindow} = require('electron').remote
 
-                function init() {
+                    function init() {
                     // Minimize task
                     document.getElementById("min-btn").addEventListener("click", (e) => {
                         var window = BrowserWindow.getFocusedWindow();
@@ -179,6 +199,8 @@
         <script src="scripts/levelgen.js"></script>
         <script src="scripts/leaderboard.js"></script>
         <script src="scripts/game.js"></script>
+        <script src="scripts/ui.js"></script>
+
         <script src="scripts/main.js"></script>
     </body>
 </html>
