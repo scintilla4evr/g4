@@ -28,8 +28,6 @@ function createWindow () {
 }
 
 app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
-app.commandLine.appendSwitch('remote-debugging-port', '8315');
-app.commandLine.appendSwitch('host-rules', 'MAP * 127.0.0.1');
 
 app.on('ready', createWindow)
 electron.app.on('browser-window-created',function(e,window) {
