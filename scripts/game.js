@@ -499,6 +499,10 @@ class Game {
 
         this.updateRecord()
         this.sendStateChange()
+
+        Leaderboard.setScore(mode, levelIndex).then(() => {
+            Leaderboard.updateLeaderboard(mode)
+        })
     }
 
     sendStateChange() {
@@ -551,10 +555,6 @@ class Game {
         localStorage[storageKey] = record
 
         this.data.userRecord = record
-
-        Leaderboard.setScore(this.data.mode, record).then(() => {
-            Leaderboard.updateLeaderboard(this.data.mode)
-        })
     }
 
     /**

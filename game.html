@@ -18,15 +18,15 @@
         <link rel="stylesheet" href="styles/build/layout.css">
     </head>
 
-    <body style="user-select: none">
-        <main class="one" style="padding-top: 48px;">
+    <body>
+        <main class="one" style="user-select: none">
             <div class="firstTimeHint hidden">
                 <img src="res/images/gameHint.svg">
             </div>
         </main>
-        <aside style="padding-top: 48px;">
+        <aside>
             <header>
-                <svg id="g4logo" viewBox="0 0 400 288">
+                <svg id="g4logo" viewBox="0 0 400 288" style="padding-top: 48px;">
                     <path d="M224,112V263.74a143.0544,143.0544,0,0,1-64,23.38,145.6907,145.6907,0,0,1-16,.88A144,144,0,0,1,144,0a145.6907,145.6907,0,0,1,16,.88V65.61a80,80,0,1,0,0,156.78V176H128V112Z"/>
                     <polygon points="400 112 400 176 352 176 352 288 288 288 288 112 400 112"/>
                     <rect x="224" width="64" height="112"/>
@@ -91,7 +91,7 @@
             <section class="leaderboard">
                 <header>
                     Leaderboard
-                    <button>
+                    <button id="setNicknameBtn">
                         Set nickname
                     </button>
                 </header>
@@ -117,6 +117,11 @@
 
         <dialog id="setNickname">
             <h1>Set leaderboard nickname</h1>
+            <p class="error hidden">This nickname is already taken.</p>
+
+            <input id="userNickname" placeholder="Your nickname">
+
+            <button>Set nickname</button>
         </dialog>
 
         <audio controls autoplay loop hidden="" src="res/music/default.mp3" type ="audio/mp3">your browser does not support Html5</audio>
@@ -206,11 +211,14 @@
             })();
         </script>
 
+
         <script src="scripts/levelgen.js"></script>
         <script src="scripts/leaderboard.js"></script>
         <script src="scripts/game.js"></script>
         <script src="scripts/ui.js"></script>
 
         <script src="scripts/main.js"></script>
+
+        <script src="scripts/install.js"></script>
     </body>
 </html>

@@ -27,3 +27,55 @@ if (!localStorage.getItem("g4_hideHint")) {
 document.querySelector("button.expander").addEventListener("click", () => {
     document.querySelector("aside").classList.toggle("expanded")
 })
+
+// Leaderboard nickname
+if (Leaderboard.getNickname()) {
+    let btn = document.querySelector("#setNicknameBtn")
+    btn.parentNode.removeChild(btn)
+} else {
+    document.querySelector("#setNicknameBtn").addEventListener("click", function(e) {
+        showDialog("setNickname", this)
+        e.stopPropagation()
+    })
+}
+
+document.querySelector("dialog#setNickname button").addEventListener("click", () => {
+    let nickname = document.querySelector("#userNickname").value
+
+    if (nickname) {
+        Leaderboard.isNicknameAvailable(nickname).then((available) => {
+            document.querySelector("dialog#setNickname p.error").classList.toggle("hidden", available)
+
+            if (available) {
+                Leaderboard.setNickname(nickname).then(() => {
+                    document.querySelector("dialog#setNickname").classList.remove("open")
+
+                    let btn = document.querySelector("#setNicknameBtn")
+                    btn.parentNode.removeChild(btn)
+                })
+            }
+        })
+    }
+})
+
+// Dialog hiding
+window.addEventListener("click", (e) => {
+    let activeDialog = document.querySelector("dialog.open")
+
+    if (activeDialog && !e.path.includes(activeDialog))
+        activeDialog.classList.remove("open")
+})
+
+/**
+ * 
+ * @param {String} dialogId 
+ * @param {HTMLButtonElement} button 
+ */
+function showDialog(dialogId, button) {
+    let dialog = document.querySelector("dialog#" + dialogId)
+
+    dialog.classList.add("open")
+
+    let top = button.getBoundingClientRect().bottom
+    dialog.style.top = `${top + 4}px`
+}

@@ -1,4 +1,4 @@
-let leaderboardEndpoint = "http://localhost:5000"
+let leaderboardEndpoint = "https://g4-leaderboard.herokuapp.com"
 
 /**
  * @typedef {Object} Score
@@ -19,14 +19,31 @@ class Leaderboard {
         )
         data = await data.json()
 
-        return data.sort((i1, i2) => i1.score > i2.score)
+        return data.sort((i1, i2) => i2.score - i1.score)
     }
 
     static getNickname() {
         return localStorage.getItem("g4game_player")
     }
 
-    static setNickname(nickname) {
+    static async isNicknameAvailable(nickname) {
+        let player = encodeURIComponent(nickname)
+        let url = `${leaderboardEndpoint}/players/nicknameCheck?user=${player}`
+
+        let data = await fetch(url)
+        data = await data.json()
+
+        if (data.check) return false
+        return true
+    }
+
+    static async setNickname(nickname) {
+        let player = encodeURIComponent(nickname)
+        let url = `${leaderboardEndpoint}/players/nicknameAdd?user=${player}`
+
+        let data = await fetch(url)
+        data = await data.json()
+        
         localStorage.setItem("g4game_player", nickname)
     }
 
