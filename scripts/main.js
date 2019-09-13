@@ -4,6 +4,8 @@
      */
     let games = []
 
+    addEventListener("g4statechange", (e) => console.log(e))
+
     let testGame = new Game(
         null, false, ""
     )
@@ -87,8 +89,6 @@
             button.classList.add("active")
         })
     })
-
-    addEventListener("g4statechange", (e) => console.log(e))
 
     addEventListener("keyup", (e) => {
         games.forEach(game => game.handleKeyboardEvent(e))

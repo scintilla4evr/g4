@@ -137,8 +137,8 @@ body.light [data-mode=denise] {
 }
 
 body.light [data-mode=reverse] {
-  --g4-game-background: #d37cdf;
-  --g4-game-damage: #df7ca2;
+  --g4-game-background: #d8caeb;
+  --g4-game-damage: #e6c3db;
   --g4-game-foreground: #231935;
   --g4-game-obstacle1: var(--g4-game-foreground);
   --g4-game-obstacle2: var(--g4-game-foreground);
@@ -167,6 +167,26 @@ main {
   right: 400px;
   display: grid;
   gap: 4px;
+}
+main div.firstTimeHint {
+  position: absolute;
+  left: 50%;
+  bottom: 64px;
+  width: 80%;
+  max-width: 500px;
+  height: auto;
+  background: var(--g4-app-background);
+  border-radius: 24px;
+  transform: translateX(-50%);
+  z-index: 100;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+main div.firstTimeHint img {
+  filter: invert(1);
+}
+main div.firstTimeHint.hidden {
+  opacity: 0;
 }
 main div.game {
   position: relative;
@@ -324,6 +344,38 @@ aside header svg#g4logo {
   width: auto;
   margin: 8px 16px;
 }
+aside header button.expander {
+  display: none;
+}
+aside header button.expander div {
+  position: relative;
+  width: 20px;
+  height: 2px;
+  background: transparent;
+}
+aside header button.expander div:before {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 2px;
+  background: var(--g4-app-foreground);
+  content: "";
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+aside header button.expander div:after {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 2px;
+  background: var(--g4-app-foreground);
+  content: "";
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+aside header button:active div {
+  --g4-app-foreground: var(--g4-app-background);
+}
 aside header button.daynight {
   background: transparent;
 }
@@ -475,6 +527,12 @@ aside section.leaderboard content table tr.me {
   background: var(--g4-app-accent);
   color: var(--g4-app-background);
 }
+aside section.pwaInstall content {
+  padding: 8px 16px;
+}
+aside section.hidden {
+  display: none;
+}
 aside footer {
   height: 33px;
   max-height: 33px;
@@ -486,6 +544,9 @@ aside footer a {
   text-decoration: none;
 }
 
+body.light div.firstTimeHint img {
+  filter: invert(0);
+}
 body.light button.daynight div:before {
   position: absolute;
   left: 50%;
@@ -507,6 +568,56 @@ body.light button.daynight div:after {
   border-radius: 0px;
   transform: translate(-50%, -50%) rotate(45deg);
   z-index: -1;
+}
+
+@media (max-width: 768px) {
+  main {
+    right: 0;
+  }
+
+  aside {
+    width: 100%;
+    max-width: 400px;
+  }
+  aside button.expander {
+    display: block !important;
+  }
+
+  aside:not(.expanded) {
+    right: -100%;
+  }
+  aside:not(.expanded) button.expander {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 48px;
+  }
+  aside:not(.expanded) button.expander div {
+    position: relative;
+    width: 20px;
+    height: 2px;
+    background: var(--g4-app-foreground);
+  }
+  aside:not(.expanded) button.expander div:before {
+    position: absolute;
+    left: 50%;
+    top: -6px;
+    width: 20px;
+    height: 2px;
+    background: var(--g4-app-foreground);
+    content: "";
+    transform: translate(-50%, -50%);
+  }
+  aside:not(.expanded) button.expander div:after {
+    position: absolute;
+    left: 50%;
+    top: 8px;
+    width: 20px;
+    height: 2px;
+    background: var(--g4-app-foreground);
+    content: "";
+    transform: translate(-50%, -50%);
+  }
 }
 
 /*# sourceMappingURL=layout.css.map */

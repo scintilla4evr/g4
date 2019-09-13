@@ -12,3 +12,18 @@ document.querySelector("button.daynight").addEventListener("click", () => {
 if (localStorage.getItem("g4_lightmode") == 1) {
     document.body.classList.add("light")
 }
+
+// First time hint
+if (!localStorage.getItem("g4_hideHint")) {
+    document.querySelector("div.firstTimeHint").classList.remove("hidden")
+    localStorage.setItem("g4_hideHint", true)
+
+    setTimeout(() => {
+        document.querySelector("div.firstTimeHint").classList.add("hidden")
+    }, 3500)
+}
+
+// Sidebar expander
+document.querySelector("button.expander").addEventListener("click", () => {
+    document.querySelector("aside").classList.toggle("expanded")
+})

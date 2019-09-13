@@ -9,15 +9,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/scintilla4evr/g4.git"
+    "url": "git+https://github.com/team-g4/base-g4.git"
   },
   "author": "HiItsDevin_ and scintilla4evr",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/scintilla4evr/g4/issues"
+    "url": "https://github.com/team-g4/base-g4/issues"
   },
-  "homepage": "https://github.com/scintilla4evr/g4#readme",
+  "homepage": "https://github.com/team-g4/base-g4#readme",
   "devDependencies": {
+    "devtron": "^1.4.0",
     "electron": "^6.0.8"
   },
   "dependencies": {
@@ -26,6 +27,7 @@
     "custom-electron-titlebar": "^3.1.0",
     "dataurl": "^0.1.0",
     "discord-rpc": "^3.0.2",
+    "electron-debug": "^3.0.1",
     "howler": "^2.1.2",
     "nan": "^2.14.0",
     "node-gyp": "^5.0.3",

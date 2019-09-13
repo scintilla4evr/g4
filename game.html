@@ -20,6 +20,9 @@
 
     <body style="user-select: none">
         <main class="one" style="padding-top: 48px;">
+            <div class="firstTimeHint hidden">
+                <img src="res/images/gameHint.svg">
+            </div>
         </main>
         <aside style="padding-top: 48px;">
             <header>
@@ -28,11 +31,16 @@
                     <polygon points="400 112 400 176 352 176 352 288 288 288 288 112 400 112"/>
                     <rect x="224" width="64" height="112"/>
                 </svg>
+                <div style="flex-grow: 1"></div>
 
                 <button>
                     Music: ON
                 </button>
                 <button class="daynight">
+                    <div></div>
+                </button>
+
+                <button class="expander">
                     <div></div>
                 </button>
             </header>
@@ -110,6 +118,8 @@
         <dialog id="setNickname">
             <h1>Set leaderboard nickname</h1>
         </dialog>
+
+        <audio controls autoplay loop hidden="" src="res/music/default.mp3" type ="audio/mp3">your browser does not support Html5</audio>
 
         <div id="title-bar">
             <div id="title" style="vertical-align: middle">
