@@ -55,6 +55,10 @@ class Game {
         div.innerHTML = `
         <header>
             ${spectatingHeader}
+            <div class="stat deaths">
+                <p class="name">Deaths</p>
+                <p class="value">0</p>
+            </div>
             <div class="stat level">
                 <p class="name">Level</p>
                 <p class="value">16</p>
@@ -415,6 +419,7 @@ class Game {
 
         this.dom.querySelector("div.stat.level p.value").textContent = this.data.levelIndex
         this.dom.querySelector("div.stat.record p.value").textContent = this.data.userRecord
+        this.dom.querySelector("div.stat.deaths p.value").textContent = this.data.userDeaths
 
         this.dom.querySelector("div.progress p.time").textContent = this.data.slow.time.toFixed(1) + " s"
         this.dom.querySelector("div.progress div").style.width = `${this.data.slow.time * 10}%`
@@ -498,6 +503,8 @@ class Game {
         this.advanceLevel(this.gameTime)
 
         this.updateRecord()
+        this.updateDeaths()
+        
         this.sendStateChange()
 
         Leaderboard.setScore(mode, levelIndex).then(() => {
@@ -534,10 +541,45 @@ class Game {
             this.data.mode, 0
         )
 
+        this.addDeath()
+
         this.dom.classList.add("hit")
         setTimeout(() => {
             this.dom.classList.remove("hit")
         }, 500)
+    }
+
+    updateDeaths() {
+        let storageKey = "g4game_deaths"
+        if (this.data.mode != "normal") {
+            let mode = this.data.mode
+
+            storageKey += mode[0].toUpperCase() + mode.substring(1)
+        }
+
+        let deaths = 0
+        if (localStorage.getItem(storageKey)) deaths = localStorage.getItem(storageKey)
+
+        localStorage[storageKey] = deaths
+
+        this.data.userDeaths = deaths
+    }
+
+    addDeath() {
+        let storageKey = "g4game_deaths"
+        if (this.data.mode != "normal") {
+            let mode = this.data.mode
+
+            storageKey += mode[0].toUpperCase() + mode.substring(1)
+        }
+
+        let deaths = 0
+        if (localStorage.getItem(storageKey)) deaths = localStorage.getItem(storageKey)
+
+        deaths++
+        localStorage[storageKey] = deaths
+
+        this.data.userDeaths = deaths
     }
 
     updateRecord() {

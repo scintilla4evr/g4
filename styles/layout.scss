@@ -230,27 +230,49 @@ main {
             }
 
             div.stat {
-                padding: 16px;
+                padding: 8px 16px;
+                text-align: center;
 
                 p.name {
+                    color: var(--g4-game-foreground);
+
                     font-size: 14pt;
                     font-weight: 500;
                     line-height: 1;
                     text-align: center;
                     text-transform: uppercase;
 
-                    margin: 0;
+                    margin: 0px 0px 4px 0px;
 
-                    opacity: 0.5;
+                    opacity: 1;
                 }
 
                 p.value {
-                    font-size: 18pt;
+                    color: var(--g4-game-bullet);
+
+                    font-size: 16pt;
                     font-weight: 500;
                     text-align: center;
                     text-transform: uppercase;
 
                     margin: 0;
+                }
+            }
+
+            div.stat.level {
+                p.value {
+                    background: var(--g4-game-cannon);
+                    color: var(--g4-game-background);
+
+                    font-size: 20pt;
+                    font-weight: 500;
+
+                    padding: 0px 20px;
+                    border-radius: 20px;
+
+                    opacity: 1;
+
+                    display: inline;
                 }
             }
         }

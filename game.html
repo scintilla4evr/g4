@@ -33,8 +33,8 @@
                 </svg>
                 <div style="flex-grow: 1"></div>
 
-                <button>
-                    Music: ON
+                <button type="button" onclick="aud_play_pause()">
+                    Music Toggle
                 </button>
                 <button class="daynight">
                     <div></div>
@@ -124,7 +124,7 @@
             <button>Set nickname</button>
         </dialog>
 
-        <audio controls autoplay loop hidden="" src="res/music/default.mp3" type ="audio/mp3">your browser does not support Html5</audio>
+        <audio id="g4music" controls autoplay loop hidden="" src="res/music/default.mp3" type ="audio/mp3">your browser does not support Html5</audio>
 
         <div id="title-bar">
             <div id="title" style="vertical-align: middle">
@@ -209,6 +209,17 @@
                     }
                 };
             })();
+        </script>
+
+        <script>
+        function aud_play_pause() {
+            var myAudio = document.getElementById("g4music");
+            if (myAudio.paused) {
+              myAudio.play();
+            } else {
+              myAudio.pause();
+            }
+        }
         </script>
 
 

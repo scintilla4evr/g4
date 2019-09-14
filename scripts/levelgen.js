@@ -97,6 +97,7 @@
  * 
  * @property {Number} levelIndex
  * @property {Number} userRecord
+ * @property {Number} userDeaths
  * @property {String} mode
  */
 
@@ -640,6 +641,7 @@ class LevelGenerator {
 
         gameData.levelIndex = levelIndex
         gameData.userRecord = userRecord
+        gameData.userDeaths = 0
         gameData.mode = mode
 
         gameData.rotation = 0
