@@ -3,10 +3,12 @@ class Game {
      * @param {GameData} gameData 
      * @param {Boolean} isSpectated 
      * @param {String} spectatedUser
+     * @param {Leaderboard} leaderboard
      */
     constructor(
         gameData,
-        isSpectated, spectatedUser
+        isSpectated, spectatedUser,
+        leaderboard
     ) {
         /**
          * @type {GameData}
@@ -37,6 +39,11 @@ class Game {
          * @type {Number}
          */
         this.gameTime = 0
+
+        /**
+         * @type {Leaderboard}
+         */
+        this.leaderboard = leaderboard
     }
 
     /**
@@ -108,7 +115,7 @@ class Game {
                     case "marqueeBar":
                         radius = Math.max(
                             radius,
-                            item.distance + item.radius
+                            item.distance + item.radius + ring.distance
                         )
                         break
                 }
@@ -129,7 +136,16 @@ class Game {
      * @param {Ring} ring
      */
     advanceRing(dTime, ring) {
+        ring.rotation += dTime
+
+        let phase = 2 * Math.PI * ring.revolvePhase
+        let centerX = Math.cos(ring.rotation * 2 * Math.PI * ring.revolveFreq + phase) * ring.distance
+        let centerY = Math.sin(ring.rotation * 2 * Math.PI * ring.revolveFreq + phase) * ring.distance
+
         ring.items.forEach(item => {
+            item.centerX = centerX
+            item.centerY = centerY
+
             switch (item.type) {
                 case "ball":
                     item.angle += dTime
@@ -167,22 +183,25 @@ class Game {
      * @param {RingElement} item 
      */
     hitTest(bullet, item) {
+        let bulletX = bullet.x - item.centerX
+        let bulletY = bullet.y - item.centerY
+
         switch (item.type) {
             case "ball":
             case "pulsingBall":
                 return Math.hypot(
-                    item.distance * Math.cos(2 * Math.PI * item.angle) - bullet.x,
-                    item.distance * Math.sin(2 * Math.PI * item.angle) - bullet.y
+                    item.distance * Math.cos(2 * Math.PI * item.angle) - bulletX,
+                    item.distance * Math.sin(2 * Math.PI * item.angle) - bulletY
                 ) < (item.radius + bullet.radius)
             case "bar":
             case "marqueeBar":
                 let bulletAngle = Math.atan2(
-                    bullet.y, bullet.x
+                    bulletY, bulletX
                 )
                 if (bulletAngle < 0) bulletAngle += Math.PI * 2
                 bulletAngle /= Math.PI * 2
 
-                let bulletDist = Math.hypot(bullet.x, bullet.y)
+                let bulletDist = Math.hypot(bulletX, bulletY)
 
                 let clampedStart = item.angleStart % 1
                 let clampedEnd = (clampedStart + item.angleLength) % 1
@@ -246,7 +265,9 @@ class Game {
      * @param {Number} dTime 
      */
     advanceCannon(dTime) {
-        this.data.cannon.angle -= dTime * 0.461538461
+        let beatTime = this.calculateBeatTime(dTime)
+
+        this.data.cannon.angle -= beatTime * 1.5
 
         switch (this.data.mode) {
             case "hard":
@@ -388,8 +409,8 @@ class Game {
                     ctx.beginPath()
 
                     ctx.arc(
-                        item.distance * Math.cos(2 * Math.PI * item.angle),
-                        item.distance * Math.sin(2 * Math.PI * item.angle),
+                        item.distance * Math.cos(2 * Math.PI * item.angle) + item.centerX,
+                        item.distance * Math.sin(2 * Math.PI * item.angle) + item.centerY,
                         item.radius,
                         0, 2 * Math.PI
                     )
@@ -403,7 +424,7 @@ class Game {
                     ctx.lineWidth = item.radius * 2
 
                     ctx.arc(
-                        0, 0, item.distance,
+                        item.centerX, item.centerY, item.distance,
                         2 * Math.PI * item.angleStart,
                         2 * Math.PI * (item.angleStart + item.angleLength)
                     )
@@ -425,16 +446,12 @@ class Game {
         this.dom.querySelector("div.progress div").style.width = `${this.data.slow.time * 10}%`
     }
 
-    render() {
+    resizeCanvas() {
         let boundingBox = this.dom.getBoundingClientRect()
         let minWidth = Math.min(
             boundingBox.width,
             boundingBox.height - 160
         )
-
-        this.updateDOM()
-
-        let computedStyles = getComputedStyle(this.dom)
 
         let canvas = this.dom.querySelector("canvas")
 
@@ -442,6 +459,13 @@ class Game {
             canvas.width = minWidth
             canvas.height = minWidth
         }
+    }
+
+    render() {
+        let computedStyles = getComputedStyle(this.dom)
+
+        let canvas = this.dom.querySelector("canvas")
+        let minWidth = canvas.width
 
         let ctx = canvas.getContext("2d")
 
@@ -507,9 +531,20 @@ class Game {
         
         this.sendStateChange()
 
-        Leaderboard.setScore(mode, levelIndex).then(() => {
-            Leaderboard.updateLeaderboard(mode)
-        })
+        this.updateLeaderboard()
+
+        // Leaderboard.setScore(mode, levelIndex).then(() => {
+        //     Leaderboard.updateLeaderboard(mode)
+        // })
+    }
+
+    async updateLeaderboard() {
+        await this.leaderboard.postScore(
+            this.data.mode,
+            this.data.levelIndex,
+            this.data.userDeaths
+        )
+        await this.leaderboard.updateLeaderboard(this.data.mode)
     }
 
     sendStateChange() {
@@ -611,5 +646,20 @@ class Game {
             this.data.slow.isSlow = true
             this.dom.classList.add("slow")
         }
+    }
+
+    static modeIDToDisplayName(mode) {
+        let modeAlias = {
+            easy: "Easy",
+            normal: "Normal",
+            hard: "Hard",
+            hell: "Hell",
+            hades: "Hades",
+            denise: "Chaos",
+            reverse: "Reverse",
+            nox: "Nox"
+        }
+
+        return modeAlias[mode]
     }
 }

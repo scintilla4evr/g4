@@ -147,6 +147,26 @@ body.light [data-mode=reverse] {
     --g4-game-bullet: #552eff;
 }
 
+[data-mode=nox] {
+    --g4-game-background: #000;
+    --g4-game-damage: rgb(22, 10, 18);
+    --g4-game-foreground: rgb(65, 209, 84);
+    --g4-game-obstacle1: var(--g4-game-foreground);
+    --g4-game-obstacle2: rgb(52, 66, 199);
+    --g4-game-cannon: #fff;
+    --g4-game-bullet: rgb(255, 0, 85);
+}
+
+body.light [data-mode=nox] {
+    --g4-game-background: #fff;
+    --g4-game-damage: rgb(255, 225, 235);
+    --g4-game-foreground: rgb(35, 202, 20);
+    --g4-game-obstacle1: var(--g4-game-foreground);
+    --g4-game-obstacle2: rgb(35, 68, 211);
+    --g4-game-cannon: rgb(0, 0, 0);
+    --g4-game-bullet: rgb(255, 0, 85);
+}
+
 body {
     background: var(--g4-app-background);
     color: var(--g4-game-foreground);
@@ -159,6 +179,16 @@ body.light {
     --g4-app-foreground: #000000;
     --g4-app-header-background: #ebebeb;
     --g4-app-accent: #1814f3;
+}
+
+body.login {
+    div.accountInfo {
+        display: flex;
+    }
+
+    button#openLoginBtn {
+        display: none;
+    }
 }
 
 main {
@@ -414,12 +444,21 @@ aside {
 
     header {
         display: flex;
+        flex-wrap: wrap;
 
         svg#g4logo {
             height: 32px;
             width: auto;
 
             margin: 8px 16px;
+        }
+
+        button#musicToggleBtn:after {
+            content: ": OFF";
+        }
+
+        button#musicToggleBtn.playing:after {
+            content: ": ON";
         }
 
         button.expander {
@@ -525,10 +564,31 @@ aside {
                 display: none;
             }
         }
+
+        div.accountInfo {
+            width: 100%;
+
+            display: none;
+
+            p {            
+                font-weight: 400;
+                font-size: 15pt;
+    
+                padding: 8px 16px;
+                margin: 0px;
+
+                flex-grow: 1;
+            }
+        }
     }
 
     svg {
         fill: var(--g4-app-accent);
+    }
+
+    div.scroller {
+        flex-grow: 1;
+        overflow: auto;
     }
 
     section {
@@ -536,9 +596,6 @@ aside {
         flex-direction: column;
         
         header {
-            position: sticky;
-            top: 0;
-
             background: var(--g4-app-header-background);
             
             font-weight: 500;
@@ -586,7 +643,7 @@ aside {
                 color: var(--g4-app-background);
             }
 
-            button[data-mode=reverse] {
+            button[data-mode=reverse] p {
                 transform: scaleX(-1);
             }
         }
@@ -652,9 +709,6 @@ aside {
     }
 
     section.leaderboard {
-        flex-grow: 1;
-        overflow: auto;
-
         content {
             table {
                 width: 100%;
@@ -753,49 +807,105 @@ body.light {
 }
 
 dialog {
-    display: none;
+    position: fixed;
+    top: 0;
+    right: -500px;
+    left: unset;
+    width: 100%;
+    max-width: 400px;
+    height: 100%;
+
+    transition: right 0.3s;
 }
 
 dialog.open {
-    position: fixed;
     right: 0;
-    left: unset;
-    width: 100%;
-    max-width: 400px - 32px;
 
-    background: #fff;
-    color: #000;
+    background: var(--g4-app-background);
+    color: var(--g4-app-foreground);
 
-    margin: 0;
+    margin: 0px;
+    padding: 0px;
     border: none;
     box-shadow: 0px 8px 32px #000000a0;
 
     display: flex;
     flex-direction: column;
-    align-content: flex-end;
 
-    h1 {
-        font-size: 16pt;
+    header {
+        top: 0;
+
+        background: var(--g4-app-header-background);
+        
         font-weight: 500;
+        font-size: 15pt;
 
-        margin: 0;
-    }
-
-    p.error {
-        color: red;
-    }
-
-    p.error.hidden {
-        display: none;
-    }
-
-    input {
-        font-family: "Poppins", sans-serif;
-        font-size: 13pt;
-
-        border: 1px solid #aaa;
-        margin: 8px 0px;
         padding: 8px 16px;
+
+        display: flex;
+        align-items: center;
+
+        button {
+            margin-right: 16px;
+        }
+    }
+
+    content {
+        padding: 16px;
+        flex-grow: 1;
+        overflow: auto;
+
+        h2 {
+            font-size: 16pt;
+            font-weight: 400;
+
+            margin: 0px 0px 32px 0px;
+        }
+
+        p.error {
+            color: var(--g4-app-accent);
+
+            display: none;
+        }
+
+        p.error.visible {
+            display: block;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+
+            label {
+                margin: 8px 0px 0px 0px;
+            }
+
+            input {
+                background: transparent;
+                color: var(--g4-app-foreground);
+
+                font-family: "Poppins", sans-serif;
+                font-size: 12pt;
+                
+                padding: 4px 8px;
+
+                border: 1px solid var(--g4-app-accent);
+            }
+        }
+
+        div.buttons {
+            height: 40px;
+
+            margin-top: 16px;
+
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+
+            button.primary {
+                color: var(--g4-app-accent);
+            }
+        }
     }
 }
 
@@ -856,5 +966,11 @@ dialog.open {
                 transform: translate(-50%, -50%);
             }
         }
+    }
+}
+
+@media (max-width: 500px) {
+    main div.game header {
+        padding-right: 52px;
     }
 }

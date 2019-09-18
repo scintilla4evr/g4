@@ -1,78 +1,192 @@
 let leaderboardEndpoint = "https://g4-leaderboard.herokuapp.com"
 
-/**
- * @typedef {Object} Score
- * 
- * @property {String} player
- * @property {Number} score
- * @property {Number} date
- */
-
 class Leaderboard {
-    /**
-     * @param {String} mode 
-     * @returns {Promise<Score[]>}
-     */
-    static async getLeaderboard(mode) {
+    constructor() {
+        this.userID = null
+        this.userName = null
+        this.accessToken = null
+    }
+
+    async isUsernameAvailable(username) {
+        if (username.length > 20) return false
+
+        let name = encodeURIComponent(username)
+        let url = `${leaderboardEndpoint}/usernameAvailable?username=${name}`
+
+        let data = await fetch(url)
+        data = await data.json()
+
+        return data.available
+    }
+
+    async loginAccount(username, passwd) {
         let data = await fetch(
-            leaderboardEndpoint + "/scores/" + mode
+            leaderboardEndpoint + "/userLogin",
+            {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: passwd
+                })
+            }
         )
         data = await data.json()
 
-        return data.sort((i1, i2) => i2.score - i1.score)
+        if (!data.successful) {
+            this.userID = null
+            this.updateUI()
+
+            return false
+        } else {
+            this.setAuthData(username, data.uuid, data.accesstoken)
+            this.updateUI()
+
+            return true
+        }
     }
 
-    static getNickname() {
-        return localStorage.getItem("g4game_player")
-    }
+    async registerAccount(username, passwd) {
+        if (username.length > 20) return false
 
-    static async isNicknameAvailable(nickname) {
-        let player = encodeURIComponent(nickname)
-        let url = `${leaderboardEndpoint}/players/nicknameCheck?user=${player}`
+        let data = await fetch(
+            leaderboardEndpoint + "/userRegister",
+            {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: passwd
+                })
+            }
+        )
 
-        let data = await fetch(url)
         data = await data.json()
 
-        if (data.check) return false
-        return true
+        if (!data.successful) {
+            this.userID = null
+            this.updateUI()
+
+            return false
+        } else {
+            this.setAuthData(username, data.uuid, data.accesstoken)
+            this.updateUI()
+
+            return true
+        }
     }
 
-    static async setNickname(nickname) {
-        let player = encodeURIComponent(nickname)
-        let url = `${leaderboardEndpoint}/players/nicknameAdd?user=${player}`
+    async logout() {
+        if (!this.userID) return
 
-        let data = await fetch(url)
+        let data = await fetch(
+            leaderboardEndpoint + "/userLogout",
+            {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    uuid: this.userID
+                })
+            }
+        )
+
         data = await data.json()
-        
-        localStorage.setItem("g4game_player", nickname)
+
+        this.userID = null
+        this.userName = null
+        this.accessToken = null
+
+        this.updateUI()
     }
 
-    static async setScore(mode, score) {
-        if (!localStorage.getItem("g4game_player")) return false
-        
-        let player = encodeURIComponent(localStorage.getItem("g4game_player"))
-
-        let url = `${leaderboardEndpoint}/set/${mode}?user=${player}&score=${score}`
-
-        await fetch(url)
-
-        return true
+    setAuthData(username, uuid, token) {
+        this.userID = uuid
+        this.userName = username
+        this.accessToken = token
     }
 
-    static async updateLeaderboard(mode) {
-        let scores = await Leaderboard.getLeaderboard(mode)
+    async updateUI() {
+        if (this.userID) {
+            document.querySelector("div.accountInfo p.username").textContent = this.userName
 
-        console.log(scores)
+            document.body.classList.add("login")
+        } else {
+            document.body.classList.remove("login")
+        }
+    }
+
+    async getLeaderboard(mode) {
+        let data = await fetch(
+            leaderboardEndpoint + "/scores?mode=" + mode
+        )
+
+        return await data.json()
+    }
+
+    async updateLeaderboard(mode) {
+        let scores = await this.getLeaderboard(mode)
 
         let table = document.querySelector("section.leaderboard tbody")
         table.innerHTML = ""
 
-        scores.forEach((score, i) => {
+        scores.scores.forEach((score, i) => {
             let tr = document.createElement("tr")
 
-            tr.innerHTML = `<td>${i + 1}</td><td>${score.player}</td><td>${score.score}</td>`
+            if (score.username === this.userName) tr.classList.add("me")
+
+            let rank = document.createElement("td")
+            rank.textContent = i + 1
+            tr.appendChild(rank)
+
+            let player = document.createElement("td")
+            player.textContent = score.username
+            tr.appendChild(player)
+
+            let scoreText = document.createElement("td")
+            scoreText.textContent = score.score
+            tr.appendChild(scoreText)
 
             table.appendChild(tr)
         })
+    }
+
+    async postScore(mode, score, deathCount) {
+        if (!this.userID) return false
+        if (score <= 0) return false
+
+        let data = await fetch(
+            leaderboardEndpoint + "/score",
+            {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    uuid: this.userID,
+                    accesstoken: this.accessToken,
+                    data: {
+                        mode: mode,
+                        score: score,
+                        deathcount: deathCount
+                    }
+                })
+            }
+        )
+
+        data = await data.json()
+
+        if (!data.authError) {
+            this.accessToken = data.accesstoken
+        }
     }
 }

@@ -146,6 +146,26 @@ body.light [data-mode=reverse] {
   --g4-game-bullet: #552eff;
 }
 
+[data-mode=nox] {
+  --g4-game-background: #000;
+  --g4-game-damage: rgb(22, 10, 18);
+  --g4-game-foreground: rgb(65, 209, 84);
+  --g4-game-obstacle1: var(--g4-game-foreground);
+  --g4-game-obstacle2: rgb(52, 66, 199);
+  --g4-game-cannon: #fff;
+  --g4-game-bullet: rgb(255, 0, 85);
+}
+
+body.light [data-mode=nox] {
+  --g4-game-background: #fff;
+  --g4-game-damage: rgb(255, 225, 235);
+  --g4-game-foreground: rgb(35, 202, 20);
+  --g4-game-obstacle1: var(--g4-game-foreground);
+  --g4-game-obstacle2: rgb(35, 68, 211);
+  --g4-game-cannon: rgb(0, 0, 0);
+  --g4-game-bullet: rgb(255, 0, 85);
+}
+
 body {
   background: var(--g4-app-background);
   color: var(--g4-game-foreground);
@@ -157,6 +177,13 @@ body.light {
   --g4-app-foreground: #000000;
   --g4-app-header-background: #ebebeb;
   --g4-app-accent: #1814f3;
+}
+
+body.login div.accountInfo {
+  display: flex;
+}
+body.login button#openLoginBtn {
+  display: none;
 }
 
 main {
@@ -351,11 +378,18 @@ aside {
 }
 aside header {
   display: flex;
+  flex-wrap: wrap;
 }
 aside header svg#g4logo {
   height: 32px;
   width: auto;
   margin: 8px 16px;
+}
+aside header button#musicToggleBtn:after {
+  content: ": OFF";
+}
+aside header button#musicToggleBtn.playing:after {
+  content: ": ON";
 }
 aside header button.expander {
   display: none;
@@ -434,16 +468,29 @@ aside header button.daynight:active div {
 aside header button.daynight:active div:before, aside header button.daynight:active div:after {
   display: none;
 }
+aside header div.accountInfo {
+  width: 100%;
+  display: none;
+}
+aside header div.accountInfo p {
+  font-weight: 400;
+  font-size: 15pt;
+  padding: 8px 16px;
+  margin: 0px;
+  flex-grow: 1;
+}
 aside svg {
   fill: var(--g4-app-accent);
+}
+aside div.scroller {
+  flex-grow: 1;
+  overflow: auto;
 }
 aside section {
   display: flex;
   flex-direction: column;
 }
 aside section header {
-  position: sticky;
-  top: 0;
   background: var(--g4-app-header-background);
   font-weight: 500;
   font-size: 15pt;
@@ -479,7 +526,7 @@ aside section.gameMode content button.mode.active {
   background: var(--g4-app-foreground);
   color: var(--g4-app-background);
 }
-aside section.gameMode content button[data-mode=reverse] {
+aside section.gameMode content button[data-mode=reverse] p {
   transform: scaleX(-1);
 }
 aside section.spectating content div.player {
@@ -516,10 +563,6 @@ aside section.spectating content div.player.robot p.name:after {
   font-size: 11pt;
   text-transform: uppercase;
   padding: 2px 8px;
-}
-aside section.leaderboard {
-  flex-grow: 1;
-  overflow: auto;
 }
 aside section.leaderboard content table {
   width: 100%;
@@ -584,41 +627,80 @@ body.light button.daynight div:after {
 }
 
 dialog {
-  display: none;
+  position: fixed;
+  top: 0;
+  right: -500px;
+  left: unset;
+  width: 100%;
+  max-width: 400px;
+  height: 100%;
+  transition: right 0.3s;
 }
 
 dialog.open {
-  position: fixed;
   right: 0;
-  left: unset;
-  width: 100%;
-  max-width: 368px;
-  background: #fff;
-  color: #000;
-  margin: 0;
+  background: var(--g4-app-background);
+  color: var(--g4-app-foreground);
+  margin: 0px;
+  padding: 0px;
   border: none;
   box-shadow: 0px 8px 32px #000000a0;
   display: flex;
   flex-direction: column;
-  align-content: flex-end;
 }
-dialog.open h1 {
-  font-size: 16pt;
+dialog.open header {
+  top: 0;
+  background: var(--g4-app-header-background);
   font-weight: 500;
-  margin: 0;
+  font-size: 15pt;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
 }
-dialog.open p.error {
-  color: red;
+dialog.open header button {
+  margin-right: 16px;
 }
-dialog.open p.error.hidden {
+dialog.open content {
+  padding: 16px;
+  flex-grow: 1;
+  overflow: auto;
+}
+dialog.open content h2 {
+  font-size: 16pt;
+  font-weight: 400;
+  margin: 0px 0px 32px 0px;
+}
+dialog.open content p.error {
+  color: var(--g4-app-accent);
   display: none;
 }
-dialog.open input {
+dialog.open content p.error.visible {
+  display: block;
+}
+dialog.open content form {
+  display: flex;
+  flex-direction: column;
+}
+dialog.open content form label {
+  margin: 8px 0px 0px 0px;
+}
+dialog.open content form input {
+  background: transparent;
+  color: var(--g4-app-foreground);
   font-family: "Poppins", sans-serif;
-  font-size: 13pt;
-  border: 1px solid #aaa;
-  margin: 8px 0px;
-  padding: 8px 16px;
+  font-size: 12pt;
+  padding: 4px 8px;
+  border: 1px solid var(--g4-app-accent);
+}
+dialog.open content div.buttons {
+  height: 40px;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+dialog.open content div.buttons button.primary {
+  color: var(--g4-app-accent);
 }
 
 @media (max-width: 768px) {
@@ -668,6 +750,11 @@ dialog.open input {
     background: var(--g4-app-foreground);
     content: "";
     transform: translate(-50%, -50%);
+  }
+}
+@media (max-width: 500px) {
+  main div.game header {
+    padding-right: 52px;
   }
 }
 

@@ -1,41 +1,34 @@
-(() => {
+loadAssets().then(() => {
     /**
      * @type {Game[]}
      */
     let games = []
 
-    addEventListener("g4statechange", (e) => console.log(e))
-
-    let testGame = new Game(
-        null, false, ""
+    let mainGame = new Game(
+        null, false, "",
+        new Leaderboard()
     )
-    testGame.generateLevel("normal", 0)
-    window.game = testGame
 
-    document.querySelector("main").appendChild(testGame.dom)
+    prepG4AccountUI(mainGame.leaderboard)
 
-    games.push(testGame)
+    mainGame.generateLevel("normal", 0)
 
-    // let spectatedGame = new Game(
-    //     JSON.parse(
-    //         JSON.stringify(
-    //             testGame.data
-    //         )
-    //     ),
-    //     true, "the one on the left"
-    // )
+    document.querySelector("main").appendChild(mainGame.dom)
+    mainGame.resizeCanvas()
 
-    // document.querySelector("main").appendChild(spectatedGame.dom)
+    games.push(mainGame)
 
-    // games.push(spectatedGame)
+    document.querySelector("audio#gameAudio").src = "res/music/default.mp3"
 
-    // setInterval(() => {
-    //     spectatedGame.data = JSON.parse(
-    //         JSON.stringify(
-    //             testGame.data
-    //         )
-    //     )
-    // }, 250)
+    // On window resize, resize the canvases
+    window.addEventListener("resize", () => {
+        games.forEach(game => game.resizeCanvas())
+    })
+
+    // DOM update "loop"
+    setInterval(() => {
+        games.forEach(game => game.updateDOM())
+    }, 1000 / 30)
 
     // Rendering "loop"
     let previousTimestamp = null
@@ -74,23 +67,36 @@
     // Mode changing buttons
     document.querySelectorAll("section.gameMode button").forEach(button => {
         button.addEventListener("click", () => {
-            if (testGame.data.mode == button.getAttribute("data-mode")) return
+            if (mainGame.data.mode == button.getAttribute("data-mode")) return
 
-            testGame.generateLevel(
+            mainGame.generateLevel(
                 button.getAttribute("data-mode"),
                 0
             )
-            testGame.data.slow = {
+            mainGame.data.slow = {
                 time: 0,
                 isSlow: false
             }
 
             document.querySelector("section.gameMode button.active").classList.remove("active")
             button.classList.add("active")
+
+            let audio = document.querySelector("audio#gameAudio")
+            let audioState = !audio.paused && !audio.ended && audio.readyState > 2
+
+            let currentTime = audio.currentTime
+
+            audio.src = "res/music/default.mp3"
+
+            if (audioState) {
+                audio.play().then(() => {
+                    audio.currentTime = currentTime % audio.duration
+                })
+            }
         })
     })
 
     addEventListener("keyup", (e) => {
         games.forEach(game => game.handleKeyboardEvent(e))
     })
-})()
+})

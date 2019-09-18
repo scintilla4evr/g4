@@ -27,6 +27,10 @@
  * @typedef {Object} RingBall
  * 
  * @property {String} type
+ * 
+ * @property {Number} centerX
+ * @property {Number} centerY
+ * 
  * @property {Number} angle
  * @property {Number} distance
  * @property {Number} radius
@@ -36,6 +40,10 @@
  * @typedef {Object} RingPulsingBall
  * 
  * @property {String} type
+ * 
+ * @property {Number} centerX
+ * @property {Number} centerY
+ * 
  * @property {Number} angle
  * @property {Number} distance
  * @property {Number} radius
@@ -49,6 +57,10 @@
  * @typedef {Object} RingBar
  * 
  * @property {String} type
+ * 
+ * @property {Number} centerX
+ * @property {Number} centerY
+ * 
  * @property {Number} angleStart
  * @property {Number} angleLength
  * @property {Number} distance
@@ -59,6 +71,10 @@
  * @typedef {Object} RingMarqueeBar
  * 
  * @property {String} type
+ * 
+ * @property {Number} centerX
+ * @property {Number} centerY
+ * 
  * @property {Number} angleStart
  * @property {Number} angleLength
  * @property {Number} distance
@@ -77,6 +93,10 @@
  * @property {Number} speedMult
  * @property {Number} rotation
  * @property {Boolean} isDistraction
+ * 
+ * @property {Number} distance
+ * @property {Number} revolveFreq
+ * @property {Number} revolvePhase
  */
 
 /**
@@ -108,10 +128,14 @@ class LevelGenerator {
      * @param {Number} radius 
      * @returns {RingBall}
      */
-    static createRingBall(angle, distance, radius) {
+    static createRingBall(angle, distance, radius, centerX, centerY) {
+        if (!centerX) centerX = 0
+        if (!centerY) centerY = 0
+
         return {
             type: "ball",
-            angle, distance, radius
+            angle, distance, radius,
+            centerX, centerY
         }
     }
 
@@ -122,13 +146,17 @@ class LevelGenerator {
      * @param {Number} pulseFreq 
      * @return {RingPulsingBall}
      */
-    static createRingPulsingBall(angle, distance, radius, pulseFreq) {
+    static createRingPulsingBall(angle, distance, radius, pulseFreq, centerX, centerY) {
+        if (!centerX) centerX = 0
+        if (!centerY) centerY = 0
+
         return {
             type: "pulsingBall",
             angle, distance, radius,
             pulseFreq,
             pulseTime: 0,
-            baseRadius: radius
+            baseRadius: radius,
+            centerX, centerY
         }
     }
 
@@ -139,10 +167,14 @@ class LevelGenerator {
      * @param {Number} radius 
      * @returns {RingBar}
      */
-    static createRingBar(angleStart, angleLength, distance, radius) {
+    static createRingBar(angleStart, angleLength, distance, radius, centerX, centerY) {
+        if (!centerX) centerX = 0
+        if (!centerY) centerY = 0
+
         return {
             type: "bar",
-            angleStart, angleLength, distance, radius
+            angleStart, angleLength, distance, radius,
+            centerX, centerY
         }
     }
 
@@ -156,15 +188,20 @@ class LevelGenerator {
      */
     static createRingMarqueeBar(
         angleStart, angleLength, distance, radius,
-        sweepFreq
+        sweepFreq,
+        centerX, centerY
     ) {
+        if (!centerX) centerX = 0
+        if (!centerY) centerY = 0
+
         return {
             type: "marqueeBar",
             angleStart, angleLength, distance, radius,
             sweepFreq,
             sweepTime: 0,
             baseStart: angleStart,
-            baseEnd: angleStart + angleLength
+            baseEnd: angleStart + angleLength,
+            centerX, centerY
         }
     }
 
@@ -398,8 +435,12 @@ class LevelGenerator {
      * @param {Boolean} isDistraction 
      * @returns {Ring}
      */
-    static createRing(items, speedMult, isDistraction) {
-        return {items, speedMult, isDistraction}
+    static createRing(items, speedMult, isDistraction, distance, revolveFreq, revolvePhase) {
+        if (!distance) distance = 0
+        if (!revolveFreq) revolveFreq = 0
+        if (!revolvePhase) revolvePhase = 0
+
+        return {items, speedMult, isDistraction, distance, revolveFreq, revolvePhase, rotation: 0}
     }
 
     /**
@@ -476,6 +517,52 @@ class LevelGenerator {
                     0.25, false
                 )
             )
+    }
+
+    static generateNoxRings(rings, level) {
+        // The giant outer ring
+        rings.push(
+            LevelGenerator.createRing(
+                LevelGenerator.generateOuterRing(2, 500),
+                0.5, false,
+                0, 0
+            )
+        )
+
+        // The middle ring
+        if (level > 12) {
+            rings.push(
+                LevelGenerator.createRing(
+                    LevelGenerator.generateMiddleRing(3, 250),
+                    0.5, false,
+                    0, 0
+                )
+            )
+        }
+
+        // The revolving rings
+        let diffOffset = (level > 9) ? 2 : 1
+        let nOffset = (level > 4) ? 2 : 3
+        let n = Math.round(Math.random() * 2) + nOffset
+
+        for (let i = 0; i < n; i++) {
+            let phase = i / n
+            let ringRadius = 400
+            let ringDistance = 100
+
+            let ringDifficulty = diffOffset + Math.round(Math.random())
+
+            rings.push(
+                LevelGenerator.createRing(
+                    LevelGenerator.generateInnerRing(
+                        ringDifficulty,
+                        ringRadius
+                    ),
+                    1, false,
+                    ringDistance, 0.5, phase
+                )
+            )
+        }
     }
 
     /**
@@ -624,6 +711,11 @@ class LevelGenerator {
                         0.5, false
                     )
                 )
+                break
+            case "nox":
+
+                LevelGenerator.generateNoxRings(rings, levelIndex)
+
                 break
         }
 

@@ -9,8 +9,8 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <meta name="apple-mobile-web-app-status-bar-style" content="black">
         <meta name="apple-mobile-web-app-title" content="G4">
-        <meta name="description" content="A distraction-less version of The Theorist Gateway gate 4 minigame.">
-        <meta name="theme-color" content="#2F3BA2" />
+        <meta name="description" content="An infinite rage puzzle game.">
+        <meta name="theme-color" content="#000000" />
         
         <link rel="apple-touch-icon" href="res/icons/icon-152x152.png">
         <link rel="manifest" href="manifest.json">
@@ -18,7 +18,9 @@
         <link rel="stylesheet" href="styles/build/layout.css">
     </head>
 
-    <body>
+    <body class="">
+        <audio id="gameAudio" loop></audio>
+
         <main class="one" style="user-select: none; padding-top: 48px;">
             <div class="firstTimeHint hidden">
                 <img src="res/images/gameHint.svg">
@@ -33,8 +35,12 @@
                 </svg>
                 <div style="flex-grow: 1"></div>
 
-                <button type="button" onclick="aud_play_pause()">
-                    Music Toggle
+                <button id="musicToggleBtn">
+                    Music
+                </button>
+
+                <button id="openLoginBtn">
+                    Log in
                 </button>
                 <button class="daynight">
                     <div></div>
@@ -43,88 +49,120 @@
                 <button class="expander">
                     <div></div>
                 </button>
+
+                <div class="accountInfo">
+                    <p class="username">N/A</p>
+
+                    <button id="logoutBtn">Log out</button>
+                </div>
             </header>
 
-            <section class="gameMode">
-                <header>Game mode</header>
-                <content>
-                    <button data-mode="easy" class="mode">
-                        <p class="name">Easy</p>
-                    </button>
-                    <button data-mode="normal" class="mode active">
-                        <p class="name">Normal</p>
-                    </button>
-                    <button data-mode="hard" class="mode">
-                        <p class="name">Hard</p>
-                    </button>
-                    <button data-mode="hell" class="mode">
-                        <p class="name">Hell</p>
-                    </button>
-                    <button data-mode="hades" class="mode">
-                        <p class="name">Hades</p>
-                    </button>
-                    <button data-mode="denise" class="mode">
-                        <p class="name">Chaos</p>
-                    </button>
-                    <button data-mode="reverse" class="mode">
-                        <p class="name">Reverse</p>
-                    </button>
-                </content>
-            </section>
-
-            <section class="spectating">
-                <header>
-                    Split-screen
-                    <button>
-                        Add player
-                    </button>
-                </header>
-                <content>
-                    <div class="player me">
-                        <p class="name">scintilla4evr</p>
-                        <p class="level">Level: 16</p>
-                        <p class="mode">Normal mode</p>
-                    </div>
-                </content>
-            </section>
-
-            <section class="leaderboard">
-                <header>
-                    Leaderboard
-                    <button id="setNicknameBtn">
-                        Set nickname
-                    </button>
-                </header>
-                <content>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Player</th>
-                                <th>Score</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </content>
-            </section>
+            <div class="scroller">
+                <section class="gameMode">
+                    <header>Game mode</header>
+                    <content>
+                        <button data-mode="easy" class="mode">
+                            <p class="name">Easy</p>
+                        </button>
+                        <button data-mode="normal" class="mode active">
+                            <p class="name">Normal</p>
+                        </button>
+                        <button data-mode="hard" class="mode">
+                            <p class="name">Hard</p>
+                        </button>
+                        <button data-mode="hell" class="mode">
+                            <p class="name">Hell</p>
+                        </button>
+                        <button data-mode="hades" class="mode">
+                            <p class="name">Hades</p>
+                        </button>
+                        <button data-mode="denise" class="mode">
+                            <p class="name">Chaos</p>
+                        </button>
+                        <button data-mode="reverse" class="mode">
+                            <p class="name">Reverse</p>
+                        </button>
+                        <button data-mode="nox" class="mode">
+                            <p class="name">Nox</p>
+                        </button>
+                    </content>
+                </section>
+    
+                <section class="leaderboard">
+                    <header>
+                        Leaderboard
+                    </header>
+                    <content>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Player</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </content>
+                </section>
+            </div>
 
             <footer>
-                G4.6 by <a href="https://www.twitter.com/scintilla4evr" target=_blank" rel="noopener" aria-label="@scintilla4evr on Twitter">@scintilla4evr</a> | Frame rate: <span class="fpsCounter"></span>
+                G4.6 by <a href="about:blank" target=_blank" rel="noopener" aria-label="Team G4's website">Team G4</a> | Frame rate: <span class="fpsCounter"></span>
             </footer>
         </aside>
 
-        <dialog id="setNickname">
-            <h1>Set leaderboard nickname</h1>
-            <p class="error hidden">This nickname is already taken.</p>
+        <dialog id="login" class="">
+            <header>
+                <button class="close">Back</button>
+                Log in
+            </header>
 
-            <input id="userNickname" placeholder="Your nickname">
+            <content>
+                <h2>Log in to your G4 account to save your scores on the leaderboard.</h2>
 
-            <button>Set nickname</button>
+                <p class="error"></p>
+
+                <form id="loginForm">
+                    <label for="loginUsername">Username:</label>
+                    <input id="loginUsername" maxlength="20">
+
+                    <label for="loginPassword">Password:</label>
+                    <input id="loginPassword" type="password">
+                </form>
+
+                <div class="buttons">
+                    <button id="loginBtn" class="primary">Log in</button>
+                    <button id="goToRegisterBtn">Create an account</button>
+                </div>
+            </content>
         </dialog>
 
-        <audio id="g4music" controls autoplay loop hidden="" src="res/music/default.mp3" type ="audio/mp3">your browser does not support Html5</audio>
+        <dialog id="register" class="">
+            <header>
+                <button class="close">Back</button>
+                Register
+            </header>
+
+            <content>
+                <h2>Create a G4 account.</h2>
+
+                <p class="error"></p>
+
+                <form id="registerForm">
+                    <label for="registerUsername">Username:</label>
+                    <input id="registerUsername" maxlength="20">
+
+                    <label for="registerPassword">Password:</label>
+                    <input id="registerPassword" type="password">
+                </form>
+
+                <div class="buttons">
+                    <button id="registerBtn" class="primary">Register</button>
+                </div>
+            </content>
+        </dialog>
 
         <div id="title-bar">
             <div id="title" style="vertical-align: middle">
@@ -135,12 +173,12 @@
                                 <rect x="224" width="64" height="112"/>
                             </svg>
                 </span>
-                G4 Electron | Build 4.6-Dev-HiItsDevin_
+                G4 Electron | Build 4.6-Dev-91719-1919-HiItsDevin_
             </div>
             <div id="title-bar-btns">
-                  <button id="min-btn">-</button>
-                  <button id="max-btn">+</button>
-                  <button id="close-btn">x</button>
+                <button id="min-btn">-</button>
+                <button id="max-btn">+</button>
+                <button id="close-btn">x</button>
             </div>
         </div>
 
@@ -154,7 +192,7 @@
                 padding: none;
                 margin: 0px;
             }
-    
+
             #title {
                 position: fixed;
                 top: 0px;
@@ -165,7 +203,7 @@
                 display: flex;
                 align-items: center;
             }
-    
+
             #title-bar-btns {
                 -webkit-app-region: no-drag;
                 position: fixed;
@@ -176,10 +214,10 @@
 
         <script>
             (function () {
-                    // Retrieve remote BrowserWindow
-                    const {BrowserWindow} = require('electron').remote
+                // Retrieve remote BrowserWindow
+                const {BrowserWindow} = require('electron').remote
 
-                    function init() {
+                function init() {
                     // Minimize task
                     document.getElementById("min-btn").addEventListener("click", (e) => {
                         var window = BrowserWindow.getFocusedWindow();
@@ -211,22 +249,11 @@
             })();
         </script>
 
-        <script>
-        function aud_play_pause() {
-            var myAudio = document.getElementById("g4music");
-            if (myAudio.paused) {
-              myAudio.play();
-            } else {
-              myAudio.pause();
-            }
-        }
-        </script>
-
-
+        <script src="scripts/assets.js"></script>
         <script src="scripts/levelgen.js"></script>
+        <script src="scripts/leaderboard.js"></script>
         <script src="scripts/game.js"></script>
         <script src="scripts/ui.js"></script>
-        <script src ="scripts/leaderboard.js"></script>
 
         <script src="scripts/main.js"></script>
     </body>
