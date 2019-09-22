@@ -62,7 +62,7 @@ window.addEventListener("g4statechange", (e) => {
 function setRPC() {
     let activityData = {
         details: "Playing on: " + currentMode,
-        state: "Just started playing...",
+        state: "Just started playing",
 
         largeImageKey: "g4_logo",
         largeImageText: "G4",
@@ -74,7 +74,7 @@ function setRPC() {
     rpc.setActivity(activityData)
 }
 
-sleep(250)
+sleep(300)
 setRPC()
 
 
