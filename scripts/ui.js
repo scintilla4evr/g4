@@ -113,6 +113,14 @@ function prepG4AccountUI(leaderboard) {
             err.textContent = "Username must be 20 characters or less."
             err.classList.add("visible")
             return
+        } else if (username.length < 3) {
+            err.textContent = "Username must be longer than 2 characters."
+            err.classList.add("visible")
+            return
+        } else if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+            err.textContent = "Username must contain only letters A-Z, numbers and underscores (_)."
+            err.classList.add("visible")
+            return
         }
 
         try {

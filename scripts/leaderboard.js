@@ -155,8 +155,53 @@ class Leaderboard {
             scoreText.textContent = score.score
             tr.appendChild(scoreText)
 
+            tr.addEventListener("click", () => {
+                this.showDetailedScores(score.username)
+            })
+
             table.appendChild(tr)
         })
+    }
+
+    async showDetailedScores(username) {
+        let name = encodeURIComponent(username)
+        let url = `${leaderboardEndpoint}/playerScores?username=${name}`
+
+        let data = await fetch(url)
+        data = await data.json()
+
+        let scores = data.scores
+        if (!scores) scores = []
+
+        document.querySelector("dialog#playerStats h2").textContent = username
+
+        let container = document.querySelector("dialog#playerStats div.scores")
+        container.innerHTML = ""
+
+        for (let score of scores) {
+            let scoreDiv = document.createElement("div")
+
+            scoreDiv.className = "highScore"
+            scoreDiv.setAttribute("data-mode", score.gamemode)
+
+            let modeName = Game.modeIDToDisplayName(score.gamemode)
+
+            scoreDiv.innerHTML = `<p class="mode">${modeName} mode</p>
+            <table>
+                <tr>
+                    <th>Score</th>
+                    <th>Deaths</th>
+                </tr>
+                <tr>
+                    <td>${+score.score}</th>
+                    <td>${+score.deathcount}</th>
+                </tr>
+            </table>`
+
+            container.appendChild(scoreDiv)
+        }
+
+        openWindow("playerStats")
     }
 
     async postScore(mode, score, deathCount) {

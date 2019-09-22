@@ -1,7 +1,7 @@
-const electron = require('electron')
-const { app, BrowserWindow } = require('electron')
+const electron = require('electron');
+const { app, BrowserWindow } = require('electron');
 const fs = require('fs');
-let path  = require("path")
+let path  = require("path");
 
 //Electron
 //--------------------------------
@@ -14,10 +14,10 @@ function createWindow () {
     webPreferences: {
       nodeIntegration: true
     }
-  })
+  });
 
-  win.loadFile('game.html')
-  win.webContents.openDevTools()
+  win.loadFile('game.html');
+  win.webContents.openDevTools();
   win.webContents.on("dom-ready", () => {
     win.webContents.executeJavaScript(
         fs.readFileSync(
@@ -29,7 +29,7 @@ function createWindow () {
 
 app.commandLine.appendSwitch("autoplay-policy", "no-user-gesture-required");
 
-app.on('ready', createWindow)
+app.on('ready', createWindow);
 electron.app.on('browser-window-created',function(e,window) {
     window.setMenu(null);
 });

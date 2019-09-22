@@ -176,7 +176,7 @@ body.light {
   --g4-app-background: #ffffff;
   --g4-app-foreground: #000000;
   --g4-app-header-background: #ebebeb;
-  --g4-app-accent: #1814f3;
+  --g4-app-accent: #e63b24;
 }
 
 body.login div.accountInfo {
@@ -354,6 +354,7 @@ button {
   text-transform: uppercase;
   padding: 4px 16px;
   border: none;
+  border-radius: 8px;
 }
 
 button:hover {
@@ -483,15 +484,21 @@ aside svg {
   fill: var(--g4-app-accent);
 }
 aside div.scroller {
+  padding: 0px 8px;
+  border-radius: 24px;
   flex-grow: 1;
   overflow: auto;
 }
 aside section {
+  background: var(--g4-app-header-background);
+  padding-bottom: 16px;
+  margin-bottom: 8px;
+  border-radius: 24px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 aside section header {
-  background: var(--g4-app-header-background);
   font-weight: 500;
   font-size: 15pt;
   padding: 8px 16px;
@@ -506,7 +513,7 @@ aside section.gameMode content {
   grid-template-columns: repeat(4, 1fr);
 }
 aside section.gameMode content button.mode {
-  background: var(--g4-app-background);
+  background: transparent;
   color: var(--g4-app-foreground);
   padding: 4px 8px;
   border: none;
@@ -639,7 +646,7 @@ dialog {
 
 dialog.open {
   right: 0;
-  background: var(--g4-app-background);
+  background: var(--g4-app-header-background);
   color: var(--g4-app-foreground);
   margin: 0px;
   padding: 0px;
@@ -650,7 +657,6 @@ dialog.open {
 }
 dialog.open header {
   top: 0;
-  background: var(--g4-app-header-background);
   font-weight: 500;
   font-size: 15pt;
   padding: 8px 16px;
@@ -661,7 +667,9 @@ dialog.open header button {
   margin-right: 16px;
 }
 dialog.open content {
+  background: var(--g4-app-background);
   padding: 16px;
+  border-radius: 24px 24px 0px 0px;
   flex-grow: 1;
   overflow: auto;
 }
@@ -701,6 +709,39 @@ dialog.open content div.buttons {
 }
 dialog.open content div.buttons button.primary {
   color: var(--g4-app-accent);
+}
+
+dialog#playerStats content {
+  padding: 8px;
+}
+dialog#playerStats content h2 {
+  font-size: 16pt;
+  font-weight: 400;
+  margin: 8px 8px 40px 8px;
+}
+dialog#playerStats content div.highScore {
+  background: var(--g4-game-background);
+  color: var(--g4-game-cannon);
+  padding: 8px 16px;
+  margin-bottom: 8px;
+  border-radius: 24px;
+  box-shadow: inset 0px 0px 0px 1px var(--g4-game-foreground);
+}
+dialog#playerStats content div.highScore p {
+  font-size: 14pt;
+  margin: 0px;
+}
+dialog#playerStats content div.highScore table {
+  width: 100%;
+  border-spacing: 0px;
+}
+dialog#playerStats content div.highScore table th {
+  font-weight: 400;
+  text-align: left;
+}
+dialog#playerStats content div.highScore table td {
+  font-weight: 500;
+  font-size: 13pt;
 }
 
 @media (max-width: 768px) {

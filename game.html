@@ -6,9 +6,6 @@
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <meta name="apple-mobile-web-app-title" content="G4">
         <meta name="description" content="An infinite rage puzzle game.">
         <meta name="theme-color" content="#000000" />
         
@@ -114,7 +111,7 @@
         </aside>
 
         <dialog id="login" class="">
-            <header>
+            <header style="padding-top: 48px;">
                 <button class="close">Back</button>
                 Log in
             </header>
@@ -140,7 +137,7 @@
         </dialog>
 
         <dialog id="register" class="">
-            <header>
+            <header style="padding-top: 48px;">
                 <button class="close">Back</button>
                 Register
             </header>
@@ -158,8 +155,24 @@
                     <input id="registerPassword" type="password">
                 </form>
 
+                <p>By clicking "Register", you agree to the <a href="about:blank">G4 Terms of Service</a>.</p>
+
                 <div class="buttons">
                     <button id="registerBtn" class="primary">Register</button>
+                </div>
+            </content>
+        </dialog>
+
+        <dialog id="playerStats" class="" style="padding-top: 48px;">
+            <header>
+                <button class="close">Back</button>
+                Player stats
+            </header>
+
+            <content>
+                <h2></h2>
+
+                <div class="scores">
                 </div>
             </content>
         </dialog>
@@ -173,7 +186,7 @@
                                 <rect x="224" width="64" height="112"/>
                             </svg>
                 </span>
-                G4 Electron | Build 4.6-Dev-91719-1919-HiItsDevin_
+                G4 Electron | Build 4.6-Dev-92119-1745-HiItsDevin_
             </div>
             <div id="title-bar-btns">
                 <button id="min-btn">-</button>
@@ -189,7 +202,6 @@
                 text-align: center;
                 line-height: 40px;
                 vertical-align: middle;
-                padding: none;
                 margin: 0px;
             }
 
