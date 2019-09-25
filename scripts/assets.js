@@ -9,5 +9,7 @@ function loadAudio(audioFile) {
 
 async function loadAssets() {
     // Load the default music
-    await loadAudio("res/music/default.mp3")
+    await loadAudio("res/music/easy.mp3")
+    await loadAudio("res/music/normal.mp3")
+    await loadAudio("res/music/hell.mp3")
 }

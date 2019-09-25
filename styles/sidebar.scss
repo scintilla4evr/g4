@@ -1,0 +1,640 @@
+aside {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 400px;
+
+    background: var(--g4-app-background);
+    color: var(--g4-app-foreground);
+    
+    box-shadow: 0px 0px 16px #00000020;
+    display: flex;
+    flex-direction: column;
+
+    transition: right 0.2s;
+
+    header {
+        display: flex;
+        flex-wrap: wrap;
+
+        content {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        svg#g4logo {
+            height: 32px;
+            width: auto;
+
+            margin: 8px 16px;
+        }
+
+        button#musicToggleBtn:after {
+            content: ": OFF";
+        }
+
+        button#musicToggleBtn.playing:after {
+            content: ": ON";
+        }
+
+        button.expander {
+            display: none;
+
+            &:not(:active) {                
+                background: transparent;
+            }
+
+            div {
+                position: relative;
+                width: 20px;
+                height: 2px;
+                
+                background: transparent;
+            }
+
+            div:before {
+                position: absolute;
+                left: 50%;
+                top: calc(50% - 4.5px);
+                width: 14px;
+                height: 2px;
+                
+                background: var(--g4-app-foreground);
+                content: "";
+
+                transform: translate(-50%, -50%) rotate(45deg);
+            }
+
+            div:after {
+                position: absolute;
+                left: 50%;
+                top: calc(50% + 4.5px);
+                width: 14px;
+                height: 2px;
+                
+                background: var(--g4-app-foreground);
+                content: "";
+
+                transform: translate(-50%, -50%) rotate(-45deg);
+            }
+        }
+        button:active div {
+            --g4-app-foreground: var(--g4-app-background);
+        }
+
+        button.daynight {
+            background: transparent;
+
+            div {
+                position: relative;
+                width: 20px;
+                height: 20px;
+                
+                background: var(--g4-app-foreground);
+
+                border: 2px solid var(--g4-app-background);
+                border-radius: 12px;
+            }
+
+            div:before {
+                position: absolute;
+                left: 100%;
+                top: 50%;
+                width: 20px;
+                height: 20px;
+
+                background: var(--g4-app-background);
+                content: "";
+
+                border-radius: 10px;
+
+                transform: translate(-50%, -50%);
+
+                z-index: 1;
+            }
+
+            div:after {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                width: 20px;
+                height: 20px;
+
+                background: var(--g4-app-foreground);
+                content: "";
+
+                border-radius: 10px;
+
+                transform: translate(-50%, -50%) rotate(45deg);
+
+                z-index: -1;
+            }
+        }
+
+        button.daynight:active {
+            background: var(--g4-app-foreground);
+
+            div {
+                background: var(--g4-app-background);
+
+                border: 2px solid var(--g4-app-foreground);
+            }
+
+            div:before, div:after {
+                display: none;
+            }
+        }
+
+        div.accountInfo {
+            width: 100%;
+
+            display: none;
+
+            p {            
+                font-weight: 400;
+                font-size: 15pt;
+    
+                padding: 8px 16px;
+                margin: 0px;
+
+                flex-grow: 1;
+            }
+        }
+    }
+
+    svg {
+        fill: var(--g4-app-accent);
+    }
+
+    div.scroller {
+        padding: 8px 8px;
+        border-radius: 24px;
+
+        flex-grow: 1;
+        overflow: auto;
+    }
+
+    section {
+        background: var(--g4-app-header-background);
+
+        padding-bottom: 16px;
+        margin-bottom: 8px;
+        border-radius: 24px;
+
+        overflow: hidden;
+
+        display: flex;
+        flex-direction: column;
+        
+        header {            
+            font-weight: 500;
+            font-size: 15pt;
+
+            padding: 8px 16px;
+
+            display: flex;
+            justify-content: space-between;
+        }
+
+        content {
+            flex-grow: 1;
+        }
+    }
+
+    section.gameMode {
+        content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+
+            button.mode {
+                background: transparent;
+                color: var(--g4-app-foreground);
+
+                padding: 4px 8px;
+                border: none;
+                
+                flex-grow: 1;
+
+                p {
+                    margin: 0px;
+
+                    font-family: Poppins;
+                    font-weight: 500;
+                    font-size: 12pt;
+                    text-transform: uppercase;
+                }
+            }
+            button.mode:hover {
+                box-shadow: inset 0px 0px 0px 4px var(--g4-game-foreground);
+            }
+            button.mode.active {
+                background: var(--g4-game-foreground);
+                color: var(--g4-game-background);
+            }
+
+            button[data-mode=reverse] p {
+                transform: scaleX(-1);
+            }
+        }
+    }
+
+    section.spectating {
+        content {
+            div.player {
+                position: relative;
+
+                padding: 8px 16px;
+
+                display: flex;
+                flex-wrap: wrap;
+
+                p {
+                    margin: 0px;
+                }
+
+                p.name {
+                    width: 100%;
+
+                    font-size: 14pt;
+                }
+
+                p.level {
+                    margin-right: 16px;
+                }
+
+                button {
+                    position: absolute;
+                    top: 8px;
+                    right: 16px;
+                }
+            }
+
+            div.player.me {
+                p.name:after {
+                    color: var(--g4-app-accent);
+
+                    content: "You";
+
+                    font-size: 11pt;
+                    text-transform: uppercase;
+
+                    padding: 2px 8px;
+                }
+            }
+
+            div.player.robot {
+                p.name:after {
+                    color: var(--g4-app-accent);
+
+                    content: "AI";
+
+                    font-size: 11pt;
+                    text-transform: uppercase;
+
+                    padding: 2px 8px;
+                }
+            }
+        }
+    }
+
+    section.leaderboard {
+        content {
+            table {
+                width: 100%;
+
+                border-spacing: 0px;
+
+                th {
+                    font-weight: 500;
+                }
+
+                tr {
+                    td:first-child {
+                        width: 15%;
+    
+                        text-align: center;
+                    }
+    
+                    td:last-child {
+                        width: 25%;
+    
+                        text-align: center;
+                    }
+                }
+
+                tbody tr:hover {
+                    background: var(--g4-app-foreground);
+                    color: var(--g4-app-background);
+
+                    cursor: pointer;
+                }
+
+                tr.me {
+                    background: var(--g4-app-accent);
+                    color: var(--g4-app-background);
+                }
+            }
+        }
+    }
+
+    section.pwaInstall {
+        content {
+            padding: 8px 16px;
+        }
+    }
+
+    section.hidden {
+        display: none;
+    }
+
+    footer {
+        height: 33px;
+        max-height: 33px;
+        min-height: 33px;
+
+        padding: 4px 16px;
+
+        a {
+            color: var(--g4-app-accent);
+
+            text-decoration: none;
+        }
+    }
+}
+
+div.dialogContainer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 400px;
+    bottom: 0;
+
+    pointer-events: none;
+    overflow: hidden;
+}
+
+dialog {
+    position: absolute;
+    top: 0;
+    left: 432px;
+    width: 100%;
+    height: 100%;
+
+    background: var(--g4-app-header-background);
+    color: var(--g4-app-foreground);
+
+    margin: 0px;
+    padding: 0px;
+    border: none;
+    
+    box-shadow: 0px 0px 16px #00000050;
+    display: flex;
+    flex-direction: column;
+
+    transition: left 0.2s;
+
+    pointer-events: all;
+
+    header {
+        top: 0;
+        
+        font-weight: 500;
+        font-size: 15pt;
+
+        padding: 8px 16px;
+
+        display: flex;
+        align-items: center;
+
+        button {
+            margin-right: 16px;
+        }
+    }
+
+    content {
+        background: var(--g4-app-background);
+
+        padding: 16px;
+        border-radius: 24px 0px 0px 0px;
+
+        flex-grow: 1;
+        overflow: auto;
+
+        h2 {
+            font-size: 16pt;
+            font-weight: 400;
+
+            margin: 0px 0px 32px 0px;
+        }
+
+        p.error {
+            color: var(--g4-app-accent);
+
+            display: none;
+        }
+
+        p.error.visible {
+            display: block;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+
+            label {
+                margin: 8px 0px 0px 0px;
+            }
+
+            input {
+                background: transparent;
+                color: var(--g4-app-foreground);
+
+                font-family: "Poppins", sans-serif;
+                font-size: 12pt;
+                
+                padding: 4px 8px;
+
+                border: 1px solid var(--g4-app-accent);
+            }
+        }
+
+        div.buttons {
+            height: 40px;
+
+            margin-top: 16px;
+
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-between;
+
+            button.primary {
+                color: var(--g4-app-accent);
+            }
+        }
+    }
+}
+
+dialog.open {
+    left: 0;
+}
+
+dialog#playerStats {
+    content {
+        padding: 8px;
+
+        h2 {
+            font-size: 16pt;
+            font-weight: 400;
+
+            margin: 8px 8px 40px 8px;
+        }
+
+        div.highScore {
+            background: var(--g4-game-background);
+            color: var(--g4-game-cannon);
+            
+            padding: 8px 16px;
+            margin-bottom: 8px;
+            border-radius: 24px;
+
+            box-shadow: inset 0px 0px 0px 1px var(--g4-game-foreground);
+
+            p {
+                font-size: 14pt;
+
+                margin: 0px;
+            }
+
+            table {
+                width: 100%;
+
+                border-spacing: 0px;
+
+                th {
+                    font-weight: 400;
+                    text-align: left;
+                }
+
+                td {
+                    font-weight: 500;
+                    font-size: 13pt;
+                }
+            }
+        }
+    }
+}
+
+body.left {
+    aside {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: unset;
+        width: 400px;
+
+        transition: left 0.2s;
+
+        & > header {
+            flex-direction: row-reverse;
+        }
+    }
+
+    aside.expanded {
+        button.expander {    
+            div:before {
+                top: calc(50% + 4.5px);
+            }
+
+            div:after {
+                top: calc(50% - 4.5px);
+            }
+        }
+    }
+    
+    div.dialogContainer {
+        left: 0;
+        right: unset;
+    }
+    
+    dialog {
+        left: unset;
+        right: 432px;
+
+        transition: right 0.2s;
+
+        &.open {
+            left: unset;
+            right: 0px;
+
+            transition: right 0.2s;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    aside {
+        width: 100%;
+        max-width: 400px;
+
+        button.expander {
+            display: block !important;
+        }
+    }
+
+    aside:not(.expanded) {
+        right: -100%;
+
+        button.expander {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 48px;
+
+            div {
+                position: relative;
+                width: 20px;
+                height: 2px;
+                
+                background: var(--g4-app-foreground);
+            }
+
+            div:before {
+                position: absolute;
+                left: 50%;
+                top: -6px;
+                width: 20px;
+                height: 2px;
+                
+                background: var(--g4-app-foreground);
+                content: "";
+
+                transform: translate(-50%, -50%);
+            }
+
+            div:after {
+                position: absolute;
+                left: 50%;
+                top: 8px;
+                width: 20px;
+                height: 2px;
+                
+                background: var(--g4-app-foreground);
+                content: "";
+
+                transform: translate(-50%, -50%);
+            }
+        }
+    }
+
+    body.left aside:not(.expanded) {
+        left: -100%;
+
+        button.expander {
+            left: 0;
+            right: unset;
+        }
+    }
+}

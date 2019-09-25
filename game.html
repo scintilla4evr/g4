@@ -18,30 +18,56 @@
     <body class="">
         <audio id="gameAudio" loop></audio>
 
-        <main class="one" style="user-select: none; padding-top: 48px;">
+        <div class="titleBar">
+            <div class="title">
+                <p>G4 Electron | Build 4.6-Dev-92519-1023-HiItsDevin_</p>
+            </div>
+            <div class="buttons">
+                <button id="minimizeBtn">
+                    <svg x="0px" y="0px" viewBox="0 0 16 16">
+                        <rect x="2" y="8" width="12" height="1"/>
+                    </svg>
+                </button>
+                <button id="maximizeBtn">
+                    <svg x="0px" y="0px" viewBox="0 0 16 16">
+                            <path d="M13,3v10H3V3H13 M14,2h-1H3H2v1v10v1h1h10h1v-1V3V2L14,2z"/>
+                    </svg>
+                </button>
+                <button id="restoreBtn">
+                    <svg x="0px" y="0px" viewBox="0 0 16 16">
+                        <path d="M5,2v3H2v9h9v-3h3V2H5z M10,13H3V6h7V13z M13,10h-2V5H6V3h7V10z"/>
+                    </svg>
+                </button>
+                <button id="closeBtn">
+                    <svg x="0px" y="0px" viewBox="0 0 16 16">
+                        <polygon points="8.7,8 14.3,13.6 13.7,14.3 8,8.7 2.3,14.3 1.7,13.6 7.3,8 1.7,2.3 2.3,1.6 8,7.3 13.7,1.6 14.3,2.3 "/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <main class="one">
             <div class="firstTimeHint hidden">
                 <img src="res/images/gameHint.svg">
             </div>
         </main>
-        <aside style="padding-top: 48px;">
+        <aside>
             <header>
-                <svg id="g4logo" viewBox="0 0 400 288">
-                    <path d="M224,112V263.74a143.0544,143.0544,0,0,1-64,23.38,145.6907,145.6907,0,0,1-16,.88A144,144,0,0,1,144,0a145.6907,145.6907,0,0,1,16,.88V65.61a80,80,0,1,0,0,156.78V176H128V112Z"/>
-                    <polygon points="400 112 400 176 352 176 352 288 288 288 288 112 400 112"/>
-                    <rect x="224" width="64" height="112"/>
-                </svg>
-                <div style="flex-grow: 1"></div>
-
-                <button id="musicToggleBtn">
-                    Music
-                </button>
-
-                <button id="openLoginBtn">
-                    Log in
-                </button>
-                <button class="daynight">
-                    <div></div>
-                </button>
+                <content>
+                    <svg id="g4logo" viewBox="0 0 400 288">
+                        <path d="M224,112V263.74a143.0544,143.0544,0,0,1-64,23.38,145.6907,145.6907,0,0,1-16,.88A144,144,0,0,1,144,0a145.6907,145.6907,0,0,1,16,.88V65.61a80,80,0,1,0,0,156.78V176H128V112Z"/>
+                        <polygon points="400 112 400 176 352 176 352 288 288 288 288 112 400 112"/>
+                        <rect x="224" width="64" height="112"/>
+                    </svg>
+                    <div style="flex-grow: 1"></div>
+    
+                    <button id="openSettingsBtn">
+                        Settings
+                    </button>
+                    <button id="openLoginBtn">
+                        Log in
+                    </button>
+                </content>
 
                 <button class="expander">
                     <div></div>
@@ -58,10 +84,10 @@
                 <section class="gameMode">
                     <header>Game mode</header>
                     <content>
-                        <button data-mode="easy" class="mode">
+                        <button data-mode="easy" class="mode active">
                             <p class="name">Easy</p>
                         </button>
-                        <button data-mode="normal" class="mode active">
+                        <button data-mode="normal" class="mode">
                             <p class="name">Normal</p>
                         </button>
                         <button data-mode="hard" class="mode">
@@ -110,157 +136,116 @@
             </footer>
         </aside>
 
-        <dialog id="login" class="">
-            <header style="padding-top: 48px;">
-                <button class="close">Back</button>
-                Log in
-            </header>
+        <div class="dialogContainer">
+            <dialog id="login" class="">
+                <header>
+                    <button class="close">Back</button>
+                    Log in
+                </header>
 
-            <content>
-                <h2>Log in to your G4 account to save your scores on the leaderboard.</h2>
+                <content>
+                    <h2>Log in to your G4 account to save your scores on the leaderboard.</h2>
 
-                <p class="error"></p>
+                    <p class="error"></p>
 
-                <form id="loginForm">
-                    <label for="loginUsername">Username:</label>
-                    <input id="loginUsername" maxlength="20">
+                    <form id="loginForm">
+                        <label for="loginUsername">Username:</label>
+                        <input id="loginUsername" maxlength="20">
 
-                    <label for="loginPassword">Password:</label>
-                    <input id="loginPassword" type="password">
-                </form>
+                        <label for="loginPassword">Password:</label>
+                        <input id="loginPassword" type="password">
+                    </form>
 
-                <div class="buttons">
-                    <button id="loginBtn" class="primary">Log in</button>
-                    <button id="goToRegisterBtn">Create an account</button>
-                </div>
-            </content>
-        </dialog>
+                    <div class="buttons">
+                        <button id="loginBtn" class="primary">Log in</button>
+                        <button id="goToRegisterBtn">Create an account</button>
+                    </div>
+                </content>
+            </dialog>
 
-        <dialog id="register" class="">
-            <header style="padding-top: 48px;">
-                <button class="close">Back</button>
-                Register
-            </header>
+            <dialog id="register" class="">
+                <header>
+                    <button class="close">Back</button>
+                    Register
+                </header>
 
-            <content>
-                <h2>Create a G4 account.</h2>
+                <content>
+                    <h2>Create a G4 account.</h2>
 
-                <p class="error"></p>
+                    <p class="error"></p>
 
-                <form id="registerForm">
-                    <label for="registerUsername">Username:</label>
-                    <input id="registerUsername" maxlength="20">
+                    <form id="registerForm">
+                        <label for="registerUsername">Username:</label>
+                        <input id="registerUsername" maxlength="20">
 
-                    <label for="registerPassword">Password:</label>
-                    <input id="registerPassword" type="password">
-                </form>
+                        <label for="registerPassword">Password:</label>
+                        <input id="registerPassword" type="password">
+                    </form>
 
-                <p>By clicking "Register", you agree to the <a href="about:blank">G4 Terms of Service</a>.</p>
+                    <p>By clicking "Register", you agree to the <a href="about:blank">G4 Terms of Service</a>.</p>
 
-                <div class="buttons">
-                    <button id="registerBtn" class="primary">Register</button>
-                </div>
-            </content>
-        </dialog>
+                    <div class="buttons">
+                        <button id="registerBtn" class="primary">Register</button>
+                    </div>
+                </content>
+            </dialog>
 
-        <dialog id="playerStats" class="" style="padding-top: 48px;">
-            <header>
-                <button class="close">Back</button>
-                Player stats
-            </header>
+            <dialog id="playerStats" class="">
+                <header>
+                    <button class="close">Back</button>
+                    Player stats
+                </header>
 
-            <content>
-                <h2></h2>
+                <content>
+                    <h2></h2>
 
-                <div class="scores">
-                </div>
-            </content>
-        </dialog>
+                    <div class="scores">
+                    </div>
+                </content>
+            </dialog>
 
-        <div id="title-bar">
-            <div id="title" style="vertical-align: middle">
-                <span style="vertical-align: middle;">
-                        <svg id="g4logo" viewBox="0 0 400 288" style="width:auto ;height:20px; vertical-align: middle; margin-right: 6px; fill: var(--g4-app-accent);">
-                                <path d="M224,112V263.74a143.0544,143.0544,0,0,1-64,23.38,145.6907,145.6907,0,0,1-16,.88A144,144,0,0,1,144,0a145.6907,145.6907,0,0,1,16,.88V65.61a80,80,0,1,0,0,156.78V176H128V112Z"/>
-                                <polygon points="400 112 400 176 352 176 352 288 288 288 288 112 400 112"/>
-                                <rect x="224" width="64" height="112"/>
-                            </svg>
-                </span>
-                G4 Electron | Build 4.6-Dev-92119-1745-HiItsDevin_
-            </div>
-            <div id="title-bar-btns">
-                <button id="min-btn">-</button>
-                <button id="max-btn">+</button>
-                <button id="close-btn">x</button>
-            </div>
+            <dialog id="settings" class="">
+                <header>
+                    <button class="close">Back</button>
+                    Settings
+                </header>
+
+                <content>
+                    <h2>General</h2>
+                    <div class="setting">
+                        <input type="checkbox" id="settingMusic">
+                        <label for="settingMusic" class="loading">In-game music</label>
+                    </div>
+                    <div class="setting">
+                        <input type="checkbox" id="settingLeftBar">
+                        <label for="settingLeftBar">Panel on the left side</label>
+                    </div>
+
+                    <h2>Color themes</h2>
+
+                    <div class="themeList"></div>
+
+                    <button id="copyCurrentThemeBtn">Create new theme from current</button>
+                </content>
+            </dialog>
+
+            <dialog id="themeEditor" class="">
+                <header>
+                    <button class="close">Back</button>
+                    Theme editor
+                </header>
+
+                <content>
+                    <input id="themeName" type="text" value="Theme 10">
+
+                    <div class="themeColors"></div>
+                </content>
+            </dialog>
         </div>
 
-        <style>
-            #title-bar {
-                -webkit-app-region: drag;
-                height: 40px;
-                text-align: center;
-                line-height: 40px;
-                vertical-align: middle;
-                margin: 0px;
-            }
+        <script src="scripts/theme.js"></script>
 
-            #title {
-                position: fixed;
-                top: 0px;
-                left: 6px;
-                height: 48px;
-                color: var(--g4-app-foreground);
-                vertical-align: middle;
-                display: flex;
-                align-items: center;
-            }
-
-            #title-bar-btns {
-                -webkit-app-region: no-drag;
-                position: fixed;
-                top: 0px;
-                right: 6px;
-            }
-        </style>
-
-        <script>
-            (function () {
-                // Retrieve remote BrowserWindow
-                const {BrowserWindow} = require('electron').remote
-
-                function init() {
-                    // Minimize task
-                    document.getElementById("min-btn").addEventListener("click", (e) => {
-                        var window = BrowserWindow.getFocusedWindow();
-                        window.minimize();
-                    });
-
-                    // Maximize window
-                    document.getElementById("max-btn").addEventListener("click", (e) => {
-                        var window = BrowserWindow.getFocusedWindow();
-                        if(window.isMaximized()){
-                            window.unmaximize();
-                        }else{
-                            window.maximize();
-                        }
-                    });
-
-                    // Close app
-                    document.getElementById("close-btn").addEventListener("click", (e) => {
-                        var window = BrowserWindow.getFocusedWindow();
-                        window.close();
-                    });
-                };
-
-                document.onreadystatechange =  () => {
-                    if (document.readyState == "complete") {
-                        init();
-                    }
-                };
-            })();
-        </script>
-
+        <script src="scripts/electronUI.js"></script>script>
         <script src="scripts/assets.js"></script>
         <script src="scripts/levelgen.js"></script>
         <script src="scripts/leaderboard.js"></script>

@@ -1,3 +1,4 @@
+/*
 // Day/night mode
 document.querySelector("button.daynight").addEventListener("click", () => {
     document.body.classList.toggle("light")
@@ -12,7 +13,7 @@ document.querySelector("button.daynight").addEventListener("click", () => {
 if (localStorage.getItem("g4_lightmode") == 1) {
     document.body.classList.add("light")
 }
-
+*/
 // First time hint
 if (!localStorage.getItem("g4_hideHint")) {
     document.querySelector("div.firstTimeHint").classList.remove("hidden")
@@ -36,17 +37,15 @@ document.querySelectorAll("dialog").forEach(dialog => {
 })
 
 function openWindow(id) {
-    if (document.querySelector("dialog.open")) {
-        document.querySelector("dialog.open").classList.remove("open")
-    }
+    let zIndex = 2000 + document.querySelectorAll("dialog.open").length
+    let dialog = document.querySelector("dialog#" + id)
 
-    document.querySelector("dialog#" + id).classList.add("open")
+    dialog.classList.add("open")
+    dialog.style.zIndex = zIndex
 }
 
 function closeWindows() {
-    if (document.querySelector("dialog.open")) {
-        document.querySelector("dialog.open").classList.remove("open")
-    }
+    document.querySelectorAll("dialog.open").forEach(d => d.classList.remove("open"))
 }
 
 // G4 Account
@@ -148,23 +147,41 @@ function prepG4AccountUI(leaderboard) {
     })
 }
 
+// Open settings
+document.querySelector("button#openSettingsBtn").addEventListener("click", () => {
+    updateThemeList()
+    openWindow("settings")
+})
+
+// Create a new theme
+document.querySelector("button#copyCurrentThemeBtn").addEventListener("click", () => {
+    duplicateCurrentTheme()
+})
+
 // Music playback
-document.querySelector("button#musicToggleBtn").addEventListener("click", function() {
+document.querySelector("input#settingMusic").addEventListener("input", function() {
     /**
      * @type {HTMLAudioElement}
      */
     let audio = document.querySelector("audio#gameAudio")
 
-    let state = !audio.paused && !audio.ended && audio.readyState > 2
-    state = !state
-
-    console.log(state)
+    let state = this.checked
 
     if (state) {
         audio.play()
     } else {
         audio.pause()
     }
+})
 
-    this.classList.toggle("playing", state)
+// Left side sidebar
+if (!localStorage.getItem("g4_leftSidebar")) localStorage["g4_leftSidebar"] = false
+if (localStorage["g4_leftSidebar"] == "true") {
+    document.querySelector("input#settingLeftBar").checked = true
+    document.body.classList.add("left", this.checked)
+}
+
+document.querySelector("input#settingLeftBar").addEventListener("input", function() {
+    localStorage["g4_leftSidebar"] = this.checked
+    document.body.classList.toggle("left", this.checked)
 })

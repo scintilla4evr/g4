@@ -1,0 +1,91 @@
+:root {
+  --g4-app-background: var(--g4-theme-app-background);
+  --g4-app-foreground: var(--g4-theme-app-foreground);
+  --g4-app-header-background: var(--g4-theme-app-headerBackground);
+  --g4-app-header-translucent: var(--g4-theme-app-headerTranslucent);
+  --g4-app-accent: var(--g4-theme-app-accent);
+  --g4-app-scroll-track: var(--g4-theme-app-scrollTrack);
+  --g4-app-scroll-thumb: var(--g4-theme-app-scrollThumb);
+}
+
+[data-mode=easy] {
+  --g4-game-background: var(--g4-theme-game-easy-background);
+  --g4-game-damage: var(--g4-theme-game-easy-damage);
+  --g4-game-foreground: var(--g4-theme-game-easy-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-easy-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-easy-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-easy-cannon);
+  --g4-game-bullet: var(--g4-theme-game-easy-bullet);
+}
+
+[data-mode=normal] {
+  --g4-game-background: var(--g4-theme-game-normal-background);
+  --g4-game-damage: var(--g4-theme-game-normal-damage);
+  --g4-game-foreground: var(--g4-theme-game-normal-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-normal-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-normal-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-normal-cannon);
+  --g4-game-bullet: var(--g4-theme-game-normal-bullet);
+}
+
+[data-mode=hard] {
+  --g4-game-background: var(--g4-theme-game-hard-background);
+  --g4-game-damage: var(--g4-theme-game-hard-damage);
+  --g4-game-foreground: var(--g4-theme-game-hard-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-hard-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-hard-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-hard-cannon);
+  --g4-game-bullet: var(--g4-theme-game-hard-bullet);
+}
+
+[data-mode=hell] {
+  --g4-game-background: var(--g4-theme-game-hell-background);
+  --g4-game-damage: var(--g4-theme-game-hell-damage);
+  --g4-game-foreground: var(--g4-theme-game-hell-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-hell-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-hell-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-hell-cannon);
+  --g4-game-bullet: var(--g4-theme-game-hell-bullet);
+}
+
+[data-mode=hades] {
+  --g4-game-background: var(--g4-theme-game-hades-background);
+  --g4-game-damage: var(--g4-theme-game-hades-damage);
+  --g4-game-foreground: var(--g4-theme-game-hades-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-hades-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-hades-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-hades-cannon);
+  --g4-game-bullet: var(--g4-theme-game-hades-bullet);
+}
+
+[data-mode=denise] {
+  --g4-game-background: var(--g4-theme-game-denise-background);
+  --g4-game-damage: var(--g4-theme-game-denise-damage);
+  --g4-game-foreground: var(--g4-theme-game-denise-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-denise-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-denise-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-denise-cannon);
+  --g4-game-bullet: var(--g4-theme-game-denise-bullet);
+}
+
+[data-mode=reverse] {
+  --g4-game-background: var(--g4-theme-game-reverse-background);
+  --g4-game-damage: var(--g4-theme-game-reverse-damage);
+  --g4-game-foreground: var(--g4-theme-game-reverse-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-reverse-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-reverse-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-reverse-cannon);
+  --g4-game-bullet: var(--g4-theme-game-reverse-bullet);
+}
+
+[data-mode=nox] {
+  --g4-game-background: var(--g4-theme-game-nox-background);
+  --g4-game-damage: var(--g4-theme-game-nox-damage);
+  --g4-game-foreground: var(--g4-theme-game-nox-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-nox-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-nox-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-nox-cannon);
+  --g4-game-bullet: var(--g4-theme-game-nox-bullet);
+}
+
+/*# sourceMappingURL=colors.css.map */

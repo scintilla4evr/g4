@@ -45,6 +45,14 @@ class Leaderboard {
             this.setAuthData(username, data.uuid, data.accesstoken)
             this.updateUI()
 
+            window.dispatchEvent(new CustomEvent(
+                "g4login", {
+                    detail: {
+                        username: username
+                    }
+                }
+            ))
+
             return true
         }
     }
@@ -78,6 +86,14 @@ class Leaderboard {
             this.setAuthData(username, data.uuid, data.accesstoken)
             this.updateUI()
 
+            window.dispatchEvent(new CustomEvent(
+                "g4login", {
+                    detail: {
+                        username: username
+                    }
+                }
+            ))
+
             return true
         }
     }
@@ -104,6 +120,10 @@ class Leaderboard {
         this.userID = null
         this.userName = null
         this.accessToken = null
+
+        window.dispatchEvent(new CustomEvent(
+            "g4logout"
+        ))
 
         this.updateUI()
     }
@@ -178,6 +198,8 @@ class Leaderboard {
         let container = document.querySelector("dialog#playerStats div.scores")
         container.innerHTML = ""
 
+        openWindow("playerStats")
+
         for (let score of scores) {
             let scoreDiv = document.createElement("div")
 
@@ -200,8 +222,6 @@ class Leaderboard {
 
             container.appendChild(scoreDiv)
         }
-
-        openWindow("playerStats")
     }
 
     async postScore(mode, score, deathCount) {

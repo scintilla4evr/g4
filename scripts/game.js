@@ -89,10 +89,15 @@ class Game {
         </footer>`
 
         if (!this.isSpectated) {
-            div.querySelector("canvas").addEventListener("click", () => {
+            div.querySelector("canvas").addEventListener("mouseup", (e) => {
+                if (!this.data.projectile && e.button == 0)
+                    this.shoot()
+            })
+            div.querySelector("canvas").addEventListener("touchend", (e) => {
                 if (!this.data.projectile)
                     this.shoot()
             })
+
             div.querySelector("footer button").addEventListener("click", () => {
                 if (this.data.slow && !this.data.slow.isSlow)
                     this.data.slow.isSlow = true
@@ -110,12 +115,17 @@ class Game {
             ring.items.forEach(item => {
                 switch (item.type) {
                     case "ball":
-                    case "pulsingBall":
                     case "bar":
                     case "marqueeBar":
                         radius = Math.max(
                             radius,
                             item.distance + item.radius + ring.distance
+                        )
+                        break
+                    case "pulsingBall":
+                        radius = Math.max(
+                            radius,
+                            item.distance + item.baseRadius * 2 + ring.distance
                         )
                         break
                 }
@@ -135,7 +145,7 @@ class Game {
      * @param {Number} dTime 
      * @param {Ring} ring
      */
-    advanceRing(dTime, ring) {
+    advanceRing(dTime, dRawTime, ring) {
         ring.rotation += dTime
 
         let phase = 2 * Math.PI * ring.revolvePhase
@@ -152,6 +162,7 @@ class Game {
                     break
                 case "pulsingBall":
                     item.angle += dTime
+                    item.pulseTime += dRawTime
                     item.radius = item.baseRadius + Math.sin(
                         item.pulseTime * 2 * Math.PI * item.pulseFreq
                     ) * item.baseRadius / 3
@@ -163,7 +174,7 @@ class Game {
                     item.baseStart += dTime
                     item.baseEnd += dTime
 
-                    item.sweepTime += dTime
+                    item.sweepTime += dRawTime
 
                     let sin = Math.sin(
                         item.sweepTime * 2 * Math.PI * item.sweepFreq
@@ -256,7 +267,7 @@ class Game {
 
         this.data.rotation += beatTime
         this.data.rings.forEach(ring => this.advanceRing(
-            beatTime * ring.speedMult,
+            beatTime * ring.speedMult, beatTime,
             ring
         ))
     }
@@ -321,8 +332,8 @@ class Game {
 
         if (this.data.projectile) {
             // move the bullet
-            this.data.projectile.x += this.data.projectile.velocityX * physTime
-            this.data.projectile.y += this.data.projectile.velocityY * physTime
+            this.data.projectile.x += this.data.projectile.velocityX * dTime
+            this.data.projectile.y += this.data.projectile.velocityY * dTime
         }
 
         // move the cannon
@@ -642,7 +653,10 @@ class Game {
         if (event.target instanceof HTMLInputElement ||
             event.target instanceof HTMLButtonElement) return
 
-        if (event.code == "Space" || event.keyCode == '38' && !this.data.projectile)
+        if (
+            (event.code == "Space" || event.code == "ArrowUp") &&
+            !this.data.projectile
+        )
             this.shoot()
         else if (event.code == "KeyS" && !this.data.slow.isSlow && this.data.slow.time) {
             this.data.slow.isSlow = true

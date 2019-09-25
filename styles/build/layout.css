@@ -1,189 +1,92 @@
 @import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
 :root {
-  --g4-app-background: #000000;
-  --g4-app-foreground: #d1d1d1;
-  --g4-app-header-background: #0f0f0f;
-  --g4-app-accent: #ff523b;
+  --g4-app-background: var(--g4-theme-app-background);
+  --g4-app-foreground: var(--g4-theme-app-foreground);
+  --g4-app-header-background: var(--g4-theme-app-headerBackground);
+  --g4-app-header-translucent: var(--g4-theme-app-headerTranslucent);
+  --g4-app-accent: var(--g4-theme-app-accent);
+  --g4-app-scroll-track: var(--g4-theme-app-scrollTrack);
+  --g4-app-scroll-thumb: var(--g4-theme-app-scrollThumb);
 }
 
 [data-mode=easy] {
-  --g4-game-background: #070f0e;
-  --g4-game-damage: #0c0f07;
-  --g4-game-foreground: #4c7d45;
-  --g4-game-obstacle1: var(--g4-game-foreground);
-  --g4-game-obstacle2: var(--g4-game-foreground);
-  --g4-game-cannon: var(--g4-game-foreground);
-  --g4-game-bullet: #e5ff00;
-}
-
-body.light [data-mode=easy] {
-  --g4-game-background: #e0f3f1;
-  --g4-game-damage: #ffe4ee;
-  --g4-game-foreground: #25691c;
-  --g4-game-obstacle1: var(--g4-game-foreground);
-  --g4-game-obstacle2: var(--g4-game-foreground);
-  --g4-game-cannon: var(--g4-game-foreground);
-  --g4-game-bullet: #07a6ce;
+  --g4-game-background: var(--g4-theme-game-easy-background);
+  --g4-game-damage: var(--g4-theme-game-easy-damage);
+  --g4-game-foreground: var(--g4-theme-game-easy-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-easy-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-easy-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-easy-cannon);
+  --g4-game-bullet: var(--g4-theme-game-easy-bullet);
 }
 
 [data-mode=normal] {
-  --g4-game-background: #1c1b1a;
-  --g4-game-damage: #2b1616;
-  --g4-game-foreground: #dbb986;
-  --g4-game-obstacle1: var(--g4-game-foreground);
-  --g4-game-obstacle2: var(--g4-game-foreground);
-  --g4-game-cannon: var(--g4-game-obstacle1);
-  --g4-game-bullet: #ff523b;
-}
-
-body.light [data-mode=normal] {
-  --g4-game-background: #f1ece7;
-  --g4-game-damage: #ffe4ee;
-  --g4-game-foreground: #8b3716;
-  --g4-game-obstacle1: var(--g4-game-foreground);
-  --g4-game-obstacle2: var(--g4-game-foreground);
-  --g4-game-cannon: var(--g4-game-obstacle1);
-  --g4-game-bullet: #ff893b;
+  --g4-game-background: var(--g4-theme-game-normal-background);
+  --g4-game-damage: var(--g4-theme-game-normal-damage);
+  --g4-game-foreground: var(--g4-theme-game-normal-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-normal-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-normal-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-normal-cannon);
+  --g4-game-bullet: var(--g4-theme-game-normal-bullet);
 }
 
 [data-mode=hard] {
-  --g4-game-background: #151523;
-  --g4-game-damage: #271620;
-  --g4-game-foreground: #9bd1ba;
-  --g4-game-obstacle1: var(--g4-game-foreground);
-  --g4-game-obstacle2: var(--g4-game-foreground);
-  --g4-game-cannon: var(--g4-game-obstacle1);
-  --g4-game-bullet: #ffcb3b;
-}
-
-body.light [data-mode=hard] {
-  --g4-game-background: #efeffa;
-  --g4-game-damage: #ffe4ee;
-  --g4-game-foreground: #466281;
-  --g4-game-obstacle1: var(--g4-game-foreground);
-  --g4-game-obstacle2: var(--g4-game-foreground);
-  --g4-game-cannon: var(--g4-game-obstacle1);
-  --g4-game-bullet: #d36307;
+  --g4-game-background: var(--g4-theme-game-hard-background);
+  --g4-game-damage: var(--g4-theme-game-hard-damage);
+  --g4-game-foreground: var(--g4-theme-game-hard-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-hard-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-hard-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-hard-cannon);
+  --g4-game-bullet: var(--g4-theme-game-hard-bullet);
 }
 
 [data-mode=hell] {
-  --g4-game-background: #200c0c;
-  --g4-game-damage: #000000;
-  --g4-game-foreground: #e20000;
-  --g4-game-obstacle1: var(--g4-game-foreground);
-  --g4-game-obstacle2: var(--g4-game-foreground);
-  --g4-game-cannon: var(--g4-game-obstacle1);
-  --g4-game-bullet: #ffa600;
-}
-
-body.light [data-mode=hell] {
-  --g4-game-background: #ff2323;
-  --g4-game-damage: #a10000;
-  --g4-game-foreground: #000000;
-  --g4-game-obstacle1: var(--g4-game-foreground);
-  --g4-game-obstacle2: var(--g4-game-foreground);
-  --g4-game-cannon: var(--g4-game-obstacle1);
-  --g4-game-bullet: #f1ff34;
+  --g4-game-background: var(--g4-theme-game-hell-background);
+  --g4-game-damage: var(--g4-theme-game-hell-damage);
+  --g4-game-foreground: var(--g4-theme-game-hell-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-hell-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-hell-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-hell-cannon);
+  --g4-game-bullet: var(--g4-theme-game-hell-bullet);
 }
 
 [data-mode=hades] {
-  --g4-game-background: #000000;
-  --g4-game-damage: #0e0909;
-  --g4-game-foreground: #302f35;
-  --g4-game-obstacle1: var(--g4-game-foreground);
-  --g4-game-obstacle2: var(--g4-game-foreground);
-  --g4-game-cannon: #fff;
-  --g4-game-bullet: #227892;
-}
-
-body.light [data-mode=hades] {
-  --g4-game-background: #ffffff;
-  --g4-game-damage: #fae2e2;
-  --g4-game-foreground: #7b788a;
-  --g4-game-obstacle1: var(--g4-game-foreground);
-  --g4-game-obstacle2: var(--g4-game-foreground);
-  --g4-game-cannon: rgb(17, 85, 233);
-  --g4-game-bullet: #1c1f20;
+  --g4-game-background: var(--g4-theme-game-hades-background);
+  --g4-game-damage: var(--g4-theme-game-hades-damage);
+  --g4-game-foreground: var(--g4-theme-game-hades-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-hades-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-hades-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-hades-cannon);
+  --g4-game-bullet: var(--g4-theme-game-hades-bullet);
 }
 
 [data-mode=denise] {
-  --g4-game-background: #1e1e1e;
-  --g4-game-damage: #292425;
-  --g4-game-foreground: #929292;
-  --g4-game-obstacle1: var(--g4-game-foreground);
-  --g4-game-obstacle2: #67d387;
-  --g4-game-cannon: var(--g4-game-obstacle1);
-  --g4-game-bullet: #67d387;
-}
-
-body.light [data-mode=denise] {
-  --g4-game-background: #dadada;
-  --g4-game-damage: #ecc7c7;
-  --g4-game-foreground: #414141;
-  --g4-game-obstacle1: var(--g4-game-foreground);
-  --g4-game-obstacle2: #1c923f;
-  --g4-game-cannon: var(--g4-game-obstacle1);
-  --g4-game-bullet: #1c923f;
+  --g4-game-background: var(--g4-theme-game-denise-background);
+  --g4-game-damage: var(--g4-theme-game-denise-damage);
+  --g4-game-foreground: var(--g4-theme-game-denise-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-denise-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-denise-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-denise-cannon);
+  --g4-game-bullet: var(--g4-theme-game-denise-bullet);
 }
 
 [data-mode=reverse] {
-  --g4-game-background: #231935;
-  --g4-game-damage: #250e27;
-  --g4-game-foreground: #d37cdf;
-  --g4-game-obstacle1: var(--g4-game-foreground);
-  --g4-game-obstacle2: var(--g4-game-foreground);
-  --g4-game-cannon: #c2fc22;
-  --g4-game-bullet: #552eff;
-}
-
-body.light [data-mode=reverse] {
-  --g4-game-background: #d8caeb;
-  --g4-game-damage: #e6c3db;
-  --g4-game-foreground: #231935;
-  --g4-game-obstacle1: var(--g4-game-foreground);
-  --g4-game-obstacle2: var(--g4-game-foreground);
-  --g4-game-cannon: #1e0b8b;
-  --g4-game-bullet: #552eff;
+  --g4-game-background: var(--g4-theme-game-reverse-background);
+  --g4-game-damage: var(--g4-theme-game-reverse-damage);
+  --g4-game-foreground: var(--g4-theme-game-reverse-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-reverse-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-reverse-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-reverse-cannon);
+  --g4-game-bullet: var(--g4-theme-game-reverse-bullet);
 }
 
 [data-mode=nox] {
-  --g4-game-background: #000;
-  --g4-game-damage: rgb(22, 10, 18);
-  --g4-game-foreground: rgb(65, 209, 84);
-  --g4-game-obstacle1: var(--g4-game-foreground);
-  --g4-game-obstacle2: rgb(52, 66, 199);
-  --g4-game-cannon: #fff;
-  --g4-game-bullet: rgb(255, 0, 85);
-}
-
-body.light [data-mode=nox] {
-  --g4-game-background: #fff;
-  --g4-game-damage: rgb(255, 225, 235);
-  --g4-game-foreground: rgb(35, 202, 20);
-  --g4-game-obstacle1: var(--g4-game-foreground);
-  --g4-game-obstacle2: rgb(35, 68, 211);
-  --g4-game-cannon: rgb(0, 0, 0);
-  --g4-game-bullet: rgb(255, 0, 85);
-}
-
-body {
-  background: var(--g4-app-background);
-  color: var(--g4-game-foreground);
-  font-family: Poppins;
-}
-
-body.light {
-  --g4-app-background: #ffffff;
-  --g4-app-foreground: #000000;
-  --g4-app-header-background: #ebebeb;
-  --g4-app-accent: #e63b24;
-}
-
-body.login div.accountInfo {
-  display: flex;
-}
-body.login button#openLoginBtn {
-  display: none;
+  --g4-game-background: var(--g4-theme-game-nox-background);
+  --g4-game-damage: var(--g4-theme-game-nox-damage);
+  --g4-game-foreground: var(--g4-theme-game-nox-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-nox-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-nox-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-nox-cannon);
+  --g4-game-bullet: var(--g4-theme-game-nox-bullet);
 }
 
 main {
@@ -345,27 +248,30 @@ main.six {
   grid-template-rows: repeat(2, 1fr);
 }
 
-button {
-  background: var(--g4-app-background);
-  color: var(--g4-app-foreground);
-  font-family: Poppins;
-  font-weight: 500;
-  font-size: 12pt;
-  text-transform: uppercase;
-  padding: 4px 16px;
-  border: none;
-  border-radius: 8px;
+body.left main {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 400px;
+  right: 0;
 }
 
-button:hover {
-  box-shadow: inset 0px 0px 0px 4px var(--g4-app-foreground);
+@media (max-width: 768px) {
+  main, body.left main {
+    left: 0;
+    right: 0;
+  }
 }
+@media (max-width: 500px) {
+  main div.game header {
+    padding-right: 52px;
+  }
 
-button:active {
-  background: var(--g4-app-foreground);
-  color: var(--g4-app-background);
+  body.left main div.game header {
+    padding-left: 52px;
+    padding-right: 0;
+  }
 }
-
 aside {
   position: fixed;
   top: 0;
@@ -374,12 +280,18 @@ aside {
   width: 400px;
   background: var(--g4-app-background);
   color: var(--g4-app-foreground);
+  box-shadow: 0px 0px 16px #00000020;
   display: flex;
   flex-direction: column;
+  transition: right 0.2s;
 }
 aside header {
   display: flex;
   flex-wrap: wrap;
+}
+aside header content {
+  display: flex;
+  flex-grow: 1;
 }
 aside header svg#g4logo {
   height: 32px;
@@ -395,6 +307,9 @@ aside header button#musicToggleBtn.playing:after {
 aside header button.expander {
   display: none;
 }
+aside header button.expander:not(:active) {
+  background: transparent;
+}
 aside header button.expander div {
   position: relative;
   width: 20px;
@@ -404,8 +319,8 @@ aside header button.expander div {
 aside header button.expander div:before {
   position: absolute;
   left: 50%;
-  top: 50%;
-  width: 20px;
+  top: calc(50% - 4.5px);
+  width: 14px;
   height: 2px;
   background: var(--g4-app-foreground);
   content: "";
@@ -414,8 +329,8 @@ aside header button.expander div:before {
 aside header button.expander div:after {
   position: absolute;
   left: 50%;
-  top: 50%;
-  width: 20px;
+  top: calc(50% + 4.5px);
+  width: 14px;
   height: 2px;
   background: var(--g4-app-foreground);
   content: "";
@@ -484,7 +399,7 @@ aside svg {
   fill: var(--g4-app-accent);
 }
 aside div.scroller {
-  padding: 0px 8px;
+  padding: 8px 8px;
   border-radius: 24px;
   flex-grow: 1;
   overflow: auto;
@@ -527,11 +442,11 @@ aside section.gameMode content button.mode p {
   text-transform: uppercase;
 }
 aside section.gameMode content button.mode:hover {
-  box-shadow: inset 0px 0px 0px 4px var(--g4-app-foreground);
+  box-shadow: inset 0px 0px 0px 4px var(--g4-game-foreground);
 }
 aside section.gameMode content button.mode.active {
-  background: var(--g4-app-foreground);
-  color: var(--g4-app-background);
+  background: var(--g4-game-foreground);
+  color: var(--g4-game-background);
 }
 aside section.gameMode content button[data-mode=reverse] p {
   transform: scaleX(-1);
@@ -586,6 +501,11 @@ aside section.leaderboard content table tr td:last-child {
   width: 25%;
   text-align: center;
 }
+aside section.leaderboard content table tbody tr:hover {
+  background: var(--g4-app-foreground);
+  color: var(--g4-app-background);
+  cursor: pointer;
+}
 aside section.leaderboard content table tr.me {
   background: var(--g4-app-accent);
   color: var(--g4-app-background);
@@ -607,55 +527,35 @@ aside footer a {
   text-decoration: none;
 }
 
-body.light div.firstTimeHint img {
-  filter: invert(0);
-}
-body.light button.daynight div:before {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 22px;
-  height: 22px;
-  background: var(--g4-app-foreground);
-  border-radius: 0px;
-  transform: translate(-50%, -50%);
-  z-index: -1;
-}
-body.light button.daynight div:after {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 22px;
-  height: 22px;
-  background: var(--g4-app-foreground);
-  border-radius: 0px;
-  transform: translate(-50%, -50%) rotate(45deg);
-  z-index: -1;
+div.dialogContainer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  max-width: 400px;
+  bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
 }
 
 dialog {
-  position: fixed;
+  position: absolute;
   top: 0;
-  right: -500px;
-  left: unset;
+  left: 432px;
   width: 100%;
-  max-width: 400px;
   height: 100%;
-  transition: right 0.3s;
-}
-
-dialog.open {
-  right: 0;
   background: var(--g4-app-header-background);
   color: var(--g4-app-foreground);
   margin: 0px;
   padding: 0px;
   border: none;
-  box-shadow: 0px 8px 32px #000000a0;
+  box-shadow: 0px 0px 16px #00000050;
   display: flex;
   flex-direction: column;
+  transition: left 0.2s;
+  pointer-events: all;
 }
-dialog.open header {
+dialog header {
   top: 0;
   font-weight: 500;
   font-size: 15pt;
@@ -663,36 +563,36 @@ dialog.open header {
   display: flex;
   align-items: center;
 }
-dialog.open header button {
+dialog header button {
   margin-right: 16px;
 }
-dialog.open content {
+dialog content {
   background: var(--g4-app-background);
   padding: 16px;
-  border-radius: 24px 24px 0px 0px;
+  border-radius: 24px 0px 0px 0px;
   flex-grow: 1;
   overflow: auto;
 }
-dialog.open content h2 {
+dialog content h2 {
   font-size: 16pt;
   font-weight: 400;
   margin: 0px 0px 32px 0px;
 }
-dialog.open content p.error {
+dialog content p.error {
   color: var(--g4-app-accent);
   display: none;
 }
-dialog.open content p.error.visible {
+dialog content p.error.visible {
   display: block;
 }
-dialog.open content form {
+dialog content form {
   display: flex;
   flex-direction: column;
 }
-dialog.open content form label {
+dialog content form label {
   margin: 8px 0px 0px 0px;
 }
-dialog.open content form input {
+dialog content form input {
   background: transparent;
   color: var(--g4-app-foreground);
   font-family: "Poppins", sans-serif;
@@ -700,15 +600,19 @@ dialog.open content form input {
   padding: 4px 8px;
   border: 1px solid var(--g4-app-accent);
 }
-dialog.open content div.buttons {
+dialog content div.buttons {
   height: 40px;
   margin-top: 16px;
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
 }
-dialog.open content div.buttons button.primary {
+dialog content div.buttons button.primary {
   color: var(--g4-app-accent);
+}
+
+dialog.open {
+  left: 0;
 }
 
 dialog#playerStats content {
@@ -744,11 +648,40 @@ dialog#playerStats content div.highScore table td {
   font-size: 13pt;
 }
 
-@media (max-width: 768px) {
-  main {
-    right: 0;
-  }
+body.left aside {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: unset;
+  width: 400px;
+  transition: left 0.2s;
+}
+body.left aside > header {
+  flex-direction: row-reverse;
+}
+body.left aside.expanded button.expander div:before {
+  top: calc(50% + 4.5px);
+}
+body.left aside.expanded button.expander div:after {
+  top: calc(50% - 4.5px);
+}
+body.left div.dialogContainer {
+  left: 0;
+  right: unset;
+}
+body.left dialog {
+  left: unset;
+  right: 432px;
+  transition: right 0.2s;
+}
+body.left dialog.open {
+  left: unset;
+  right: 0px;
+  transition: right 0.2s;
+}
 
+@media (max-width: 768px) {
   aside {
     width: 100%;
     max-width: 400px;
@@ -792,11 +725,308 @@ dialog#playerStats content div.highScore table td {
     content: "";
     transform: translate(-50%, -50%);
   }
-}
-@media (max-width: 500px) {
-  main div.game header {
-    padding-right: 52px;
+
+  body.left aside:not(.expanded) {
+    left: -100%;
   }
+  body.left aside:not(.expanded) button.expander {
+    left: 0;
+    right: unset;
+  }
+}
+dialog#settings h2, dialog#themeEditor h2 {
+  margin-bottom: 0px;
+}
+dialog#settings h2:not(:first-child), dialog#themeEditor h2:not(:first-child) {
+  margin-top: 32px;
+}
+
+div.setting {
+  padding: 4px 0px;
+  display: flex;
+  align-items: center;
+}
+div.setting label {
+  position: relative;
+  font-size: 13pt;
+  flex-grow: 1;
+}
+div.setting input[type=number] {
+  width: 64px;
+  background: transparent;
+  color: var(--g4-app-foreground);
+  font-family: "Poppins", sans-serif;
+  font-size: 14pt;
+  padding: 4px 8px;
+  border: 1px solid var(--g4-app-accent);
+}
+div.setting input[type=checkbox] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+div.setting input[type=checkbox] + label:before {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 36px;
+  height: 24px;
+  background: var(--g4-app-foreground);
+  content: "";
+  border-radius: 12px;
+  transform: translateY(-50%);
+  transition: all 0.2s;
+}
+div.setting input[type=checkbox] + label:after {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background: var(--g4-app-background);
+  content: "";
+  border-radius: 10px;
+  transform: translateY(-50%);
+  transition: background 0.2s, right 0.2s;
+}
+div.setting input[type=checkbox]:checked + label:before {
+  background: var(--g4-app-accent);
+}
+div.setting input[type=checkbox]:checked + label:after {
+  right: 2px;
+  background: var(--g4-app-background);
+}
+div.setting input[type=checkbox] + label.loading {
+  opacity: 0.8;
+  pointer-events: none;
+}
+@keyframes LabelThrobber {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+div.setting input[type=checkbox] + label.loading:before {
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border: 3px solid transparent;
+  border-right: 3px solid var(--g4-app-accent);
+  animation: LabelThrobber 0.7s infinite linear;
+}
+div.setting input[type=checkbox] + label.loading:after {
+  opacity: 0;
+}
+
+div.themeList div.theme {
+  background: var(--g4-app-header-background);
+  color: var(--g4-app-foreground);
+  padding: 8px 16px;
+  margin-bottom: 8px;
+  border-radius: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+div.themeList div.theme p {
+  width: 100%;
+  font-size: 14pt;
+  margin: 0px;
+  flex-grow: 1;
+}
+div.themeList div.theme.current p:after {
+  content: " current";
+  font-size: 11pt;
+}
+div.themeList div.theme button {
+  margin-left: 8px;
+}
+div.themeList div.theme.current {
+  box-shadow: inset 0px 0px 0px 2px var(--g4-app-accent);
+}
+
+dialog#themeEditor input[type=text] {
+  width: calc(100% - 16px);
+  background: transparent;
+  color: var(--g4-app-foreground);
+  font-family: "Poppins", sans-serif;
+  font-size: 14pt;
+  padding: 4px 8px;
+  border: 1px solid var(--g4-app-accent);
+}
+dialog#themeEditor div.colors h2 {
+  margin-top: 16px;
+  margin-bottom: 4px;
+}
+dialog#themeEditor div.colors div.colors h2 {
+  font-size: 14pt;
+}
+dialog#themeEditor div.colors div.colors div.colors h2 {
+  font-size: 13pt;
+  font-weight: 600;
+}
+dialog#themeEditor div.colors div.color {
+  padding: 4px 0px;
+  display: flex;
+  align-items: center;
+}
+dialog#themeEditor div.colors div.color label {
+  position: relative;
+  font-size: 13pt;
+  flex-grow: 1;
+}
+
+div.titleBar {
+  display: none;
+}
+
+body.electron div.titleBar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 40px;
+  display: flex;
+  z-index: 9000;
+  -webkit-app-region: drag;
+}
+body.electron div.titleBar div.title {
+  color: var(--g4-app-foreground);
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+}
+body.electron div.titleBar div.title p {
+  margin: 0px 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+body.electron div.titleBar div.buttons {
+  min-width: 144px;
+  display: flex;
+  justify-content: flex-end;
+}
+body.electron div.titleBar div.buttons button {
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-app-region: no-drag;
+}
+body.electron div.titleBar div.buttons button svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--g4-app-foreground);
+}
+body.electron div.titleBar div.buttons button:active {
+  background: var(--g4-app-foreground);
+}
+body.electron div.titleBar div.buttons button:active svg {
+  fill: var(--g4-app-background);
+}
+body.electron main div.game header {
+  top: 40px;
+}
+body.electron main div.game canvas {
+  top: calc(50% + 40px);
+}
+body.electron aside, body.electron dialog {
+  height: calc(100% - 40px);
+  padding-top: 40px;
+}
+
+body:not(.maximized) button#restoreBtn {
+  display: none;
+}
+
+body.maximized button#maximizeBtn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  body.electron aside:not(.expanded) button.expander {
+    top: 40px;
+  }
+}
+body {
+  background: var(--g4-app-background);
+  color: var(--g4-game-foreground);
+  font-family: Poppins;
+  user-select: none;
+}
+
+body.login div.accountInfo {
+  display: flex;
+}
+body.login button#openLoginBtn {
+  display: none;
+}
+
+button {
+  background: var(--g4-app-background);
+  color: var(--g4-app-foreground);
+  font-family: Poppins;
+  font-weight: 500;
+  font-size: 12pt;
+  text-transform: uppercase;
+  padding: 4px 16px;
+  border: none;
+  border-radius: 8px;
+}
+
+button:hover {
+  box-shadow: inset 0px 0px 0px 4px var(--g4-app-foreground);
+}
+
+button:active {
+  background: var(--g4-app-foreground);
+  color: var(--g4-app-background);
+}
+
+body.light div.firstTimeHint img {
+  filter: invert(0);
+}
+body.light button.daynight div:before {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  background: var(--g4-app-foreground);
+  border-radius: 0px;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+body.light button.daynight div:after {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  background: var(--g4-app-foreground);
+  border-radius: 0px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  z-index: -1;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--g4-app-scroll-track);
+  border-radius: 6px;
+  box-shadow: inset 0px 0px 0px 3px var(--g4-app-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--g4-app-scroll-thumb);
+  border-radius: 6px;
+  box-shadow: inset 0px 0px 0px 3px var(--g4-app-background);
 }
 
 /*# sourceMappingURL=layout.css.map */

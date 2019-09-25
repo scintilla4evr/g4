@@ -1,0 +1,209 @@
+dialog#settings, dialog#themeEditor {
+    h2 {
+        margin-bottom: 0px;
+    }
+
+    h2:not(:first-child) {
+        margin-top: 32px;
+    }
+}
+
+div.setting {
+    padding: 4px 0px;
+
+    display: flex;
+    align-items: center;
+
+    label {
+        position: relative;
+
+        font-size: 13pt;
+
+        flex-grow: 1;
+    }
+
+    input[type=number] {
+        width: 64px;
+
+        background: transparent;
+        color: var(--g4-app-foreground);
+
+        font-family: "Poppins", sans-serif;
+        font-size: 14pt;
+        
+        padding: 4px 8px;
+
+        border: 1px solid var(--g4-app-accent);
+    }
+
+    input[type=checkbox] {
+        position: absolute;
+        opacity: 0;
+
+        pointer-events: none;
+
+        & + label:before {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            width: 36px;
+            height: 24px;
+    
+            background: var(--g4-app-foreground);
+            content: "";
+    
+            border-radius: 12px;
+
+            transform: translateY(-50%);
+
+            transition: all 0.2s;
+        }
+
+        & + label:after {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            width: 20px;
+            height: 20px;
+    
+            background: var(--g4-app-background);
+            content: "";
+    
+            border-radius: 10px;
+
+            transform: translateY(-50%);
+
+            transition: background 0.2s, right 0.2s;
+        }
+
+        &:checked + label:before {
+            background: var(--g4-app-accent);
+        }
+
+        &:checked + label:after {
+            right: 2px;
+    
+            background: var(--g4-app-background);
+        }
+
+        & + label.loading {
+            opacity: 0.8;
+
+            pointer-events: none;
+
+            @keyframes LabelThrobber {
+                0% {
+                    transform: translateY(-50%);
+                }
+                100% {
+                    transform: translateY(-50%) rotate(360deg);
+                }
+            }
+
+            &:before {
+                width: 18px;
+                height: 18px;
+
+                background: transparent;
+
+                border: 3px solid transparent;
+                border-right: 3px solid var(--g4-app-accent);
+
+                animation: LabelThrobber 0.7s infinite linear;
+            }
+
+            &:after {
+                opacity: 0;
+            }
+        }
+    }
+}
+
+div.themeList {
+    div.theme {
+        background: var(--g4-app-header-background);
+        color: var(--g4-app-foreground);
+
+        padding: 8px 16px;
+        margin-bottom: 8px;
+        border-radius: 24px;
+
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+
+        p {
+            width: 100%;
+
+            font-size: 14pt;
+            margin: 0px;
+            flex-grow: 1;
+        }
+        
+        &.current p:after {
+            content: " current";
+
+            font-size: 11pt;
+        }
+
+        button {
+            margin-left: 8px;
+        }
+    }
+
+    div.theme.current {
+        box-shadow: inset 0px 0px 0px 2px var(--g4-app-accent);
+    }
+}
+
+dialog#themeEditor {
+    input[type=text] {
+        width: calc(100% - 16px);
+
+        background: transparent;
+        color: var(--g4-app-foreground);
+
+        font-family: "Poppins", sans-serif;
+        font-size: 14pt;
+        
+        padding: 4px 8px;
+
+        border: 1px solid var(--g4-app-accent);
+    }
+
+    div.colors {
+        h2 {
+            margin-top: 16px;
+            margin-bottom: 4px;
+        }
+
+        div.colors {
+            h2 {
+                font-size: 14pt;
+            }
+
+            div.colors {
+                h2 {
+                    font-size: 13pt;
+                    font-weight: 600;
+                }
+            }
+        }
+
+        div.color {
+            padding: 4px 0px;
+
+            display: flex;
+            align-items: center;
+
+            label {
+                position: relative;
+        
+                font-size: 13pt;
+        
+                flex-grow: 1;
+            }
+        }
+    }
+}
