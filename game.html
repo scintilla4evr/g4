@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="An infinite rage puzzle game.">
         <meta name="theme-color" content="#000000" />
-        
+
         <link rel="apple-touch-icon" href="res/icons/icon-152x152.png">
         <link rel="manifest" href="manifest.json">
         <link rel="shortcut icon" href="res/icons/favicon.png">
@@ -20,7 +20,7 @@
 
         <div class="titleBar">
             <div class="title">
-                <p>G4 Electron | Build 4.6-Dev-92519-1023-HiItsDevin_</p>
+                <p>G4 Electron | Build 4.6-Dev-92719-1340-HiItsDevin_</p>
             </div>
             <div class="buttons">
                 <button id="minimizeBtn">
@@ -60,7 +60,7 @@
                         <rect x="224" width="64" height="112"/>
                     </svg>
                     <div style="flex-grow: 1"></div>
-    
+
                     <button id="openSettingsBtn">
                         Settings
                     </button>
@@ -110,7 +110,7 @@
                         </button>
                     </content>
                 </section>
-    
+
                 <section class="leaderboard">
                     <header>
                         Leaderboard
@@ -221,11 +221,33 @@
                         <label for="settingLeftBar">Panel on the left side</label>
                     </div>
 
+                    <h2>Input</h2>
+                    <h3>Keyboard controls</h3>
+                    <div class="setting">
+                        <label>Shoot</label>
+                        <button class="keyboardInput" data-control="keyboardShoot">Space</button>
+                    </div>
+                    <div class="setting">
+                        <label>Enable slow mode</label>
+                        <button class="keyboardInput" data-control="keyboardSlow">Press a key...</button>
+                    </div>
+
+                    <h3>Gamepad controls</h3>
+
+                    <span id="noGamepads">No gamepads connected.</span>
+                    <div class="gamepad setting disabled">
+                        <label>Shoot</label>
+                        <button class="gamepadInput" data-control="gamepadShoot">---</button>
+                    </div>
+                    <div class="gamepad setting disabled">
+                        <label>Enable slow mode</label>
+                        <button class="gamepadInput" data-control="gamepadSlow">---</button>
+                    </div>
+
                     <h2>Color themes</h2>
+                    Note: you cannot delete the current custom theme. Switch to a different one first.
 
                     <div class="themeList"></div>
-
-                    <button id="copyCurrentThemeBtn">Create new theme from current</button>
                 </content>
             </dialog>
 
@@ -245,11 +267,12 @@
 
         <script src="scripts/theme.js"></script>
 
-        <script src="scripts/electronUI.js"></script>script>
+        <script src="scripts/electronUI.js"></script>
         <script src="scripts/assets.js"></script>
         <script src="scripts/levelgen.js"></script>
         <script src="scripts/leaderboard.js"></script>
         <script src="scripts/game.js"></script>
+        <script src="scripts/input.js"></script>
         <script src="scripts/ui.js"></script>
 
         <script src="scripts/main.js"></script>

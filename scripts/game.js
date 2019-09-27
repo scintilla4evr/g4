@@ -534,6 +534,8 @@ class Game {
 
             this.data.rings = LevelGenerator.generateRings(mode, levelIndex)
         }
+        
+        this.data.slow.isSlow = false
 
         this.advanceLevel(this.gameTime)
 
@@ -543,10 +545,6 @@ class Game {
         this.sendStateChange()
 
         this.updateLeaderboard()
-
-        // Leaderboard.setScore(mode, levelIndex).then(() => {
-        //     Leaderboard.updateLeaderboard(mode)
-        // })
     }
 
     async updateLeaderboard() {
@@ -654,13 +652,30 @@ class Game {
             event.target instanceof HTMLButtonElement) return
 
         if (
-            (event.code == "Space" || event.code == "ArrowUp") &&
+            (event.code == localStorage["g4input_keyboardShoot"]) &&
             !this.data.projectile
         )
             this.shoot()
-        else if (event.code == "KeyS" && !this.data.slow.isSlow && this.data.slow.time) {
+        else if (event.code == localStorage["g4input_keyboardSlow"] && !this.data.slow.isSlow && this.data.slow.time) {
             this.data.slow.isSlow = true
             this.dom.classList.add("slow")
+        }
+    }
+
+    handleGamepadEvent(event) {
+        if (this.isSpectated) return
+
+        if (
+            event.detail.button == localStorage["g4input_gamepadShoot"] &&
+            !this.data.projectile
+        ) {
+            this.shoot()
+        } else if (
+            event.detail.button == localStorage["g4input_gamepadSlow"] &&
+            !this.data.slow.isSlow && this.data.slow.time
+        ) {
+            this.data.slow.isSlow = true
+                this.dom.classList.add("slow")
         }
     }
 

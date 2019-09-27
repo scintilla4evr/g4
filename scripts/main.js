@@ -18,6 +18,14 @@
 
     games.push(mainGame)
 
+    // Game interaction events
+    addEventListener("keyup", (e) => {
+        games.forEach(game => game.handleKeyboardEvent(e))
+    })
+    addEventListener("g4gamepadbuttonpressed", (e) => {
+        games.forEach(game => game.handleGamepadEvent(e))
+    })
+
     // Load audio & stuff
     loadAssets().then(() => {
         document.querySelector("audio#gameAudio").src = "res/music/easy.mp3"
@@ -37,6 +45,7 @@
     // Rendering "loop"
     let previousTimestamp = null
     let fpsCounter = document.querySelector("span.fpsCounter")
+
     function renderAllGames(timestamp) {
         if (previousTimestamp) {
             let frameTime = timestamp - previousTimestamp
@@ -66,6 +75,8 @@
         })
 
         processSpectated = !processSpectated
+
+        processGamepadInputs()
     }, 1000 / physicsFps)
 
     // Mode changing buttons
@@ -96,6 +107,12 @@
                 audio.src = "res/music/easy.mp3"
             } else if (mainGame.data.mode == "hell") {
                 audio.src = "res/music/hell.mp3"
+            } else if (mainGame.data.mode == "hades") {
+                audio.src = "res/music/hades.mp3"
+            } else if (mainGame.data.mode == "reverse") {
+                audio.src = "res/music/reverse.mp3"
+            } else if (mainGame.data.mode == "denise") {
+                audio.src = "res/music/denise.mp3"
             }
 
             if (audioState) {
@@ -105,9 +122,5 @@
                 })
             }
         })
-    })
-
-    addEventListener("keyup", (e) => {
-        games.forEach(game => game.handleKeyboardEvent(e))
     })
 })()

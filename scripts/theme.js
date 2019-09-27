@@ -33,13 +33,21 @@ async function loadTheme(name) {
     return await data.json()
 }
 
-async function loadDefaultThemes() {
+async function loadDefaultThemes(replace) {
     let themes = [
         await loadTheme("dark"),
         await loadTheme("light")
     ]
 
-    localStorage["g4_themes"] = JSON.stringify(themes)
+    if (replace) {
+        let storedThemes = JSON.parse(localStorage["g4_themes"])
+        
+        themes.forEach((t, i) => storedThemes[i] = t)
+
+        localStorage["g4_themes"] = JSON.stringify(storedThemes)
+    } else {
+        localStorage["g4_themes"] = JSON.stringify(themes)
+    }
 }
 
 function createCSSVars(compStyles, obj, prefix) {
@@ -193,29 +201,41 @@ function updateThemeList() {
         name.textContent = theme.name
         div.appendChild(name)
 
-        let editBtn = document.createElement("button")
-        editBtn.textContent = "Edit"
-        div.appendChild(editBtn)
+        let cloneBtn = document.createElement("button")
+        cloneBtn.textContent = "Clone"
+        div.appendChild(cloneBtn)
 
-        editBtn.addEventListener("click", () => {
-            editTheme(themeId)
+        cloneBtn.addEventListener("click", (e) => {
+            duplicateTheme(themeId)
+
+            e.stopPropagation()
         })
 
-        if (localStorage.g4_currentTheme != themeId && themeId > 2) {
-            let deleteBtn = document.createElement("button")
-            deleteBtn.textContent = "Delete"
-            div.appendChild(deleteBtn)
+        if (themeId > 2) {
+            let editBtn = document.createElement("button")
+            editBtn.textContent = "Edit"
+            div.appendChild(editBtn)
     
-            deleteBtn.addEventListener("click", () => {
-                deleteTheme(themeId)
+            editBtn.addEventListener("click", (e) => {
+                editTheme(themeId)
+
+                e.stopPropagation()
             })
+
+            if (localStorage.g4_currentTheme != themeId) {
+                let deleteBtn = document.createElement("button")
+                deleteBtn.textContent = "Delete"
+                div.appendChild(deleteBtn)
+        
+                deleteBtn.addEventListener("click", (e) => {
+                    deleteTheme(themeId)
+
+                    e.stopPropagation()
+                })
+            }
         }
 
-        let applyBtn = document.createElement("button")
-        applyBtn.textContent = "Apply"
-        div.appendChild(applyBtn)
-
-        applyBtn.addEventListener("click", () => {
+        div.addEventListener("click", () => {
             setTheme(themeId)
         })
 
@@ -237,8 +257,17 @@ function duplicateCurrentTheme() {
     updateThemeList()
 }
 
-if (!localStorage.getItem("g4_themes")) {
-    loadDefaultThemes().then(() => applyTheme())
-} else {
-    applyTheme()
+function duplicateTheme(themeId) {
+    let themes = JSON.parse(localStorage["g4_themes"])
+    let theme = {...themes[themeId - 1]}
+
+    theme.name = theme.name + " - copy"
+
+    themes.push(theme)
+
+    localStorage["g4_themes"] = JSON.stringify(themes)
+    localStorage["g4_currentTheme"] = themes.length
+    updateThemeList()
 }
+
+loadDefaultThemes(!!localStorage.getItem("g4_themes")).then(() => applyTheme())

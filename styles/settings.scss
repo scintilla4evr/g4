@@ -1,5 +1,5 @@
 dialog#settings, dialog#themeEditor {
-    h2 {
+    h2, h3 {
         margin-bottom: 0px;
     }
 
@@ -13,6 +13,12 @@ div.setting {
 
     display: flex;
     align-items: center;
+
+    &.disabled {
+        opacity: 0.5;
+
+        pointer-events: none;
+    }
 
     label {
         position: relative;
@@ -28,7 +34,7 @@ div.setting {
         background: transparent;
         color: var(--g4-app-foreground);
 
-        font-family: "Poppins", sans-serif;
+        font-family: var(--g4-app-typeface);
         font-size: 14pt;
         
         padding: 4px 8px;
@@ -117,6 +123,16 @@ div.setting {
             }
         }
     }
+
+    button.keyboardInput, button.gamepadInput {
+        width: 180px;
+
+        text-transform: none;
+
+        &.waiting {
+            color: var(--g4-app-accent);
+        }
+    }
 }
 
 div.themeList {
@@ -125,7 +141,7 @@ div.themeList {
         color: var(--g4-app-foreground);
 
         padding: 8px 16px;
-        margin-bottom: 8px;
+        margin-top: 8px;
         border-radius: 24px;
 
         display: flex;
@@ -148,12 +164,23 @@ div.themeList {
         }
 
         button {
+            background: var(--g4-app-background);
+
             margin-left: 8px;
         }
-    }
 
-    div.theme.current {
-        box-shadow: inset 0px 0px 0px 2px var(--g4-app-accent);
+        button:active {
+            background: var(--g4-app-foreground);
+            color: var(--g4-app-background);
+        }
+
+        &:hover {
+            box-shadow: inset 0px 0px 0px 2px var(--g4-app-accent);
+        }
+
+        &.current {
+            box-shadow: inset 0px 0px 0px 2px var(--g4-app-foreground);
+        }
     }
 }
 
@@ -164,7 +191,7 @@ dialog#themeEditor {
         background: transparent;
         color: var(--g4-app-foreground);
 
-        font-family: "Poppins", sans-serif;
+        font-family: var(--g4-app-typeface);
         font-size: 14pt;
         
         padding: 4px 8px;

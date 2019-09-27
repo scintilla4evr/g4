@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
+@import url("https://fonts.googleapis.com/css?family=var(--g4-app-typeface):100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic");
 
 @import "colors.scss";
 
@@ -9,11 +9,15 @@
 
 @import "electron.scss";
 
+:root {
+    --g4-app-typeface: "Poppins", sans-serif;
+}
+
 body {
     background: var(--g4-app-background);
     color: var(--g4-game-foreground);
 
-    font-family: Poppins;
+    font-family: var(--g4-app-typeface);
 
     user-select: none;
 }
@@ -32,7 +36,7 @@ button {
     background: var(--g4-app-background);
     color: var(--g4-app-foreground);
 
-    font-family: Poppins;
+    font-family: var(--g4-app-typeface);
     font-weight: 500;
     font-size: 12pt;
     text-transform: uppercase;
@@ -47,6 +51,17 @@ button:hover {
 button:active {
     background: var(--g4-app-foreground);
     color: var(--g4-app-background);
+}
+
+a {
+    color: var(--g4-app-accent);
+
+    text-decoration: none;
+
+    &:hover {
+        background: var(--g4-app-accent);
+        color: var(--g4-app-background);
+    }
 }
 
 body.light {
