@@ -93,7 +93,7 @@ async function loadAssets() {
         audioBuffers.set(
             mode,
             await loadAudioBuffer(
-                audioCtx, `res/music/${mode}.mp3`
+                audioCtx, `res/music/${mode}.ogg`
             )
         )
     }
