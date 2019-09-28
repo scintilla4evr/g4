@@ -100,8 +100,7 @@ class Game {
 
             div.querySelector("footer button").addEventListener("click", () => {
                 if (this.data.slow && !this.data.slow.isSlow)
-                    this.data.slow.isSlow = true
-                    this.dom.classList.add("slow")
+                    this.enableSlow()
             })
         }
 
@@ -344,8 +343,7 @@ class Game {
 
             slow.time = Math.max(0, slow.time - dTime)
             if (slow.time == 0) {
-                slow.isSlow = false
-                this.dom.classList.remove("slow")
+                this.disableSlow()
             }
         }
     }
@@ -445,6 +443,23 @@ class Game {
         })
     }
 
+    enableSlow() {
+        this.data.slow.isSlow = true
+
+        this.dom.classList.add("slow")
+
+        enableSlowAudioEffect()
+    }
+
+    disableSlow() {
+        if (!this.data.slow.isSlow) return
+        this.data.slow.isSlow = false
+
+        this.dom.classList.remove("slow")
+
+        disableSlowAudioEffect()
+    }
+
     updateDOM() {
         if (this.dom.getAttribute("data-mode") != this.data.mode)
             this.dom.setAttribute("data-mode", this.data.mode)
@@ -534,8 +549,7 @@ class Game {
 
             this.data.rings = LevelGenerator.generateRings(mode, levelIndex)
         }
-        
-        this.data.slow.isSlow = false
+        this.disableSlow()
 
         this.advanceLevel(this.gameTime)
 
@@ -657,8 +671,7 @@ class Game {
         )
             this.shoot()
         else if (event.code == localStorage["g4input_keyboardSlow"] && !this.data.slow.isSlow && this.data.slow.time) {
-            this.data.slow.isSlow = true
-            this.dom.classList.add("slow")
+            this.enableSlow()
         }
     }
 
@@ -674,8 +687,7 @@ class Game {
             event.detail.button == localStorage["g4input_gamepadSlow"] &&
             !this.data.slow.isSlow && this.data.slow.time
         ) {
-            this.data.slow.isSlow = true
-                this.dom.classList.add("slow")
+            this.enableSlow()
         }
     }
 

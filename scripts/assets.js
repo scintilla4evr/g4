@@ -10,6 +10,10 @@ let audioCtx = new AudioContext()
  * @type {AudioBufferSourceNode}
  */
 let currentSourceNode = null
+/**
+ * @type {BiquadFilterNode}
+ */
+let currentBiquadNode = null
 let isAudioPlaying = false
 let audioStartTime = 0
 
@@ -25,8 +29,19 @@ async function loadAudioBuffer(audioCtx, audioFile) {
 }
 
 function stopAudio() {
-    currentSourceNode.disconnect(audioCtx.destination)
+    currentSourceNode.disconnect(currentBiquadNode)
+    currentBiquadNode.disconnect(audioCtx.destination)
     currentSourceNode.stop()
+}
+
+function enableSlowAudioEffect() {
+    currentBiquadNode.frequency.linearRampToValueAtTime(1000, 1)
+    currentSourceNode.playbackRate.linearRampToValueAtTime(0.5, 1)
+}
+
+function disableSlowAudioEffect() {
+    currentBiquadNode.frequency.linearRampToValueAtTime(20000, 1)
+    currentSourceNode.playbackRate.linearRampToValueAtTime(1, 1)
 }
 
 function playAudio(mode, fresh) {
@@ -39,11 +54,17 @@ function playAudio(mode, fresh) {
     let sourceNode = audioCtx.createBufferSource()
     sourceNode.buffer = buffer
 
-    sourceNode.connect(audioCtx.destination)
-
     sourceNode.loop = true
     sourceNode.loopStart = 0
     sourceNode.loopEnd = buffer.duration
+
+    let biquadNode = audioCtx.createBiquadFilter()
+
+    biquadNode.type = "lowpass"
+    biquadNode.frequency.value = 20000
+
+    sourceNode.connect(biquadNode)
+    biquadNode.connect(audioCtx.destination)
 
     let offset = 0
 
@@ -58,6 +79,7 @@ function playAudio(mode, fresh) {
     audioStartTime = audioCtx.currentTime - offset
 
     currentSourceNode = sourceNode
+    currentBiquadNode = biquadNode
 }
 
 async function loadAssets() {
