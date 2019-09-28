@@ -1,12 +1,3 @@
-function loadAudio(audioFile) {
-    return new Promise((resolve, reject) => {
-        let audio = new Audio()
-
-        audio.addEventListener("canplaythrough", () => resolve())
-        audio.src = audioFile
-    })
-}
-
 /**
  * @type {Map<String, AudioBuffer>}
  */
