@@ -158,14 +158,12 @@ document.querySelector("input#settingMusic").addEventListener("input", function(
     /**
      * @type {HTMLAudioElement}
      */
-    let audio = document.querySelector("audio#gameAudio")
+    isAudioPlaying = !isAudioPlaying
 
-    let state = this.checked
-
-    if (state) {
-        audio.play()
+    if (isAudioPlaying) {
+        playAudio(mainGame.data.mode, true)
     } else {
-        audio.pause()
+        stopAudio()
     }
 })
 

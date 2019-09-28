@@ -18,6 +18,8 @@
 
     games.push(mainGame)
 
+    window.mainGame = mainGame
+
     // Game interaction events
     addEventListener("keyup", (e) => {
         games.forEach(game => game.handleKeyboardEvent(e))
@@ -28,7 +30,6 @@
 
     // Load audio & stuff
     loadAssets().then(() => {
-        document.querySelector("audio#gameAudio").src = "res/music/easy.mp3"
         document.querySelector("label[for=settingMusic]").classList.remove("loading")
     })
 
@@ -96,31 +97,7 @@
             document.querySelector("section.gameMode button.active").classList.remove("active")
             button.classList.add("active")
 
-            let audio = document.querySelector("audio#gameAudio")
-            let audioState = !audio.paused && !audio.ended && audio.readyState > 2
-
-            let currentTime = audio.currentTime
-
-            // Temporary (until we get all modes music'd up)
-            audio.src = "res/music/normal.mp3"
-            if (mainGame.data.mode == "easy") {
-                audio.src = "res/music/easy.mp3"
-            } else if (mainGame.data.mode == "hell") {
-                audio.src = "res/music/hell.mp3"
-            } else if (mainGame.data.mode == "hades") {
-                audio.src = "res/music/hades.mp3"
-            } else if (mainGame.data.mode == "reverse") {
-                audio.src = "res/music/reverse.mp3"
-            } else if (mainGame.data.mode == "denise") {
-                audio.src = "res/music/denise.mp3"
-            }
-
-            if (audioState) {
-                let timestamp = Date.now()
-                audio.play().then(() => {
-                    audio.currentTime = currentTime % audio.duration + (Date.now() - timestamp) / 1000
-                })
-            }
+            playAudio(mainGame.data.mode)
         })
     })
 })()
