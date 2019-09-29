@@ -1,2 +1,4 @@
 g4.code-workspace
 /node_modules
+/.idea
+/.vscode
