@@ -4,19 +4,17 @@ let discord = electron.remote.require("discord-rpc")
 let clientId = "620780964494442500"
 
 // dynamyc's section
-let currentRawMode = "easy" // REPLACE THIS WITH EASY PICTURE BEFORE PUSH OR ELSE IT MIGHT BREAK IDK
+let currentRawMode = "easy"
 let currentMode = "Easy"
 let currentScore = "0"
 let username = null
-let preUsername = document.querySelector("input#loginUsername").value
+let preUsername = document.querySelector("input#loginUsername").value //will replace with cache once caching logins work
 
 if (preUsername == "") {
     username = "an Unregistered user"
 } else {
     username = preUsername
 }
-
-
 
 function sleep(milliseconds) {
     var start = new Date().getTime();
@@ -26,7 +24,6 @@ function sleep(milliseconds) {
       }
     }
   }
-
 
 const fs = require('fs');
 const clientID = JSON.parse(fs.readFileSync(__dirname + "/discordID.json", "utf-8")).clientId
@@ -45,20 +42,6 @@ rpc.login({
 //Updating the RPC on certain stuff
 //WARNING: Really fucking spaghetti
 window.addEventListener("g4statechange", (e) => {
-
-    preUsername = document.querySelector("input#loginUsername").value
-
-    //Update username
-    if (preUsername == "") {
-        username = "an Unregistered user"
-    } else {
-        username = preUsername
-    }
-
-
-
-
-
     let modeAlias = {
         easy: "Easy",
         normal: "Normal",
@@ -72,9 +55,6 @@ window.addEventListener("g4statechange", (e) => {
     currentMode = modeAlias[e.detail.mode]
     currentScore = e.detail.levelIndex
     currentRawMode = [e.detail.mode]
-
-
-
 
     let activityData = {
         details: "Playing on: " + currentMode,
@@ -91,37 +71,13 @@ window.addEventListener("g4statechange", (e) => {
 
 })
 window.addEventListener("g4login", (e) => {
-
-    preUsername = document.querySelector("input#loginUsername").value
-
     //Update username
+    preUsername = e.detail.username
     if (preUsername == "") {
         username = "an Unregistered user"
     } else {
         username = preUsername
     }
-
-
-
-
-
-    let modeAlias = {
-        easy: "Easy",
-        normal: "Normal",
-        hard: "Hard",
-        hell: "Hell",
-        hades: "Hades",
-        denise: "Chaos",
-        reverse: "Reverse",
-        nox: "Nox"
-    }
-    currentMode = modeAlias[e.detail.mode]
-    currentScore = e.detail.levelIndex
-    currentRawMode = [e.detail.mode]
-
-
-
-
     let activityData = {
         details: "Playing on: " + currentMode,
         state: "Score: " + currentScore,
@@ -134,40 +90,10 @@ window.addEventListener("g4login", (e) => {
     }
 
     rpc.setActivity(activityData)
-
 })
 window.addEventListener("g4logout", (e) => {
-
-    preUsername = document.querySelector("input#loginUsername").value
-
     //Update username
-    if (preUsername == "") {
-        username = "an Unregistered user"
-    } else {
-        username = preUsername
-    }
-
-
-
-
-
-    let modeAlias = {
-        easy: "Easy",
-        normal: "Normal",
-        hard: "Hard",
-        hell: "Hell",
-        hades: "Hades",
-        denise: "Chaos",
-        reverse: "Reverse",
-        nox: "nox"
-    }
-    currentMode = modeAlias[e.detail.mode]
-    currentScore = e.detail.levelIndex
-    currentRawMode = e.detail.mode
-
-
-
-
+    username = "an Unregistered user"
     let activityData = {
         details: "Playing on: " + currentMode,
         state: "Score: " + currentScore,
@@ -180,7 +106,6 @@ window.addEventListener("g4logout", (e) => {
     }
 
     rpc.setActivity(activityData)
-
 })
 
 // END
