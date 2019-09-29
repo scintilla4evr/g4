@@ -566,6 +566,76 @@ class LevelGenerator {
     }
 
     /**
+     * @param {RingElement} item 
+     * @param {Number} ringLength
+     */
+    static getRingItemAngleRange(item, ringLength) {
+        let low = 0, high = 0, radiusAngle
+
+        switch (item.type) {
+            case "ball":
+                radiusAngle = item.radius / ringLength
+                low = item.angle - radiusAngle
+                high = item.angle + radiusAngle
+                break
+            case "pulsingBall":
+                radiusAngle = 1.5 * item.baseRadius / ringLength
+                low = item.angle - radiusAngle
+                high = item.angle + radiusAngle
+                break
+            case "bar":
+                low = item.angleStart
+                high = item.angleStart + item.angleLength
+                break
+            case "marqueeBar":
+                low = item.baseStart
+                high = item.baseEnd
+                break
+        }
+
+        if (low >= 0 && high <= 1) {
+            return [
+                new CoverageRange(low, high)
+            ]
+        } else if (low < 0 && high <= 1) {
+            return [
+                new CoverageRange(0, high),
+                new CoverageRange(low + 1, 1)
+            ]
+        } else if (low >= 0 && high > 1) {
+            return [
+                new CoverageRange(0, high - 1),
+                new CoverageRange(low, 1)
+            ]
+        } else {
+            return [
+                new CoverageRange(0, 1)
+            ]
+        }
+
+        return []
+    }
+
+    /**
+     * @param {Ring} ring
+     * @returns {Number}
+     */
+    static calculateRingClearance(ring) {
+        let coverage = new Coverage()
+        let ringDistances = ring.items.map(item => item.distance)
+        let ringRadius = Math.max(...ringDistances)
+        let ringLength = 2 * Math.PI * ringRadius
+
+        ring.items.forEach(item => {
+            let ranges = LevelGenerator.getRingItemAngleRange(item, ringLength)
+
+            ranges.forEach(range => coverage.subtract(range))
+        })
+
+        return coverage.getMaxLength() * ringLength
+    }
+
+    /**
      * @param {String} mode 
      * @param {Number} levelIndex 
      * @returns {Ring[]}
@@ -717,6 +787,14 @@ class LevelGenerator {
                 LevelGenerator.generateNoxRings(rings, levelIndex)
 
                 break
+        }
+
+        let clearances = rings.map(ring => {
+            return LevelGenerator.calculateRingClearance(ring)
+        })
+
+        if (Math.min(...clearances) < 120) {
+            return LevelGenerator.generateRings(mode, levelIndex)
         }
 
         return rings
