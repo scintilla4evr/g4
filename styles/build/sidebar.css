@@ -15,7 +15,7 @@ aside header {
   display: flex;
   flex-wrap: wrap;
 }
-aside header content {
+aside header div.content {
   display: flex;
   flex-grow: 1;
 }
@@ -95,97 +95,97 @@ aside section header {
   display: flex;
   justify-content: space-between;
 }
-aside section content {
+aside section div.content {
   flex-grow: 1;
 }
-aside section.gameMode content {
+aside section.gameMode div.content {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
 }
-aside section.gameMode content button.mode {
+aside section.gameMode div.content button.mode {
   background: transparent;
   color: var(--g4-app-foreground);
   padding: 4px 8px;
   border: none;
   flex-grow: 1;
 }
-aside section.gameMode content button.mode p {
+aside section.gameMode div.content button.mode p {
   margin: 0px;
   font-family: var(--g4-app-typeface);
   font-weight: 500;
   font-size: 12pt;
   text-transform: uppercase;
 }
-aside section.gameMode content button.mode:hover {
+aside section.gameMode div.content button.mode:hover {
   box-shadow: inset 0px 0px 0px 4px var(--g4-game-foreground);
 }
-aside section.gameMode content button.mode.active {
+aside section.gameMode div.content button.mode.active {
   background: var(--g4-game-foreground);
   color: var(--g4-game-background);
 }
-aside section.gameMode content button[data-mode=reverse] p {
+aside section.gameMode div.content button[data-mode=reverse] p {
   transform: scaleX(-1);
 }
-aside section.spectating content div.player {
+aside section.spectating div.content div.player {
   position: relative;
   padding: 8px 16px;
   display: flex;
   flex-wrap: wrap;
 }
-aside section.spectating content div.player p {
+aside section.spectating div.content div.player p {
   margin: 0px;
 }
-aside section.spectating content div.player p.name {
+aside section.spectating div.content div.player p.name {
   width: 100%;
   font-size: 14pt;
 }
-aside section.spectating content div.player p.level {
+aside section.spectating div.content div.player p.level {
   margin-right: 16px;
 }
-aside section.spectating content div.player button {
+aside section.spectating div.content div.player button {
   position: absolute;
   top: 8px;
   right: 16px;
 }
-aside section.spectating content div.player.me p.name:after {
+aside section.spectating div.content div.player.me p.name:after {
   color: var(--g4-app-accent);
   content: "You";
   font-size: 11pt;
   text-transform: uppercase;
   padding: 2px 8px;
 }
-aside section.spectating content div.player.robot p.name:after {
+aside section.spectating div.content div.player.robot p.name:after {
   color: var(--g4-app-accent);
   content: "AI";
   font-size: 11pt;
   text-transform: uppercase;
   padding: 2px 8px;
 }
-aside section.leaderboard content table {
+aside section.leaderboard div.content table {
   width: 100%;
   border-spacing: 0px;
 }
-aside section.leaderboard content table th {
+aside section.leaderboard div.content table th {
   font-weight: 500;
 }
-aside section.leaderboard content table tr td:first-child {
+aside section.leaderboard div.content table tr td:first-child {
   width: 15%;
   text-align: center;
 }
-aside section.leaderboard content table tr td:last-child {
+aside section.leaderboard div.content table tr td:last-child {
   width: 25%;
   text-align: center;
 }
-aside section.leaderboard content table tbody tr:hover {
+aside section.leaderboard div.content table tbody tr:hover {
   background: var(--g4-app-foreground);
   color: var(--g4-app-background);
   cursor: pointer;
 }
-aside section.leaderboard content table tr.me {
+aside section.leaderboard div.content table tr.me {
   background: var(--g4-app-accent);
   color: var(--g4-app-background);
 }
-aside section.pwaInstall content {
+aside section.pwaInstall div.content {
   padding: 8px 16px;
 }
 aside section.hidden {
@@ -238,39 +238,39 @@ dialog header {
 dialog header button {
   margin-right: 16px;
 }
-dialog content {
+dialog div.content {
   background: var(--g4-app-background);
   padding: 16px;
   border-radius: 24px 0px 0px 0px;
   flex-grow: 1;
   overflow: auto;
 }
-dialog content button {
+dialog div.content button {
   background: var(--g4-app-header-background);
 }
-dialog content button:active {
+dialog div.content button:active {
   background: var(--g4-app-foreground);
 }
-dialog content h2 {
+dialog div.content h2 {
   font-size: 16pt;
   font-weight: 400;
   margin: 0px 0px 32px 0px;
 }
-dialog content p.error {
+dialog div.content p.error {
   color: var(--g4-app-accent);
   display: none;
 }
-dialog content p.error.visible {
+dialog div.content p.error.visible {
   display: block;
 }
-dialog content form {
+dialog div.content form {
   display: flex;
   flex-direction: column;
 }
-dialog content form label {
+dialog div.content form label {
   margin: 8px 0px 0px 0px;
 }
-dialog content form input {
+dialog div.content form input {
   background: transparent;
   color: var(--g4-app-foreground);
   font-family: var(--g4-app-typeface);
@@ -278,14 +278,14 @@ dialog content form input {
   padding: 4px 8px;
   border: 1px solid var(--g4-app-accent);
 }
-dialog content div.buttons {
+dialog div.content div.buttons {
   height: 40px;
   margin-top: 16px;
   display: flex;
   flex-direction: row-reverse;
   justify-content: space-between;
 }
-dialog content div.buttons button.primary {
+dialog div.content div.buttons button.primary {
   color: var(--g4-app-accent);
 }
 
@@ -293,15 +293,15 @@ dialog.open {
   left: 0;
 }
 
-dialog#playerStats content {
+dialog#playerStats div.content {
   padding: 8px;
 }
-dialog#playerStats content h2 {
+dialog#playerStats div.content h2 {
   font-size: 16pt;
   font-weight: 400;
   margin: 8px 8px 40px 8px;
 }
-dialog#playerStats content div.highScore {
+dialog#playerStats div.content div.highScore {
   background: var(--g4-game-background);
   color: var(--g4-game-cannon);
   padding: 8px 16px;
@@ -309,19 +309,19 @@ dialog#playerStats content div.highScore {
   border-radius: 24px;
   box-shadow: inset 0px 0px 0px 1px var(--g4-game-foreground);
 }
-dialog#playerStats content div.highScore p {
+dialog#playerStats div.content div.highScore p {
   font-size: 14pt;
   margin: 0px;
 }
-dialog#playerStats content div.highScore table {
+dialog#playerStats div.content div.highScore table {
   width: 100%;
   border-spacing: 0px;
 }
-dialog#playerStats content div.highScore table th {
+dialog#playerStats div.content div.highScore table th {
   font-weight: 400;
   text-align: left;
 }
-dialog#playerStats content div.highScore table td {
+dialog#playerStats div.content div.highScore table td {
   font-weight: 500;
   font-size: 13pt;
 }

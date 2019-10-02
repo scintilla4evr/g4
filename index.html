@@ -6,9 +6,12 @@
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="G4">
         <meta name="description" content="An infinite rage puzzle game.">
         <meta name="theme-color" content="#000000" />
-
+        
         <link rel="apple-touch-icon" href="res/icons/icon-152x152.png">
         <link rel="manifest" href="manifest.json">
         <link rel="shortcut icon" href="res/icons/favicon.png">
@@ -78,7 +81,19 @@
                 </div>
             </header>
 
-            <div class="scroller">    
+            <div class="scroller">
+                <section class="pwaInstall hidden">
+                    <header>
+                        Install G4 locally
+                        <button id="butInstall" aria-label="Install">
+                            Click to Install
+                        </button>
+                    </header>
+                    <div class="content">
+                        You can install G4 on your device as a Progressive Web App to play it without an internet connection.
+                    </div>
+                </section>
+    
                 <section class="gameMode">
                     <header>Game mode</header>
                     <div class="content">
@@ -265,7 +280,6 @@
 
         <script src="scripts/theme.js"></script>
 
-        <script src="scripts/electronUI.js"></script>
         <script src="scripts/assets.js"></script>
         <script src="scripts/coverage.js"></script>
         <script src="scripts/levelgen.js"></script>
@@ -275,5 +289,15 @@
         <script src="scripts/ui.js"></script>
 
         <script src="scripts/main.js"></script>
+
+        <script src="scripts/install.js"></script>
+        <script>if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+              navigator.serviceWorker.register('service-worker.js')
+                  .then((reg) => {
+                    console.log('Service worker registered.', reg);
+                  });
+            });
+          }</script>
     </body>
 </html>

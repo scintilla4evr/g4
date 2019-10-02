@@ -140,7 +140,7 @@ function editTheme(id) {
     let themes = JSON.parse(localStorage["g4_themes"])
     let theme = themes[id - 1]
 
-    let editor = document.querySelector("dialog#themeEditor content")
+    let editor = document.querySelector("dialog#themeEditor div.content")
 
     editor.querySelector("#themeName").value = theme.name
     editor.querySelector("#themeName").oninput = function() {

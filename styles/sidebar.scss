@@ -18,7 +18,7 @@ aside {
         display: flex;
         flex-wrap: wrap;
 
-        content {
+        div.content {
             display: flex;
             flex-grow: 1;
         }
@@ -126,13 +126,13 @@ aside {
             justify-content: space-between;
         }
 
-        content {
+        div.content {
             flex-grow: 1;
         }
     }
 
     section.gameMode {
-        content {
+        div.content {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
 
@@ -169,7 +169,7 @@ aside {
     }
 
     section.spectating {
-        content {
+        div.content {
             div.player {
                 position: relative;
 
@@ -228,7 +228,7 @@ aside {
     }
 
     section.leaderboard {
-        content {
+        div.content {
             table {
                 width: 100%;
 
@@ -268,7 +268,7 @@ aside {
     }
 
     section.pwaInstall {
-        content {
+        div.content {
             padding: 8px 16px;
         }
     }
@@ -337,7 +337,7 @@ dialog {
         }
     }
 
-    content {
+    div.content {
         background: var(--g4-app-background);
 
         padding: 16px;
@@ -413,7 +413,7 @@ dialog.open {
 }
 
 dialog#playerStats {
-    content {
+    div.content {
         padding: 8px;
 
         h2 {
