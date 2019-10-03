@@ -191,6 +191,8 @@ main div.game footer div.progress {
   position: relative;
   background: var(--g4-app-background);
   margin-right: 16px;
+  border-radius: 8px;
+  overflow: hidden;
   flex-grow: 1;
 }
 main div.game footer div.progress p {
@@ -529,6 +531,11 @@ dialog div.content h2 {
   font-size: 16pt;
   font-weight: 400;
   margin: 0px 0px 32px 0px;
+}
+dialog div.content h2 em {
+  color: var(--g4-app-accent);
+  font-size: 20pt;
+  font-style: normal;
 }
 dialog div.content p.error {
   color: var(--g4-app-accent);

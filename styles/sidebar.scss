@@ -359,6 +359,13 @@ dialog {
             font-weight: 400;
 
             margin: 0px 0px 32px 0px;
+
+            em {
+                color: var(--g4-app-accent);
+
+                font-size: 20pt;
+                font-style: normal;
+            }
         }
 
         p.error {

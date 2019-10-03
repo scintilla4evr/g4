@@ -1,11 +1,7 @@
 // First time hint
 if (!localStorage.getItem("g4_hideHint")) {
-    document.querySelector("div.firstTimeHint").classList.remove("hidden")
+    openWindow("oobe")
     localStorage.setItem("g4_hideHint", true)
-
-    setTimeout(() => {
-        document.querySelector("div.firstTimeHint").classList.add("hidden")
-    }, 3500)
 }
 
 // Sidebar expander

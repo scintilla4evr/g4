@@ -84,7 +84,7 @@ class Game {
                 <p class="time">5 s</p>
             </div>
             <button>
-                Slow mode [s]
+                Slow mode
             </button>
         </footer>`
 
@@ -434,8 +434,8 @@ class Game {
 
                     ctx.arc(
                         item.centerX, item.centerY, item.distance,
-                        2 * Math.PI * item.angleStart,
-                        2 * Math.PI * (item.angleStart + item.angleLength)
+                        2 * Math.PI * item.angleStart - 0.01,
+                        2 * Math.PI * (item.angleStart + item.angleLength) + 0.01
                     )
 
                     ctx.stroke()
