@@ -84,7 +84,7 @@ function playAudio(mode, fresh) {
 
 async function loadAssets() {
     let modes = [
-        "easy", "normal", "hell",
+        "easy", "normal", "hard", "hell",
         "hades", "reverse", "denise"
     ]
 
