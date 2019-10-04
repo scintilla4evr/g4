@@ -19,6 +19,10 @@ document.querySelector("button#closeBtn").addEventListener("click", () => {
     ipcRenderer.send("close")
 })
 
+document.querySelector("button#clearCacheBtn").addEventListener("click", () => {
+    ipcRenderer.send("clearCache")
+})
+
 ipcRenderer.on("maximized", (e) => {
     document.body.classList.add("maximized")
 })

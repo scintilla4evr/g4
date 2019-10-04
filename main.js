@@ -18,7 +18,6 @@ function createWindow () {
   });
 
   win.loadFile('game.html');
-  win.webContents.openDevTools();
 
   win.webContents.on("dom-ready", () => {
     win.webContents.executeJavaScript(
@@ -46,6 +45,9 @@ function initIpcEvents(win) {
   })
   ipcMain.on("close", (e) => {
     win.close()
+  })
+  ipcMain.on("clearCache", (e) => {
+    win.webContents.session.clearCache()
   })
 
   if (win.isMaximized()) win.webContents.send("maximized")
