@@ -1,5 +1,5 @@
 const {ipcRenderer} = require("electron")
-const {BrowserWindow} = require("electron").remote
+const {shell} = require("electron").remote
 
 document.body.classList.add("electron")
 
@@ -25,4 +25,11 @@ ipcRenderer.on("maximized", (e) => {
 
 ipcRenderer.on("unmaximized", (e) => {
     document.body.classList.remove("maximized")
+})
+
+document.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", (e) => {
+        shell.openExternal(link.href)
+        e.preventDefault()
+    })
 })

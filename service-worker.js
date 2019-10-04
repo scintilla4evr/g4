@@ -1,22 +1,22 @@
 'use strict';
 
-const DEV_BUILD_VERSION = 17
+const DEV_BUILD_VERSION = 18
 
-const CACHE_NAME = `static-cache-g4.6-dev${DEV_BUILD_VERSION}`;
-const DATA_CACHE_NAME = `static-cache-g4.6-dev${DEV_BUILD_VERSION}`;
+const CACHE_NAME = `static-cache-g4.6-stable${DEV_BUILD_VERSION}`;
+const DATA_CACHE_NAME = `static-cache-g4.6-stable${DEV_BUILD_VERSION}`;
 
 const FILES_TO_CACHE = [
     ' ',
     'index.html',
 
-    'res/music/easy.mp3',
-    'res/music/normal.mp3',
-    'res/music/hard.mp3',
-    'res/music/hell.mp3',
-    'res/music/hades.mp3',
-    'res/music/reverse.mp3',
-    'res/music/denise.mp3',
-    'res/music/nox.mp3',
+    'res/music/easy.ogg',
+    'res/music/normal.ogg',
+    'res/music/hard.ogg',
+    'res/music/hell.ogg',
+    'res/music/hades.ogg',
+    'res/music/reverse.ogg',
+    'res/music/denise.ogg',
+    'res/music/nox.ogg',
 
     'res/images/gameHint.svg',
 
