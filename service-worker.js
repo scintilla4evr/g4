@@ -1,6 +1,6 @@
 'use strict';
 
-const DEV_BUILD_VERSION = 16
+const DEV_BUILD_VERSION = 17
 
 const CACHE_NAME = `static-cache-g4.6-dev${DEV_BUILD_VERSION}`;
 const DATA_CACHE_NAME = `static-cache-g4.6-dev${DEV_BUILD_VERSION}`;
@@ -16,6 +16,7 @@ const FILES_TO_CACHE = [
     'res/music/hades.mp3',
     'res/music/reverse.mp3',
     'res/music/denise.mp3',
+    'res/music/nox.mp3',
 
     'res/images/gameHint.svg',
 
