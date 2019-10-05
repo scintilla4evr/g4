@@ -1,74 +1,8 @@
 <!DOCTYPE html>
 
-<html lang="en">
-    <head>
-        <title>G4</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-status-bar-style" content="black">
-        <meta name="apple-mobile-web-app-title" content="G4">
-        <meta name="description" content="A distraction-less version of The Theorist Gateway gate 4 minigame.">
-        <meta name="theme-color" content="#2F3BA2" />
-        <link rel="apple-touch-icon" href="images/icons/icon-152x152.png">
-        <link href="https://fonts.googleapis.com/css?family=Lexend+Deca&display=swap" rel="stylesheet">        
-        <link rel="stylesheet" href="styles/styles.css">
-        <link rel="manifest" href="manifest.json">
-        <link rel="shortcut icon" href="images/icons/favicon.png">
-    </head>
-    <body class="">
-        <audio src="assets/music.mp3" loop></audio>
-        <header>
-            <div>
-                <h2>Level</h2>
-                <h1 id="levelNum">0</h1>
-            </div>
-            <div>
-                <h2>Record</h2>
-                <h1><span id="recordNum">0</span></h1>
-            </div>
-        </header>
+the game lives over at <a href="https://g4game.wtf/">g4game.wtf</a> now.<br>
+imma redirect you there
 
-        <canvas id="main" width="900" height="900"></canvas>
-
-        <div class="slowdown">
-            <div class="slowProgress">
-                <div style="width: 0%"></div>
-            </div>
-            <button id="initSlowDown" class="checked">Slow down for 0s</button>
-        </div>
-
-        <footer>
-            <button id="muteMusic" class="checked" style="display: none">Unmute</button>
-            <div id="modeSwitches">
-                <h1>Mode:</h1>
-                <button id="modeEasy">Easy</button>
-                <button id="modeNormal" class="checked">Normal</button>
-                <button id="modeHard">Hard</button>
-                <button id="modeHell">Hell</button>
-                <button id="modeHades">Hades</button>
-                <button id="modeDenise">Chaos</button>
-            </div>
-
-            <a href="https://twitter.com/scintilla4evr" target="_blank" rel="noopener" aria-label="scintilla4evr on Twitter">
-                <svg id="g4logo" viewBox="0 0 400 288">
-                    <path d="M224,112V263.74a143.0544,143.0544,0,0,1-64,23.38,145.6907,145.6907,0,0,1-16,.88A144,144,0,0,1,144,0a145.6907,145.6907,0,0,1,16,.88V65.61a80,80,0,1,0,0,156.78V176H128V112Z"/>
-                    <polygon points="400 112 400 176 352 176 352 288 288 288 288 112 400 112"/>
-                    <rect x="224" width="64" height="112"/>
-                </svg>
-            </a>
-            <button id="butInstall" aria-label="Install" hidden>Install</button>
-        </footer>
-
-        <script src="scripts/game.js"></script>
-        <script src="scripts/install.js"></script>
-        <script>if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-              navigator.serviceWorker.register('service-worker.js')
-                  .then((reg) => {
-                    console.log('Service worker registered.', reg);
-                  });
-            });
-          }</script>
-    </body>
-</html>
+<script>
+    location.href = "https://g4game.wtf"
+</script>
