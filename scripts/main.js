@@ -18,7 +18,16 @@
 
     games.push(mainGame)
 
-    window.mainGame = mainGame
+    // Music playback
+    document.querySelector("input#settingMusic").addEventListener("input", function() {
+        isAudioPlaying = !isAudioPlaying
+    
+        if (isAudioPlaying) {
+            playAudio(mainGame.data.mode, true)
+        } else {
+            stopAudio()
+        }
+    })
 
     // Game interaction events
     addEventListener("keyodwn", (e) => {

@@ -133,17 +133,6 @@ document.querySelector("button#openSettingsBtn").addEventListener("click", () =>
     openWindow("settings")
 })
 
-// Music playback
-document.querySelector("input#settingMusic").addEventListener("input", function() {
-    isAudioPlaying = !isAudioPlaying
-
-    if (isAudioPlaying) {
-        playAudio(mainGame.data.mode, true)
-    } else {
-        stopAudio()
-    }
-})
-
 // Left side sidebar
 if (!localStorage.getItem("g4_leftSidebar")) localStorage["g4_leftSidebar"] = false
 if (localStorage["g4_leftSidebar"] == "true") {
