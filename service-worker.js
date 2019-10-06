@@ -1,6 +1,6 @@
 'use strict';
 
-const DEV_BUILD_VERSION = 20
+const DEV_BUILD_VERSION = 21
 
 const CACHE_NAME = `static-cache-g4.6-stable${DEV_BUILD_VERSION}`;
 const DATA_CACHE_NAME = `static-cache-g4.6-stable${DEV_BUILD_VERSION}`;
