@@ -791,7 +791,7 @@ class LevelGenerator {
 
         let clearances = rings.map(ring => {
             return LevelGenerator.calculateRingClearance(ring)
-        })
+        }).filter(n => isFinite(n))
 
         if (Math.min(...clearances) < 120) {
             return LevelGenerator.generateRings(mode, levelIndex)
