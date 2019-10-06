@@ -1,0 +1,1042 @@
+@font-face {
+  font-family: "Poppins";
+  font-weight: 400;
+  src: url("../../res/fonts/Poppins-Regular.ttf");
+}
+@font-face {
+  font-family: "Poppins";
+  font-weight: 500;
+  src: url("../../res/fonts/Poppins-Medium.ttf");
+}
+@font-face {
+  font-family: "Poppins";
+  font-weight: 600;
+  src: url("../../res/fonts/Poppins-SemiBold.ttf");
+}
+@font-face {
+  font-family: "Poppins";
+  font-weight: 700;
+  src: url("../../res/fonts/Poppins-Bold.ttf");
+}
+:root {
+  --g4-app-background: var(--g4-theme-app-background);
+  --g4-app-foreground: var(--g4-theme-app-foreground);
+  --g4-app-header-background: var(--g4-theme-app-headerBackground);
+  --g4-app-header-translucent: var(--g4-theme-app-headerTranslucent);
+  --g4-app-accent: var(--g4-theme-app-accent);
+  --g4-app-scroll-track: var(--g4-theme-app-scrollTrack);
+  --g4-app-scroll-thumb: var(--g4-theme-app-scrollThumb);
+}
+
+[data-mode=easy] {
+  --g4-game-background: var(--g4-theme-game-easy-background);
+  --g4-game-damage: var(--g4-theme-game-easy-damage);
+  --g4-game-foreground: var(--g4-theme-game-easy-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-easy-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-easy-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-easy-cannon);
+  --g4-game-bullet: var(--g4-theme-game-easy-bullet);
+}
+
+[data-mode=normal] {
+  --g4-game-background: var(--g4-theme-game-normal-background);
+  --g4-game-damage: var(--g4-theme-game-normal-damage);
+  --g4-game-foreground: var(--g4-theme-game-normal-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-normal-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-normal-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-normal-cannon);
+  --g4-game-bullet: var(--g4-theme-game-normal-bullet);
+}
+
+[data-mode=hard] {
+  --g4-game-background: var(--g4-theme-game-hard-background);
+  --g4-game-damage: var(--g4-theme-game-hard-damage);
+  --g4-game-foreground: var(--g4-theme-game-hard-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-hard-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-hard-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-hard-cannon);
+  --g4-game-bullet: var(--g4-theme-game-hard-bullet);
+}
+
+[data-mode=hell] {
+  --g4-game-background: var(--g4-theme-game-hell-background);
+  --g4-game-damage: var(--g4-theme-game-hell-damage);
+  --g4-game-foreground: var(--g4-theme-game-hell-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-hell-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-hell-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-hell-cannon);
+  --g4-game-bullet: var(--g4-theme-game-hell-bullet);
+}
+
+[data-mode=hades] {
+  --g4-game-background: var(--g4-theme-game-hades-background);
+  --g4-game-damage: var(--g4-theme-game-hades-damage);
+  --g4-game-foreground: var(--g4-theme-game-hades-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-hades-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-hades-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-hades-cannon);
+  --g4-game-bullet: var(--g4-theme-game-hades-bullet);
+}
+
+[data-mode=denise] {
+  --g4-game-background: var(--g4-theme-game-denise-background);
+  --g4-game-damage: var(--g4-theme-game-denise-damage);
+  --g4-game-foreground: var(--g4-theme-game-denise-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-denise-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-denise-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-denise-cannon);
+  --g4-game-bullet: var(--g4-theme-game-denise-bullet);
+}
+
+[data-mode=reverse] {
+  --g4-game-background: var(--g4-theme-game-reverse-background);
+  --g4-game-damage: var(--g4-theme-game-reverse-damage);
+  --g4-game-foreground: var(--g4-theme-game-reverse-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-reverse-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-reverse-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-reverse-cannon);
+  --g4-game-bullet: var(--g4-theme-game-reverse-bullet);
+}
+
+[data-mode=nox] {
+  --g4-game-background: var(--g4-theme-game-nox-background);
+  --g4-game-damage: var(--g4-theme-game-nox-damage);
+  --g4-game-foreground: var(--g4-theme-game-nox-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-nox-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-nox-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-nox-cannon);
+  --g4-game-bullet: var(--g4-theme-game-nox-bullet);
+}
+
+main {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 400px;
+  display: grid;
+  gap: 4px;
+}
+main div.firstTimeHint {
+  position: absolute;
+  left: 50%;
+  bottom: 64px;
+  width: 80%;
+  max-width: 500px;
+  height: auto;
+  background: var(--g4-app-background);
+  border-radius: 24px;
+  transform: translateX(-50%);
+  z-index: 100;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+main div.firstTimeHint img {
+  filter: invert(1);
+}
+main div.firstTimeHint.hidden {
+  opacity: 0;
+}
+main div.game {
+  position: relative;
+  background: var(--g4-game-background);
+  color: var(--g4-game-foreground);
+}
+main div.game header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+main div.game header div.spectating {
+  width: 100%;
+  text-align: center;
+  display: none;
+}
+main div.game header div.spectating span.name {
+  color: var(--g4-app-accent);
+}
+main div.game header div.stat {
+  padding: 8px 16px;
+  text-align: center;
+}
+main div.game header div.stat p.name {
+  color: var(--g4-game-foreground);
+  font-size: 14pt;
+  font-weight: 500;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  margin: 0px 0px 4px 0px;
+  opacity: 1;
+}
+main div.game header div.stat p.value {
+  color: var(--g4-game-bullet);
+  font-size: 16pt;
+  font-weight: 500;
+  text-align: center;
+  text-transform: uppercase;
+  margin: 0;
+}
+main div.game header div.stat.level p.value {
+  background: var(--g4-game-cannon);
+  color: var(--g4-game-background);
+  font-size: 20pt;
+  font-weight: 500;
+  padding: 0px 20px;
+  border-radius: 20px;
+  opacity: 1;
+  display: inline;
+}
+main div.game canvas {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+main div.game footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 32px;
+  padding: 8px 16px;
+  display: flex;
+}
+main div.game footer div.progress {
+  position: relative;
+  background: var(--g4-app-background);
+  margin-right: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-grow: 1;
+}
+main div.game footer div.progress p {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-size: 12pt;
+  font-weight: 500;
+  text-align: center;
+  margin: 4px;
+}
+main div.game footer div.progress div {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--g4-app-accent);
+  opacity: 0.5;
+}
+main div.game.hit {
+  --g4-game-background: var(--g4-game-damage);
+}
+main div.game.spectated {
+  background: var(--g4-app-background);
+}
+main div.game.spectated header div.spectating {
+  display: block;
+}
+main div.game.spectated footer div.progress {
+  margin: 0;
+}
+main div.game.spectated footer button {
+  display: none;
+}
+
+main.single {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+main.two {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 1fr;
+}
+
+main.four {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+main.six {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+body.left main {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 400px;
+  right: 0;
+}
+
+@media (max-width: 768px) {
+  main, body.left main {
+    left: 0;
+    right: 0;
+  }
+}
+@media (max-width: 500px) {
+  main div.game header {
+    padding-right: 52px;
+  }
+
+  body.left main div.game header {
+    padding-left: 52px;
+    padding-right: 0;
+  }
+}
+aside {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 400px;
+  background: var(--g4-app-background);
+  color: var(--g4-app-foreground);
+  box-shadow: 0px 0px 16px #00000020;
+  display: flex;
+  flex-direction: column;
+  transition: right 0.2s;
+}
+aside header {
+  display: flex;
+  flex-wrap: wrap;
+}
+aside header div.content {
+  display: flex;
+  flex-grow: 1;
+}
+aside header svg#g4logo {
+  height: 32px;
+  width: auto;
+  margin: 8px 16px;
+}
+aside header button.expander {
+  display: none;
+}
+aside header button.expander:not(:active) {
+  background: transparent;
+}
+aside header button.expander div {
+  position: relative;
+  width: 20px;
+  height: 2px;
+  background: transparent;
+}
+aside header button.expander div:before {
+  position: absolute;
+  left: 50%;
+  top: calc(50% - 4.5px);
+  width: 14px;
+  height: 2px;
+  background: var(--g4-app-foreground);
+  content: "";
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+aside header button.expander div:after {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + 4.5px);
+  width: 14px;
+  height: 2px;
+  background: var(--g4-app-foreground);
+  content: "";
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+aside header button:active div {
+  --g4-app-foreground: var(--g4-app-background);
+}
+aside header div.accountInfo {
+  width: 100%;
+  display: none;
+}
+aside header div.accountInfo p {
+  font-weight: 400;
+  font-size: 15pt;
+  padding: 8px 16px;
+  margin: 0px;
+  flex-grow: 1;
+}
+aside svg {
+  fill: var(--g4-app-accent);
+}
+aside div.scroller {
+  padding: 8px 8px;
+  border-radius: 24px;
+  flex-grow: 1;
+  overflow: auto;
+}
+aside section {
+  background: var(--g4-app-header-background);
+  padding-bottom: 16px;
+  margin-bottom: 8px;
+  border-radius: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+aside section header {
+  font-weight: 500;
+  font-size: 15pt;
+  padding: 8px 16px;
+  display: flex;
+  justify-content: space-between;
+}
+aside section div.content {
+  flex-grow: 1;
+}
+aside section.gameMode div.content {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+aside section.gameMode div.content button.mode {
+  background: transparent;
+  color: var(--g4-app-foreground);
+  padding: 4px 8px;
+  border: none;
+  flex-grow: 1;
+}
+aside section.gameMode div.content button.mode p {
+  margin: 0px;
+  font-family: var(--g4-app-typeface);
+  font-weight: 500;
+  font-size: 12pt;
+  text-transform: uppercase;
+}
+aside section.gameMode div.content button.mode:hover {
+  box-shadow: inset 0px 0px 0px 4px var(--g4-game-foreground);
+}
+aside section.gameMode div.content button.mode.active {
+  background: var(--g4-game-foreground);
+  color: var(--g4-game-background);
+}
+aside section.gameMode div.content button[data-mode=reverse] p {
+  transform: scaleX(-1);
+}
+aside section.spectating div.content div.player {
+  position: relative;
+  padding: 8px 16px;
+  display: flex;
+  flex-wrap: wrap;
+}
+aside section.spectating div.content div.player p {
+  margin: 0px;
+}
+aside section.spectating div.content div.player p.name {
+  width: 100%;
+  font-size: 14pt;
+}
+aside section.spectating div.content div.player p.level {
+  margin-right: 16px;
+}
+aside section.spectating div.content div.player button {
+  position: absolute;
+  top: 8px;
+  right: 16px;
+}
+aside section.spectating div.content div.player.me p.name:after {
+  color: var(--g4-app-accent);
+  content: "You";
+  font-size: 11pt;
+  text-transform: uppercase;
+  padding: 2px 8px;
+}
+aside section.spectating div.content div.player.robot p.name:after {
+  color: var(--g4-app-accent);
+  content: "AI";
+  font-size: 11pt;
+  text-transform: uppercase;
+  padding: 2px 8px;
+}
+aside section.leaderboard div.content table {
+  width: 100%;
+  border-spacing: 0px;
+}
+aside section.leaderboard div.content table th {
+  font-weight: 500;
+}
+aside section.leaderboard div.content table tr td:first-child {
+  width: 15%;
+  text-align: center;
+}
+aside section.leaderboard div.content table tr td:last-child {
+  width: 25%;
+  text-align: center;
+}
+aside section.leaderboard div.content table tbody tr:hover {
+  background: var(--g4-app-foreground);
+  color: var(--g4-app-background);
+  cursor: pointer;
+}
+aside section.leaderboard div.content table tr.me {
+  background: var(--g4-app-accent);
+  color: var(--g4-app-background);
+}
+aside section.pwaInstall div.content {
+  padding: 8px 16px;
+}
+aside section.hidden {
+  display: none;
+}
+aside footer {
+  height: 33px;
+  max-height: 33px;
+  min-height: 33px;
+  padding: 4px 16px;
+}
+
+div.dialogContainer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  max-width: 400px;
+  bottom: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+dialog {
+  position: absolute;
+  top: 0;
+  left: 432px;
+  width: 100%;
+  height: 100%;
+  background: var(--g4-app-header-background);
+  color: var(--g4-app-foreground);
+  margin: 0px;
+  padding: 0px;
+  border: none;
+  box-shadow: 0px 0px 16px #00000050;
+  display: flex;
+  flex-direction: column;
+  transition: left 0.2s;
+  pointer-events: all;
+}
+dialog header {
+  top: 0;
+  min-height: 33px;
+  font-weight: 500;
+  font-size: 15pt;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+}
+dialog header button {
+  margin-right: 16px;
+}
+dialog div.content {
+  background: var(--g4-app-background);
+  padding: 16px;
+  border-radius: 24px 0px 0px 0px;
+  flex-grow: 1;
+  overflow: auto;
+}
+dialog div.content button {
+  background: var(--g4-app-header-background);
+}
+dialog div.content button:active {
+  background: var(--g4-app-foreground);
+}
+dialog div.content h2 {
+  font-size: 16pt;
+  font-weight: 400;
+  margin: 0px 0px 32px 0px;
+}
+dialog div.content h2 em {
+  color: var(--g4-app-accent);
+  font-size: 20pt;
+  font-style: normal;
+}
+dialog div.content p.error {
+  color: var(--g4-app-accent);
+  display: none;
+}
+dialog div.content p.error.visible {
+  display: block;
+}
+dialog div.content form {
+  display: flex;
+  flex-direction: column;
+}
+dialog div.content form label {
+  margin: 8px 0px 0px 0px;
+}
+dialog div.content form input {
+  background: transparent;
+  color: var(--g4-app-foreground);
+  font-family: var(--g4-app-typeface);
+  font-size: 12pt;
+  padding: 4px 8px;
+  border: 1px solid var(--g4-app-accent);
+}
+dialog div.content div.buttons {
+  height: 40px;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+dialog div.content div.buttons button.primary {
+  color: var(--g4-app-accent);
+}
+
+dialog.open {
+  left: 0;
+}
+
+dialog#playerStats div.content {
+  padding: 8px;
+}
+dialog#playerStats div.content h2 {
+  font-size: 16pt;
+  font-weight: 400;
+  margin: 8px 8px 40px 8px;
+}
+dialog#playerStats div.content div.highScore {
+  background: var(--g4-game-background);
+  color: var(--g4-game-cannon);
+  padding: 8px 16px;
+  margin-bottom: 8px;
+  border-radius: 24px;
+  box-shadow: inset 0px 0px 0px 1px var(--g4-game-foreground);
+}
+dialog#playerStats div.content div.highScore p {
+  font-size: 14pt;
+  margin: 0px;
+}
+dialog#playerStats div.content div.highScore table {
+  width: 100%;
+  border-spacing: 0px;
+}
+dialog#playerStats div.content div.highScore table th {
+  font-weight: 400;
+  text-align: left;
+}
+dialog#playerStats div.content div.highScore table td {
+  font-weight: 500;
+  font-size: 13pt;
+}
+
+body.left aside {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: unset;
+  width: 400px;
+  transition: left 0.2s;
+}
+body.left aside > header {
+  flex-direction: row-reverse;
+}
+body.left aside.expanded button.expander div:before {
+  top: calc(50% + 4.5px);
+}
+body.left aside.expanded button.expander div:after {
+  top: calc(50% - 4.5px);
+}
+body.left div.dialogContainer {
+  left: 0;
+  right: unset;
+}
+body.left dialog {
+  left: unset;
+  right: 432px;
+  transition: right 0.2s;
+}
+body.left dialog.open {
+  left: unset;
+  right: 0px;
+  transition: right 0.2s;
+}
+
+@media (max-width: 768px) {
+  aside {
+    width: 100%;
+    max-width: 400px;
+  }
+  aside button.expander {
+    display: block !important;
+  }
+
+  aside:not(.expanded) {
+    right: -100%;
+  }
+  aside:not(.expanded) button.expander {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 48px;
+  }
+  aside:not(.expanded) button.expander div {
+    position: relative;
+    width: 20px;
+    height: 2px;
+    background: var(--g4-app-foreground);
+  }
+  aside:not(.expanded) button.expander div:before {
+    position: absolute;
+    left: 50%;
+    top: -6px;
+    width: 20px;
+    height: 2px;
+    background: var(--g4-app-foreground);
+    content: "";
+    transform: translate(-50%, -50%);
+  }
+  aside:not(.expanded) button.expander div:after {
+    position: absolute;
+    left: 50%;
+    top: 8px;
+    width: 20px;
+    height: 2px;
+    background: var(--g4-app-foreground);
+    content: "";
+    transform: translate(-50%, -50%);
+  }
+
+  body.left aside:not(.expanded) {
+    left: -100%;
+  }
+  body.left aside:not(.expanded) button.expander {
+    left: 0;
+    right: unset;
+  }
+}
+dialog#settings h2, dialog#settings h3, dialog#themeEditor h2, dialog#themeEditor h3 {
+  margin-bottom: 0px;
+}
+dialog#settings h2:not(:first-child), dialog#themeEditor h2:not(:first-child) {
+  margin-top: 32px;
+}
+
+div.setting {
+  padding: 4px 0px;
+  display: flex;
+  align-items: center;
+}
+div.setting.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+div.setting label {
+  position: relative;
+  font-size: 13pt;
+  flex-grow: 1;
+}
+div.setting input[type=number] {
+  width: 64px;
+  background: transparent;
+  color: var(--g4-app-foreground);
+  font-family: var(--g4-app-typeface);
+  font-size: 14pt;
+  padding: 4px 8px;
+  border: 1px solid var(--g4-app-accent);
+}
+div.setting input[type=checkbox] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+div.setting input[type=checkbox] + label:before {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 36px;
+  height: 24px;
+  background: var(--g4-app-foreground);
+  content: "";
+  border-radius: 12px;
+  transform: translateY(-50%);
+  transition: all 0.2s;
+}
+div.setting input[type=checkbox] + label:after {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background: var(--g4-app-background);
+  content: "";
+  border-radius: 10px;
+  transform: translateY(-50%);
+  transition: background 0.2s, right 0.2s;
+}
+div.setting input[type=checkbox]:checked + label:before {
+  background: var(--g4-app-accent);
+}
+div.setting input[type=checkbox]:checked + label:after {
+  right: 2px;
+  background: var(--g4-app-background);
+}
+div.setting input[type=checkbox] + label.loading {
+  opacity: 0.8;
+  pointer-events: none;
+}
+@keyframes LabelThrobber {
+  0% {
+    transform: translateY(-50%);
+  }
+  100% {
+    transform: translateY(-50%) rotate(360deg);
+  }
+}
+div.setting input[type=checkbox] + label.loading:before {
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border: 3px solid transparent;
+  border-right: 3px solid var(--g4-app-accent);
+  animation: LabelThrobber 0.7s infinite linear;
+}
+div.setting input[type=checkbox] + label.loading:after {
+  opacity: 0;
+}
+div.setting button.keyboardInput, div.setting button.gamepadInput {
+  width: 180px;
+  text-transform: none;
+}
+div.setting button.keyboardInput.waiting, div.setting button.gamepadInput.waiting {
+  color: var(--g4-app-accent);
+}
+
+div.themeList div.theme {
+  background: var(--g4-app-header-background);
+  color: var(--g4-app-foreground);
+  padding: 8px 16px;
+  margin-top: 8px;
+  border-radius: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+}
+div.themeList div.theme p {
+  width: 100%;
+  font-size: 14pt;
+  margin: 0px;
+  flex-grow: 1;
+}
+div.themeList div.theme.current p:after {
+  content: " current";
+  font-size: 11pt;
+}
+div.themeList div.theme button {
+  background: var(--g4-app-background);
+  margin-left: 8px;
+}
+div.themeList div.theme button:active {
+  background: var(--g4-app-foreground);
+  color: var(--g4-app-background);
+}
+div.themeList div.theme:hover {
+  box-shadow: inset 0px 0px 0px 2px var(--g4-app-accent);
+}
+div.themeList div.theme.current {
+  box-shadow: inset 0px 0px 0px 2px var(--g4-app-foreground);
+}
+
+dialog#themeEditor input[type=text] {
+  width: calc(100% - 16px);
+  background: transparent;
+  color: var(--g4-app-foreground);
+  font-family: var(--g4-app-typeface);
+  font-size: 14pt;
+  padding: 4px 8px;
+  border: 1px solid var(--g4-app-accent);
+}
+dialog#themeEditor div.colors h2 {
+  margin-top: 16px;
+  margin-bottom: 4px;
+}
+dialog#themeEditor div.colors div.colors h2 {
+  font-size: 14pt;
+}
+dialog#themeEditor div.colors div.colors div.colors h2 {
+  font-size: 13pt;
+  font-weight: 600;
+}
+dialog#themeEditor div.colors div.color {
+  padding: 4px 0px;
+  display: flex;
+  align-items: center;
+}
+dialog#themeEditor div.colors div.color label {
+  position: relative;
+  font-size: 13pt;
+  flex-grow: 1;
+}
+
+div.titleBar {
+  display: none;
+}
+
+body.electron div.titleBar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  height: 40px;
+  display: flex;
+  z-index: 9000;
+  -webkit-app-region: drag;
+}
+body.electron div.titleBar div.title {
+  color: var(--g4-app-foreground);
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+}
+body.electron div.titleBar div.title p {
+  margin: 0px 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+body.electron div.titleBar div.buttons {
+  min-width: 144px;
+  display: flex;
+  justify-content: flex-end;
+}
+body.electron div.titleBar div.buttons button {
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-app-region: no-drag;
+}
+body.electron div.titleBar div.buttons button svg {
+  width: 16px;
+  height: 16px;
+  fill: var(--g4-app-foreground);
+}
+body.electron div.titleBar div.buttons button:active {
+  background: var(--g4-app-foreground);
+}
+body.electron div.titleBar div.buttons button:active svg {
+  fill: var(--g4-app-background);
+}
+body.electron main div.game header {
+  top: 40px;
+}
+body.electron main div.game canvas {
+  top: calc(50% + 40px);
+}
+body.electron aside, body.electron dialog {
+  height: calc(100% - 40px);
+  padding-top: 40px;
+}
+
+body:not(.maximized) button#restoreBtn {
+  display: none;
+}
+
+body.maximized button#maximizeBtn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  body.electron aside:not(.expanded) button.expander {
+    top: 40px;
+  }
+}
+:root {
+  --g4-app-typeface: "Poppins", sans-serif;
+}
+
+body {
+  background: var(--g4-app-background);
+  color: var(--g4-game-foreground);
+  font-family: var(--g4-app-typeface);
+  user-select: none;
+}
+
+body.login div.accountInfo {
+  display: flex;
+}
+body.login button#openLoginBtn {
+  display: none;
+}
+
+button {
+  background: var(--g4-app-background);
+  color: var(--g4-app-foreground);
+  font-family: var(--g4-app-typeface);
+  font-weight: 500;
+  font-size: 12pt;
+  text-transform: uppercase;
+  padding: 4px 16px;
+  border: none;
+  border-radius: 8px;
+}
+
+button:hover {
+  box-shadow: inset 0px 0px 0px 4px var(--g4-app-foreground);
+}
+
+button:active {
+  background: var(--g4-app-foreground);
+  color: var(--g4-app-background);
+}
+
+a {
+  color: var(--g4-app-accent);
+  text-decoration: none;
+}
+a:hover {
+  background: var(--g4-app-accent);
+  color: var(--g4-app-background);
+}
+
+body.light div.firstTimeHint img {
+  filter: invert(0);
+}
+body.light button.daynight div:before {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  background: var(--g4-app-foreground);
+  border-radius: 0px;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+}
+body.light button.daynight div:after {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  background: var(--g4-app-foreground);
+  border-radius: 0px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  z-index: -1;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--g4-app-scroll-track);
+  border-radius: 6px;
+  box-shadow: inset 0px 0px 0px 3px var(--g4-app-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--g4-app-scroll-thumb);
+  border-radius: 6px;
+  box-shadow: inset 0px 0px 0px 3px var(--g4-app-background);
+}
+
+/*# sourceMappingURL=layout.css.map */

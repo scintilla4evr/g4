@@ -1,1601 +1,708 @@
-(() => {
-    var legacyMode = false
-
-    class Projectile {
-        constructor(
-            x, y, radius,
-            veloX, veloY
-        ) {
-            this.x = x
-            this.y = y
-            this.radius = radius
-            this.veloX = veloX
-            this.veloY = veloY
-        }
-
+class Game {
+    /**
+     * @param {GameData} gameData 
+     * @param {Boolean} isSpectated 
+     * @param {String} spectatedUser
+     * @param {Leaderboard} leaderboard
+     */
+    constructor(
+        gameData,
+        isSpectated, spectatedUser,
+        leaderboard
+    ) {
         /**
-         * 
-         * @param {Number} time 
+         * @type {GameData}
          */
-        advance(time) {
-            this.x += this.veloX * time
-            this.y += this.veloY * time
-        }
-    }
-
-    class Collider {
-        /**
-         * @param {Projectile} projectile 
-         * @returns {Boolean}
-         */
-        hitTest(projectile) {
-            return false
-        }
-    }
-
-    class RingElement extends Collider {
-        /**
-         * 
-         * @param {CanvasRenderingContext2D} context
-         */
-        render(context) {}
-
-        /**
-         * 
-         * @param {Number} dAngle 
-         */
-        rotate(dAngle) {}
-
-        /**
-         * 
-         * @param {Number} time 
-         */
-        advance(time) {}
-    }
-
-    class RingBall extends RingElement {
-        constructor(angle, distance, radius) {
-            super()
-
-            this.angle = angle
-            this.distance = distance
-            this.radius = radius
-        }
-
-        /**
-         * @param {Projectile} projectile 
-         * @returns {Boolean}
-         */
-        hitTest(projectile) {
-            return Math.hypot(
-                this.distance * Math.cos(2 * Math.PI * this.angle) - projectile.x,
-                this.distance * Math.sin(2 * Math.PI * this.angle) - projectile.y
-            ) < (this.radius + projectile.radius)
-        }
-
-        rotate(dAngle) {
-            this.angle += dAngle
-        }
-
-        render(context) {
-            context.beginPath()
-
-            context.arc(
-                this.distance * Math.cos(2 * Math.PI * this.angle) + context.canvas.width / 2,
-                this.distance * Math.sin(2 * Math.PI * this.angle) + context.canvas.height / 2,
-                this.radius,
-                0, 2 * Math.PI
-            )
-
-            context.fill()
-        }
-    }
-
-    class RingPulsingBall extends RingBall {
-        constructor(angle, distance, radius, pulseFreq) {
-            super(angle, distance, radius)
-
-            this.baseRadius = radius
-            this.pulseTime = 0
-            this.pulseFreq = pulseFreq
-        }
-
-        advance(dTime) {
-            this.pulseTime += dTime
-
-            this.radius = this.baseRadius + Math.sin(this.pulseTime * 2 * Math.PI * this.pulseFreq) * this.baseRadius / 3
-        }
-    }
-
-    class RingBar extends RingElement {
-        constructor(angleStart, angleLength, distance, radius) {
-            super()
-
-            this.angleStart = angleStart
-            this.angleLength = angleLength
-            this.distance = distance
-            this.radius = radius
-        }
-
-        /**
-         * @param {Projectile} projectile 
-         * @returns {Boolean}
-         */
-        hitTest(projectile) {
-            var projAngle = Math.atan2(
-                projectile.y, projectile.x
-            )
-            if (projAngle < 0) projAngle += Math.PI * 2
-            projAngle /= Math.PI * 2
-
-            var projDist = Math.hypot(projectile.x, projectile.y)
-
-            var clampedStart = this.angleStart % 1
-            var clampedEnd = (clampedStart + this.angleLength) % 1
-
-            var mightCollide = false
-
-            if (clampedStart < clampedEnd) {
-                mightCollide = projAngle > clampedStart && projAngle < clampedEnd
-            } else {
-                mightCollide = projAngle > clampedStart || projAngle < clampedEnd
-            }
-
-            if (mightCollide && Math.abs(projDist - this.distance) < (this.radius + projectile.radius))
-                return true
-            return false
-        }
-
-        rotate(dAngle) {
-            this.angleStart += dAngle
-        }
-
-        render(context) {
-            context.beginPath()
-
-            context.lineWidth = this.radius * 2
-
-            context.arc(
-                context.canvas.width / 2,
-                context.canvas.height / 2,
-                this.distance,
-                2 * Math.PI * this.angleStart,
-                2 * Math.PI * (this.angleStart + this.angleLength)
-            )
-
-            context.stroke()
-        }
-    }
-
-    class RingMarqueeBar extends RingBar {
-        constructor(angleStart, angleLength, distance, radius, sweepFreq) {
-            super(angleStart, angleLength, distance, radius)
+        this.data = gameData
         
-            this.sweepFreq = sweepFreq
-            this.sweepTime = 0
+        /**
+         * @type {Boolean}
+         */
+        this.isSpectated = isSpectated
 
-            this.baseStart = angleStart
-            this.baseEnd = angleStart + angleLength
+        /**
+         * @type {String}
+         */
+        this.spectatedUser = spectatedUser
+
+        /**
+         * @type {Number}
+         */
+        this.bpm = 16.25
+
+        /**
+         * @type {HTMLDivElement}
+         */
+        this.dom = this.createDOM()
+
+        /**
+         * @type {Number}
+         */
+        this.gameTime = 0
+
+        /**
+         * @type {Leaderboard}
+         */
+        this.leaderboard = leaderboard
+    }
+
+    /**
+     * @returns {HTMLDivElement}
+     */
+    createDOM() {
+        let div = document.createElement("div")
+        div.classList.add("game")
+        if (this.isSpectated)
+            div.classList.add("spectated")
+
+        let spectatingHeader = ""
+        if (this.isSpectated)
+            spectatingHeader = `<div class="spectating">Spectating <span class="name">${this.spectatedUser}</div>`
+
+        div.innerHTML = `
+        <header>
+            ${spectatingHeader}
+            <div class="stat deaths">
+                <p class="name">Deaths</p>
+                <p class="value">0</p>
+            </div>
+            <div class="stat level">
+                <p class="name">Level</p>
+                <p class="value">16</p>
+            </div>
+            <div class="stat record">
+                <p class="name">Record</p>
+                <p class="value">16</p>
+            </div>
+        </header>
+
+        <canvas class="viewport"></canvas>
+
+        <footer>
+            <div class="progress">
+                <div style="width: 50%"></div>
+                <p class="time">5 s</p>
+            </div>
+            <button>
+                Slow mode
+            </button>
+        </footer>`
+
+        if (!this.isSpectated) {
+            div.querySelector("canvas").addEventListener("mouseup", (e) => {
+                if (!this.data.projectile && e.button == 0)
+                    this.shoot()
+            })
+            div.querySelector("canvas").addEventListener("touchend", (e) => {
+                if (!this.data.projectile)
+                    this.shoot()
+            })
+
+            div.querySelector("footer button").addEventListener("click", () => {
+                if (this.data.slow && !this.data.slow.isSlow)
+                    this.enableSlow()
+            })
         }
 
-        advance(dTime) {
-            this.sweepTime += dTime
-            
-            var sin = Math.sin(this.sweepTime * 2 * Math.PI * this.sweepFreq) / 2 + 0.5
-            this.angleLength = sin * (this.baseEnd - this.baseStart)
-            this.angleStart = (this.baseStart + this.baseEnd) / 2 - this.angleLength / 2
+        return div
+    }
+
+    getLevelRadius() {
+        let radius = 200
+
+        this.data.rings.forEach(ring => {
+            ring.items.forEach(item => {
+                switch (item.type) {
+                    case "ball":
+                    case "bar":
+                    case "marqueeBar":
+                        radius = Math.max(
+                            radius,
+                            item.distance + item.radius + ring.distance
+                        )
+                        break
+                    case "pulsingBall":
+                        radius = Math.max(
+                            radius,
+                            item.distance + item.baseRadius * 2 + ring.distance
+                        )
+                        break
+                }
+            })
+        })
+
+        let cannonDistance = Math.hypot(
+            this.data.cannon.x, this.data.cannon.y
+        )
+
+        radius = Math.max(radius, cannonDistance + 20)
+
+        return radius
+    }
+
+    /**
+     * @param {Number} dTime 
+     * @param {Ring} ring
+     */
+    advanceRing(dTime, dRawTime, ring) {
+        ring.rotation += dTime
+
+        let phase = 2 * Math.PI * ring.revolvePhase
+        let centerX = Math.cos(ring.rotation * 2 * Math.PI * ring.revolveFreq + phase) * ring.distance
+        let centerY = Math.sin(ring.rotation * 2 * Math.PI * ring.revolveFreq + phase) * ring.distance
+
+        ring.items.forEach(item => {
+            item.centerX = centerX
+            item.centerY = centerY
+
+            switch (item.type) {
+                case "ball":
+                    item.angle += dTime
+                    break
+                case "pulsingBall":
+                    item.angle += dTime
+                    item.pulseTime += dRawTime
+                    item.radius = item.baseRadius + Math.sin(
+                        item.pulseTime * 2 * Math.PI * item.pulseFreq
+                    ) * item.baseRadius / 3
+                    break
+                case "bar":
+                    item.angleStart += dTime
+                    break
+                case "marqueeBar":
+                    item.baseStart += dTime
+                    item.baseEnd += dTime
+
+                    item.sweepTime += dRawTime
+
+                    let sin = Math.sin(
+                        item.sweepTime * 2 * Math.PI * item.sweepFreq
+                    ) / 2 + 0.5
+
+                    item.angleLength = sin * (item.baseEnd - item.baseStart)
+                    item.angleStart = (item.baseStart + item.baseStart) / 2 - item.angleLength / 2
+
+                    break
+            }
+        })
+    }
+
+    /**
+     * 
+     * @param {Projectile} bullet 
+     * @param {RingElement} item 
+     */
+    hitTest(bullet, item) {
+        let bulletX = bullet.x - item.centerX
+        let bulletY = bullet.y - item.centerY
+
+        switch (item.type) {
+            case "ball":
+            case "pulsingBall":
+                return Math.hypot(
+                    item.distance * Math.cos(2 * Math.PI * item.angle) - bulletX,
+                    item.distance * Math.sin(2 * Math.PI * item.angle) - bulletY
+                ) < (item.radius + bullet.radius)
+            case "bar":
+            case "marqueeBar":
+                let bulletAngle = Math.atan2(
+                    bulletY, bulletX
+                )
+                if (bulletAngle < 0) bulletAngle += Math.PI * 2
+                bulletAngle /= Math.PI * 2
+
+                let bulletDist = Math.hypot(bulletX, bulletY)
+
+                let clampedStart = item.angleStart % 1
+                let clampedEnd = (clampedStart + item.angleLength) % 1
+
+                let mightCollide = false
+
+                if (clampedStart < clampedEnd) {
+                    mightCollide = bulletAngle > clampedStart && bulletAngle < clampedEnd
+                } else {
+                    mightCollide = bulletAngle > clampedStart || bulletAngle < clampedEnd
+                }
+
+                if (
+                    mightCollide &&
+                    Math.abs(bulletDist - item.distance) < (item.radius + bullet.radius)
+                )
+                    return true
         }
 
-        rotate(dAngle) {
-            this.baseStart += dAngle
-            this.baseEnd += dAngle
+        return false
+    }
+
+    /**
+     * 
+     * @param {Projectile} bullet 
+     */
+    hitTestLevel(bullet) {
+        for (let ring of this.data.rings) {
+            if (ring.isDistraction) continue
+            for (let item of ring.items) {
+                if (this.hitTest(bullet, item)) return true
+            }
+        }
+
+        return false
+    }
+
+    /**
+     * @param {Number} dTime 
+     */
+    calculateBeatTime(dTime) {
+        let beatTime = 60 / this.bpm
+
+        return dTime / beatTime
+    }
+
+    /**
+     * @param {Number} dTime 
+     */
+    advanceLevel(dTime) {
+        let beatTime = this.calculateBeatTime(dTime)
+
+        this.data.rotation += beatTime
+        this.data.rings.forEach(ring => this.advanceRing(
+            beatTime * ring.speedMult, beatTime,
+            ring
+        ))
+    }
+
+    /**
+     * @param {Number} dTime 
+     */
+    advanceCannon(dTime) {
+        let beatTime = this.calculateBeatTime(dTime)
+
+        this.data.cannon.angle -= beatTime * 1.5
+
+        switch (this.data.mode) {
+            case "hard":
+            case "hell":
+                this.data.cannon.x = 40 * Math.cos(-this.data.cannon.angle * Math.PI)
+                this.data.cannon.y = 40 * Math.sin(-this.data.cannon.angle * Math.PI)
+                break
+            case "hades":
+                this.data.cannon.x = 200 * Math.cos(-this.data.cannon.angle * Math.PI)
+                this.data.cannon.y = 200 * Math.sin(-this.data.cannon.angle * Math.PI)
+                break
+            case "reverse":
+                this.data.cannon.angle += dTime * 0.461538461 / 2
+
+                this.data.cannon.x = -400 * Math.cos(2 * Math.PI * this.data.cannon.angle) 
+                this.data.cannon.y = -400 * Math.sin(2 * Math.PI * this.data.cannon.angle) 
+                break
+            default:
+                this.data.cannon.x = 0
+                this.data.cannon.y = 0
         }
     }
 
     /**
-     * Represents a ring of obstacles
+     * 
+     * @param {Number} dTime 
      */
-    class Ring {
-        constructor(
-            level,
-            speedMult,
-            isDistraction
-        ) {
-            /**
-             * @type {Level}
-             */
-            this.level = level
+    advance(dTime) {
+        let physTime = dTime
+        if (this.data.slow.isSlow) physTime /= 2
 
-            /**
-             * @type {Number}
-             */
-            this.speedMult = speedMult
+        this.gameTime += physTime
 
-            /**
-             * @type {Number}
-             */
-            this.rotation = 0
+        this.advanceLevel(physTime)
 
-            /**
-             * @type {RingElement[]}
-             */
-            this.elements = []
+        // Process collisions and level transition here
+        if (!this.isSpectated && this.data.projectile) {
+            let levelRadius = this.getLevelRadius()
+            let bullet = this.data.projectile
 
-            /**
-             * @type {Boolean}
-             */
-            this.isDistraction = isDistraction
-        }
-        /**
-         * 
-         * @param {CanvasRenderingContext2D} context
-         */
-        render(context) {
-            context.globalAlpha = 1
-            if (this.isDistraction) context.globalAlpha = 0.4
-            this.elements.forEach(element => element.render(context))
-            context.globalAlpha = 1
-        }
-
-        advance(time) {
-            this.rotation += time * this.speedMult
-            this.elements.forEach(element => {
-                element.rotate(time * this.speedMult)
-                element.advance(time)
-            })
-        }
-
-        /**
-         * 
-         * @param {Projectile} projectile 
-         * @returns {RingElement}
-         */
-        getCollidingObject(projectile) {
-            for (var element of this.elements) {
-                if (element.hitTest(projectile)) return element
+            if (Math.hypot(bullet.x, bullet.y) >= levelRadius * 1.41 + 20) {
+                this.data.projectile = null
+                this.nextLevel()
             }
-            return null
+
+            if (this.hitTestLevel(bullet)) {
+                this.data.projectile = null
+                this.resetProgress()
+            }
+        }
+
+        if (this.data.projectile) {
+            // move the bullet
+            this.data.projectile.x += this.data.projectile.velocityX * dTime
+            this.data.projectile.y += this.data.projectile.velocityY * dTime
+        }
+
+        // move the cannon
+        this.advanceCannon(physTime)
+
+        if (this.data.slow.isSlow) {
+            let slow = this.data.slow
+
+            slow.time = Math.max(0, slow.time - dTime)
+            if (slow.time == 0) {
+                this.disableSlow()
+            }
         }
     }
 
-    class Level {
-        constructor(bpm) {
-            /**
-             * @type {Ring[]}
-             */
-            this.rings = []
+    shoot() {
+        let cannon = this.data.cannon
 
-            /**
-             * @type {Number}
-             */
-            this.bpm = bpm
-
-            /**
-             * @type {Number}
-             */
-            this.rotation = 0
-        }
-
-        static create(difficulties) {
-            var level = new Level(16.25)
-
-            var innerRing = new Ring(level, 1)
-            innerRing.elements = level.generateInnerRing(difficulties[0])
-            level.rings.push(innerRing)
-
-            var middleRing = new Ring(level, 0.5)
-            if (difficulties[1]) {
-                middleRing.elements = level.generateMiddleRing(difficulties[1])
-            }
-            level.rings.push(middleRing)
-
-            var outerRing = new Ring(level, 0.25)
-            if (difficulties[2]) {
-                outerRing.elements = level.generateOuterRing(difficulties[2])
-            }
-            level.rings.push(outerRing)
-
-            return level
-        }
-
-        static createDenise() {
-            var level = new Level(16.25)
-
-            let difficulties = Array(3).fill(0).map(x => Math.floor(Math.random() * 2 + 2))
-
-            var innerRing = new Ring(level, 1)
-            innerRing.elements = level.generateDeniseRing(4, 200)
-            level.rings.push(innerRing)
-
-            var middleRing = new Ring(level, 0.5)
-            middleRing.elements = level.generateDeniseRing(4, 266)
-            level.rings.push(middleRing)
-
-            var outerRing = new Ring(level, 0.25)
-            outerRing.elements = level.generateDeniseRing(4, 333)
-            level.rings.push(outerRing)
-
-            var outerRing2 = new Ring(level, 0.25)
-            outerRing2.elements = level.generateDeniseRing(4, 400)
-            level.rings.push(outerRing2)
-
-            return level
-        }
-
-        static createHell() {
-            var level = new Level(16.25)
-
-            var innerRing = new Ring(level, 1)
-            innerRing.elements = level.generateInnerRing(2)
-            level.rings.push(innerRing)
-
-            var innerRing2 = new Ring(level, 0.5)
-            innerRing2.elements = level.generateInnerRing(2)
-            level.rings.push(innerRing2)
-
-            var middleRing = new Ring(level, 0.5)
-            middleRing.elements = level.generateMiddleRing(3)
-            level.rings.push(middleRing)
-
-            var outerRing = new Ring(level, 0.25)
-            outerRing.elements = level.generateOuterRing(3)
-            level.rings.push(outerRing)
-
-            var outerRing2 = new Ring(level, 0.125)
-            outerRing2.elements = level.generateOuterRing(3)
-            level.rings.push(outerRing2)
-
-            return level
-        }
-
-        static createHades() {
-            var level = new Level(16.25)
-
-            var innerRing = new Ring(level, 1)
-            innerRing.elements = level.generateInnerRing(1, 100)
-            level.rings.push(innerRing)
-
-            var middleRing = new Ring(level, 0.5)
-            middleRing.elements = level.generateInnerRing(3, 300)
-            level.rings.push(middleRing)
-
-            var outerRing1 = new Ring(level, 0.25)
-            outerRing1.elements = level.generateOuterRing(3)
-            level.rings.push(outerRing1)
-
-            var outerRing2 = new Ring(level, 0.125)
-            outerRing2.elements = level.generateOuterRing(3)
-            level.rings.push(outerRing2)
-
-            // Distractions
-            var middleRing = new Ring(level, 1)
-            middleRing.isDistraction = true
-            middleRing.elements = level.generateMiddleRing(3)
-            level.rings.push(middleRing)
-
-            var outerRing3 = new Ring(level, 0.5)
-            outerRing3.isDistraction = true
-            outerRing3.elements = level.generateOuterRing(3)
-            level.rings.push(outerRing3)
-
-            var innerRing2 = new Ring(level, 0.75)
-            innerRing2.isDistraction = true
-            innerRing2.elements = level.generateInnerRing(2, 150)
-            level.rings.push(innerRing2)
-
-            return level
-        }
-
-        advance(time) {
-            var beatTime = 60 / this.bpm
-            this.rotation += time / beatTime
-
-            this.rings.forEach(ring => ring.advance(time / beatTime))
-        }
-
-        /**
-         * 
-         * @param {CanvasRenderingContext2D} context
-         */
-        render(context) {
-            this.rings.forEach(ring => ring.render(context))
-        }
-
-        /**
-         * 
-         * @param {Projectile} projectile 
-         * @returns {RingElement}
-         */
-        getCollidingObject(projectile) {
-            for (var ring of this.rings) {
-                if (ring.isDistraction) continue
-                var element = ring.getCollidingObject(projectile)
-                if (element) return element
-            }
-            return null
-        }
-
-        generateAngleArrangement(n, isSmall, isEasy) {
-            var angleBetween = 1 / n
-            var shiftAngle = angleBetween / 3
-            var isShifted = Math.random() >= 0.5
-            if (isEasy) isShifted = false
-            var shiftSign = (Math.random() >= 0.5) ? 1 : -1
-    
-            var angles = []
-    
-            for (var i = 0; i < n; i++) {
-                var angle = i * angleBetween
-    
-                if (isShifted && n == 4 && i % 2) {
-                    angle += shiftSign * shiftAngle
-                } else if (isShifted && n == 6 && !isSmall) {
-                    if (i % 3 == 0) angle += shiftSign * shiftAngle
-                    if (i % 3 == 1) angle -= shiftSign * shiftAngle
-                }
-    
-                angles.push(angle)
-            }
-    
-            return angles
-        }
-
-        generateInnerRing(difficulty, radius) {
-            var n = 2
-            if (!radius) radius = 200
-            if (difficulty == 2) n = Math.floor(Math.random() * 2) + 2
-            if (difficulty == 3) n = 4
-    
-            n += Math.round(Math.random() * 2)
-    
-            var elements = []
-            var angles = this.generateAngleArrangement(n, true, difficulty < 3)
-    
-            for (var i = 0; i < n; i++) {
-                var isBall = Math.random() >= 0.5
-    
-                if (isBall || (!isBall && i == 0)) {
-                    elements.push(
-                        new RingBall(angles[i], radius, 50)
-                    )
-    
-                    if (Math.random() >= 0.7 && difficulty > 1 && i > 0) {
-                        elements.push(
-                            new RingBall(
-                                angles[i] + 0.08, radius, 20
-                            ),
-                            new RingBall(
-                                angles[i] - 0.08, radius, 20
-                            )
-                        )
-    
-                    }
-                } else if (!isBall && i > 0) {
-                    var angleStart = angles[i]
-                    var angleLength = angles[(i + 1) % angles.length] - angleStart
-                    if (angleLength < 0) angleLength += 1
-    
-                    elements.push(
-                        new RingBar(
-                            angleStart, angleLength, radius, 10
-                        )
-                    )
-    
-                    if (Math.random() >= 0.5) {
-                        elements.push(
-                            new RingBall(
-                                angleStart, radius, 30
-                            ),
-                            new RingBall(
-                                angleStart + angleLength, radius, 30
-                            )
-                        )
-                    }
-                }
-            }
-    
-            return elements
-        }
-
-        generateMiddleRing(difficulty) {
-            if (difficulty == 1) return []
-            var n = (difficulty - 1) * 2
-            if (difficulty == 3 && Math.random() >= 0.6) n = 6
-    
-            var angles = this.generateAngleArrangement(n)
-            var elements = []
-    
-            for (var i = 0; i < n / 2; i++) {
-                var angleStart = angles[2 * i]
-                var angleLength = angles[2 * i + 1] - angleStart
-    
-                if (difficulty == 3 && Math.random() >= 0.5) {
-                    elements.push(
-                        new RingMarqueeBar(angleStart, angleLength, 300, 10, 1)
-                    )
-                } else {
-                    elements.push(
-                        new RingBar(angleStart, angleLength, 300, 10)
-                    )
-                }
-            }
-    
-            return elements
-        }
-
-        generateDeniseRing(difficulty, radius) {
-            if (difficulty == 1) return []
-            var n = (difficulty - 1) * 2
-            if (difficulty == 3 && Math.random() >= 0.6) n = 6
-            if (difficulty == 4) n = Math.floor(Math.random() * 2)*4 + 4
-    
-            var angles = this.generateAngleArrangement(n)
-            var elements = []
-    
-            for (var i = 0; i < n / 2; i++) {
-                var angleStart = angles[2 * i]
-                var angleLength = angles[2 * i + 1] - angleStart
-    
-                if (difficulty >= 3 && Math.random() >= 0.5) {
-                    elements.push(
-                        new RingMarqueeBar(angleStart, angleLength, radius, 2, 1)
-                    )
-                } else {
-                    elements.push(
-                        new RingBar(angleStart, angleLength, radius, 2)
-                    )
-                }
-            }
-
-            for (var i = 1; i < n; i += 2) {
-                var angleStart = angles[i]
-                var angleLength = angles[(i + 1) % n] - angleStart
-
-                var numOfBalls = Math.round(Math.random() * 2 + 1)
-
-                for (var j = 1; j <= (numOfBalls + 1); j++) {
-                    elements.push(
-                        new RingBall(
-                            angleStart + (j/(numOfBalls+2)) * angleLength,
-                            radius,
-                            4
-                        )
-                    )
-                }
-            }
-    
-            return elements
-        }
-
-        generateOuterRing(difficulty) {
-            if (difficulty == 1 && Math.random() >= 0.5) return []
-            var n = 3 + Math.round(1.2 * difficulty * Math.random())
-            var isPulsing = Math.random() >= 0.5 && difficulty > 1
-            var willGenerateBars = difficulty > 2
-    
-            var elements = []
-    
-            var angles = this.generateAngleArrangement(n)
-            angles.forEach((angle, i) => {
-                if (isPulsing && i % 2) {
-                    elements.push(
-                        new RingPulsingBall(angle, 400, 20, 2)
-                    )
-                } else {
-                    elements.push(
-                        new RingBall(angle, 400, 20)
-                    )
-                }
-            })
-    
-            if (willGenerateBars) {
-                for (var i = 0; i < n/2; i++) {
-                    var angle1 = angles[i * 2]
-                    var angle2 = angles[(i * 2 + 1) % angles.length]
-                    if (angle2 < angle1) angle2 += 1
-    
-                    var angleLength = (angle2 - angle1) * (Math.random() * 0.4 + 0.2)
-                    var angleStart = (angle1 + angle2) / 2 - angleLength / 2
-    
-                    elements.push(
-                        new RingBar(angleStart, angleLength, 400, 10)
-                    )
-                }
-            }
-    
-            return elements
+        this.data.projectile = {
+            x: 20 * Math.cos(2 * Math.PI * cannon.angle) + cannon.x,
+            y: 20 * Math.sin(2 * Math.PI * cannon.angle) + cannon.y,
+            radius: 7,
+            velocityX: 750 * Math.cos(2 * Math.PI * cannon.angle),
+            velocityY: 750 * Math.sin(2 * Math.PI * cannon.angle)
         }
     }
 
-    class Game {
-        constructor() {
-            /**
-             * @type {Level}
-             */
-            this.level = null
+    /**
+     * @param {CanvasRe} ctx 
+     */
+    renderCannon(ctx) {
+        let cannon = this.data.cannon
 
-            /**
-             * @type {Projectile}
-             */
-            this.bullet = null
+        ctx.beginPath()
+        ctx.moveTo(
+            20 * Math.cos(2 * Math.PI * cannon.angle) + cannon.x,
+            20 * Math.sin(2 * Math.PI * cannon.angle) + cannon.y
+        )
+        ctx.lineTo(
+            20 * Math.cos(2 * Math.PI * cannon.angle + Math.PI - 0.8) + cannon.x,
+            20 * Math.sin(2 * Math.PI * cannon.angle + Math.PI - 0.8) + cannon.y
+        )
+        ctx.lineTo(
+            8 * Math.cos(2 * Math.PI * cannon.angle + Math.PI) + cannon.x,
+            8 * Math.sin(2 * Math.PI * cannon.angle + Math.PI) + cannon.y
+        )
+        ctx.lineTo(
+            20 * Math.cos(2 * Math.PI * cannon.angle + Math.PI + 0.8) + cannon.x,
+            20 * Math.sin(2 * Math.PI * cannon.angle + Math.PI + 0.8) + cannon.y
+        )
+        ctx.closePath()
 
-            /**
-             * @type {Number}
-             */
-            this.playerAngle = 0
+        ctx.fill()
+    }
 
-            /**
-             * @type {Number}
-             */
-            this.progressionLevel = 0
+    /**
+     * @param {CanvasRe} ctx 
+     */
+    renderProjectile(ctx) {
+        let bullet = this.data.projectile
 
-            /**
-             * @type {Number}
-             */
-            this.gameTime = 0
+        ctx.beginPath()
+        ctx.arc(
+            bullet.x, bullet.y,
+            10,
+            0, Math.PI * 2
+        )
+        ctx.closePath()
 
-            /**
-             * @type {Number}
-             */
-            this.slowTime = 0
+        ctx.fill()
+    }
 
-            /**
-             * @type {Boolean}
-             */
-            this.isSlow = false
 
-            /**
-             * @type {Number[][]}
-             */
-            this.staticProgression = [
-                [1, 0, 0],
-                [1, 0, 0],
-                [2, 0, 0],
-                [2, 0, 0],
-                [2, 0, 0],
-                [3, 0, 0],
-                [3, 0, 1],
-                [2, 0, 2],
-                [2, 0, 2],
-                [2, 0, 2],
-                [2, 1, 2],
-                [2, 1, 2]
-            ]
+    /**
+     * @param {CanvasRenderingContext2D} ctx 
+     * @param {Ring} ring
+     */
+    renderRing(ctx, ring) {
+        ring.items.forEach(item => {
+            switch (item.type) {
+                case "ball":
+                case "pulsingBall":
+                    ctx.beginPath()
 
-            /**
-             * @type {Number[][]}
-             */
-            this.loopedProgression = [
-                [3, 1, 2],
-                [2, 2, 2],
-                [2, 2, 2],
-                [2, 3, 2],
-                [2, 3, 1],
-                [2, 2, 2],
-                [2, 2, 2],
-                [3, 1, 2],
-                [2, 1, 2],
-                [3, 1, 2],
-                [2, 2, 2],
-                [2, 2, 2],
-                [2, 3, 2],
-                [3, 3, 3],
-                [2, 2, 2],
-                [2, 2, 2],
-                [3, 1, 2],
-                [2, 1, 2]
-            ]
-        }
+                    ctx.arc(
+                        item.distance * Math.cos(2 * Math.PI * item.angle) + item.centerX,
+                        item.distance * Math.sin(2 * Math.PI * item.angle) + item.centerY,
+                        item.radius,
+                        0, 2 * Math.PI
+                    )
 
-        advance(time) {
-            var dTime = time
-            if (this.isSlow) dTime /= 2
+                    ctx.fill()
+                    break
+                case "bar":
+                case "marqueeBar":
+                    ctx.beginPath()
 
-            this.gameTime += dTime
+                    ctx.lineWidth = item.radius * 2
 
-            this.level.advance(dTime)
+                    ctx.arc(
+                        item.centerX, item.centerY, item.distance,
+                        2 * Math.PI * item.angleStart - 0.01,
+                        2 * Math.PI * (item.angleStart + item.angleLength) + 0.01
+                    )
 
-            if (this.bullet) {
-                if (Math.hypot(this.bullet.x, this.bullet.y) >= 600) {
-                    this.bullet = null
-                    this.nextLevel()
-                }
-
-                var collision = this.level.getCollidingObject(this.bullet)
-                if (collision instanceof RingElement) {
-                    this.resetProgress()
-                    this.bullet = null
-                }
+                    ctx.stroke()
             }
+        })
+    }
 
-            if (this.bullet) 
-                this.bullet.advance(dTime)
+    enableSlow() {
+        this.data.slow.isSlow = true
 
-            this.playerAngle -= dTime * 0.461538461
+        this.dom.classList.add("slow")
 
-            document.querySelector("#initSlowDown").textContent = `Slow down for ${Math.round(this.slowTime*10)/10}s`
-            document.querySelector("div.slowProgress div").style.width = `${this.slowTime * 10}%`
+        enableSlowAudioEffect()
+    }
 
-            if (this.isSlow) {
-                this.slowTime = Math.max(0, this.slowTime - time)
-                if (this.slowTime == 0) {
-                    document.body.classList.remove("slow")
-                    this.isSlow = false
-                }
-            }
-        }
+    disableSlow() {
+        if (!this.data.slow.isSlow) return
+        this.data.slow.isSlow = false
 
-        /**
-         * 
-         * @param {CanvasRenderingContext2D} context
-         */
-        render(context) {
-            context.fillStyle = "#dbb986"
-            context.strokeStyle = "#dbb986"
+        this.dom.classList.remove("slow")
 
-            context.clearRect(
-                0, 0,
-                context.canvas.width, context.canvas.height
-            )
+        disableSlowAudioEffect()
+    }
 
-            this.level.render(context)
+    updateDOM() {
+        if (this.dom.getAttribute("data-mode") != this.data.mode)
+            this.dom.setAttribute("data-mode", this.data.mode)
 
-            context.lineWidth = 1
+        this.dom.querySelector("div.stat.level p.value").textContent = this.data.levelIndex
+        this.dom.querySelector("div.stat.record p.value").textContent = this.data.userRecord
+        this.dom.querySelector("div.stat.deaths p.value").textContent = this.data.userDeaths
 
-            context.beginPath()
-            context.moveTo(
-                20 * Math.cos(2 * Math.PI * this.playerAngle) + context.canvas.width / 2,
-                20 * Math.sin(2 * Math.PI * this.playerAngle) + context.canvas.height / 2
-            )
-            context.lineTo(
-                20 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + context.canvas.width / 2,
-                20 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + context.canvas.height / 2
-            )
-            context.lineTo(
-                10 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI) + context.canvas.width / 2,
-                10 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI) + context.canvas.height / 2
-            )
-            context.lineTo(
-                20 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + context.canvas.width / 2,
-                20 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + context.canvas.height / 2
-            )
-            context.closePath()
+        this.dom.querySelector("div.progress p.time").textContent = this.data.slow.time.toFixed(1) + " s"
+        this.dom.querySelector("div.progress div").style.width = `${this.data.slow.time * 10}%`
+    }
 
-            context.fill()
+    resizeCanvas() {
+        let boundingBox = this.dom.getBoundingClientRect()
+        let minWidth = Math.min(
+            boundingBox.width,
+            boundingBox.height - 160
+        )
 
-            if (this.bullet) {
-                context.beginPath()
+        let canvas = this.dom.querySelector("canvas")
 
-                context.arc(
-                    this.bullet.x + context.canvas.width / 2,
-                    this.bullet.y + context.canvas.height / 2,
-                    10,
-                    0, 2 * Math.PI
-                )
-
-                context.fillStyle = "#ff523b"
-                context.fill()
-            }
-        }
-
-        shoot() {
-            var bullet = new Projectile(
-                20 * Math.cos(2 * Math.PI * this.playerAngle),
-                20 * Math.sin(2 * Math.PI * this.playerAngle),
-                7,
-                750 * Math.cos(2 * Math.PI * this.playerAngle),
-                750 * Math.sin(2 * Math.PI * this.playerAngle)
-            )
-
-            this.bullet = bullet
-        }
-
-        getProgression() {
-            if (this.progressionLevel < this.staticProgression.length) return this.staticProgression[this.progressionLevel]
-
-            var level = (this.progressionLevel - this.staticProgression.length) % this.loopedProgression.length
-            return this.loopedProgression[level]
-        }
-
-        start() {
-            this.level = Level.create(this.getProgression())
-            this.level.advance(this.gameTime)
-
-            document.querySelector("#levelNum").textContent = this.progressionLevel
-            this.updateRecord()
-            resizeCanvas()
-        }
-
-        nextLevel() {
-            this.progressionLevel++
-            this.slowTime = Math.min(this.slowTime + 0.2, 10)
-            this.start()
-        }
-
-        resetProgress() {
-            this.progressionLevel = 0
-            this.slowTime = Math.min(this.slowTime, 0.6)
-            this.start()
-
-            document.body.classList.add("hit")
-            setTimeout(() => {
-                document.body.classList.remove("hit")
-            }, 500)
-        }
-
-        updateRecord() {
-            var record = 0
-            if (localStorage.getItem("g4game_record")) record = localStorage.getItem("g4game_record")
-
-            if (this.progressionLevel > record) record = this.progressionLevel
-            localStorage.setItem("g4game_record", record)
-
-            document.querySelector("#recordNum").textContent = record
+        if (canvas.width != minWidth || canvas.height != minWidth) {
+            canvas.width = minWidth
+            canvas.height = minWidth
         }
     }
 
-    class GameDeniseMode extends Game {
-        /**
-         * 
-         * @param {CanvasRenderingContext2D} context 
-         */
-        render(context) {
+    render() {
+        let computedStyles = getComputedStyle(this.dom)
 
-            context.clearRect(
-                0, 0,
-                context.canvas.width, context.canvas.height
-            )
+        let canvas = this.dom.querySelector("canvas")
+        let minWidth = canvas.width
 
-            //this.level.render(context)
-            for (var i = 0; i < this.level.rings.length; i++) {
-                let color = i % 2 ? "#67d387" : "#929292"
-                context.fillStyle = color
-                context.strokeStyle = color
-                
-                this.level.rings[i].render(context)
-            }
+        let ctx = canvas.getContext("2d")
 
-            context.lineWidth = 1
+        ctx.setTransform(1, 0, 0, 1, 0, 0)
 
-            var drawCannon = (radius) => {
-                context.beginPath()
-                context.moveTo(
-                    radius * Math.cos(2 * Math.PI * this.playerAngle) + context.canvas.width / 2,
-                    radius * Math.sin(2 * Math.PI * this.playerAngle) + context.canvas.height / 2
-                )
-                context.lineTo(
-                    radius * Math.cos(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + context.canvas.width / 2,
-                    radius * Math.sin(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + context.canvas.height / 2
-                )
-                context.lineTo(
-                    (radius / 2) * Math.cos(2 * Math.PI * this.playerAngle + Math.PI) + context.canvas.width / 2,
-                    (radius / 2) * Math.sin(2 * Math.PI * this.playerAngle + Math.PI) + context.canvas.height / 2
-                )
-                context.lineTo(
-                    radius * Math.cos(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + context.canvas.width / 2,
-                    radius * Math.sin(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + context.canvas.height / 2
-                )
-                context.closePath()
+        ctx.fillStyle = computedStyles.getPropertyValue("--g4-game-background")
 
-                context.stroke()
-            }
+        if (this.data.slow.isSlow) ctx.globalAlpha = 0.2
+        ctx.fillRect(0, 0, minWidth, minWidth)
+        ctx.globalAlpha = 1
 
-            context.lineWidth = 4
-            context.lineJoin = "round"
-            drawCannon(20)
-            context.setLineDash([5, 8, 10, 6])
-            context.strokeStyle = "#929292"
-            drawCannon(40)
-            context.setLineDash([])
+        let levelRadius = this.getLevelRadius()
+        let levelScale = (minWidth / 2) / levelRadius
+        levelScale = Math.min(levelScale, 1.2)
 
-            if (this.bullet) {
-                context.beginPath()
+        ctx.fillStyle = "#fff"
+        ctx.strokeStyle = "#fff"
 
-                context.arc(
-                    this.bullet.x + context.canvas.width / 2,
-                    this.bullet.y + context.canvas.height / 2,
-                    10,
-                    0, 2 * Math.PI
-                )
+        ctx.translate(minWidth / 2, minWidth / 2)
+        ctx.scale(levelScale, levelScale)
 
-                context.fillStyle = "#67d387"
-                context.fill()
-            }
-        }
+        this.data.rings.forEach((ring, i) => {
+            let property = "--g4-game-obstacle" + ((i % 2) + 1)
+            ctx.fillStyle = computedStyles.getPropertyValue(property)
+            ctx.strokeStyle = computedStyles.getPropertyValue(property)
 
-        start() {
-            this.level = Level.createDenise()
-            this.level.advance(this.gameTime)
+            ctx.globalAlpha = ring.isDistraction ? 0.4 : 1
 
-            document.querySelector("#levelNum").textContent = this.progressionLevel
-            this.updateRecord()
-            resizeCanvas()
-        }
- 
-        updateRecord() {
-            var record = 0
-            if (localStorage.getItem("g4game_recordDenise")) record = localStorage.getItem("g4game_recordDenise")
+            this.renderRing(ctx, ring)
+        })
 
-            if (this.progressionLevel > record) record = this.progressionLevel
-            localStorage.setItem("g4game_recordDenise", record)
+        ctx.globalAlpha = 1
 
-            document.querySelector("#recordNum").textContent = record
-        }}
+        ctx.fillStyle = computedStyles.getPropertyValue("--g4-game-cannon")
+        this.renderCannon(ctx)
 
-    class GameNormalMode extends Game {}
-
-    class GameEasyMode extends Game {
-        constructor() {
-            super()
-        }
-
-        /**
-         * 
-         * @param {CanvasRenderingContext2D} context
-         */
-        render(context) {
-            context.fillStyle = "#4c7d45"
-            context.strokeStyle = "#4c7d45"
-
-            context.clearRect(
-                0, 0,
-                context.canvas.width, context.canvas.height
-            )
-
-            this.level.render(context)
-
-            context.lineWidth = 1
-
-            var cannonX = context.canvas.width / 2
-            var cannonY = context.canvas.height / 2
-        
-            context.beginPath()
-            context.moveTo(
-                20 * Math.cos(2 * Math.PI * this.playerAngle) + cannonX,
-                20 * Math.sin(2 * Math.PI * this.playerAngle) + cannonY
-            )
-            context.lineTo(
-                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + cannonX,
-                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + cannonY
-            )
-            context.lineTo(
-                10 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI) + cannonX,
-                10 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI) + cannonY
-            )
-            context.lineTo(
-                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + cannonX,
-                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + cannonY
-            )
-            context.closePath()
-
-            context.fill()
-
-            if (this.bullet) {
-                context.beginPath()
-
-                context.arc(
-                    this.bullet.x + context.canvas.width / 2,
-                    this.bullet.y + context.canvas.height / 2,
-                    10,
-                    0, 2 * Math.PI
-                )
-
-                context.fillStyle = "#e5ff00"
-                context.fill()
-            }
-        }
-
-        shoot() {
-            var cannonPos = [0, 0]
-
-            var bullet = new Projectile(
-                20 * Math.cos(2 * Math.PI * this.playerAngle) + cannonPos[0],
-                20 * Math.sin(2 * Math.PI * this.playerAngle) + cannonPos[1],
-                7,
-                750 * Math.cos(2 * Math.PI * this.playerAngle),
-                750 * Math.sin(2 * Math.PI * this.playerAngle)
-            )
-
-            this.bullet = bullet
-        }
-
-        
-
-        getProgression() {
-            var progression = super.getProgression()
-            
-            progression[0] = Math.max(progression[0], 2)
-            progression[1] = 0
-            progression[2] = 0
-
-            return progression
-        }
- 
-        updateRecord() {
-            var record = 0
-            if (localStorage.getItem("g4game_recordEasy")) record = localStorage.getItem("g4game_recordEasy")
-
-            if (this.progressionLevel > record) record = this.progressionLevel
-            localStorage.setItem("g4game_recordEasy", record)
-
-            document.querySelector("#recordNum").textContent = record
+        if (this.data.projectile) {
+            ctx.fillStyle = computedStyles.getPropertyValue("--g4-game-bullet")
+            this.renderProjectile(ctx)
         }
     }
 
-    class GameHardMode extends Game {
-        constructor() {
-            super()
-        }
-
-        advance(time) {
-            super.advance(time)
-        }
-
-        getCannonPosition() {
-            return [
-                Math.cos(-this.playerAngle * Math.PI) * 40,
-                Math.sin(-this.playerAngle * Math.PI) * 40
-            ]
-        }
-
-        /**
-         * 
-         * @param {CanvasRenderingContext2D} context
-         */
-        render(context) {
-            context.fillStyle = "#9bd1ba"
-            context.strokeStyle = "#9bd1ba"
-
-            context.clearRect(
-                0, 0,
-                context.canvas.width, context.canvas.height
+    /**
+     * @param {String} mode 
+     * @param {Number} levelIndex 
+     */
+    generateLevel(mode, levelIndex) {
+        if (!this.data) {
+            this.data = LevelGenerator.generate(
+                levelIndex, 0, mode
             )
-
-            this.level.render(context)
-
-            context.lineWidth = 1
-
-            var cannonX = context.canvas.width / 2
-            var cannonY = context.canvas.height / 2
-
-            var cannonPos = this.getCannonPosition()
-            cannonX += cannonPos[0]
-            cannonY += cannonPos[1]
-        
-            context.beginPath()
-            context.moveTo(
-                20 * Math.cos(2 * Math.PI * this.playerAngle) + cannonX,
-                20 * Math.sin(2 * Math.PI * this.playerAngle) + cannonY
-            )
-            context.lineTo(
-                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + cannonX,
-                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + cannonY
-            )
-            context.lineTo(
-                10 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI) + cannonX,
-                10 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI) + cannonY
-            )
-            context.lineTo(
-                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + cannonX,
-                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + cannonY
-            )
-            context.closePath()
-
-            context.fill()
-
-            context.beginPath()
-            
-            context.arc(
-                10 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI) + cannonX,
-                10 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI) + cannonY,
-                6, 0, Math.PI * 2
-            )
-
-            context.fillStyle = "#151523"
-            context.fill()
-
-            if (this.bullet) {
-                context.beginPath()
-
-                context.arc(
-                    this.bullet.x + context.canvas.width / 2,
-                    this.bullet.y + context.canvas.height / 2,
-                    10,
-                    0, 2 * Math.PI
-                )
-
-                context.fillStyle = "#ffcb3b"
-                context.fill()
-            }
-        }
-
-        shoot() {
-            var cannonPos = this.getCannonPosition()
-
-            var bullet = new Projectile(
-                20 * Math.cos(2 * Math.PI * this.playerAngle) + cannonPos[0],
-                20 * Math.sin(2 * Math.PI * this.playerAngle) + cannonPos[1],
-                7,
-                750 * Math.cos(2 * Math.PI * this.playerAngle),
-                750 * Math.sin(2 * Math.PI * this.playerAngle)
-            )
-
-            this.bullet = bullet
-        }
-
-        getProgression() {
-            if (this.progressionLevel < this.staticProgression.length) return this.staticProgression[this.progressionLevel].map(x => x ? 3 : 0)
-
-            var level = (this.progressionLevel - this.staticProgression.length) % this.loopedProgression.length
-            return this.loopedProgression[level].map(x => x ? 3 : 0)
-        }
- 
-        updateRecord() {
-            var record = 0
-            if (localStorage.getItem("g4game_recordHard")) record = localStorage.getItem("g4game_recordHard")
-
-            if (this.progressionLevel > record) record = this.progressionLevel
-            localStorage.setItem("g4game_recordHard", record)
-
-            document.querySelector("#recordNum").textContent = record
-        }
-    }
-
-    class GameHellMode extends Game {
-        getCannonPosition() {
-            return [
-                Math.cos(-this.playerAngle * Math.PI) * 40,
-                Math.sin(-this.playerAngle * Math.PI) * 40
-            ]
-        }
-
-        /**
-         * 
-         * @param {CanvasRenderingContext2D} context
-         */
-        render(context) {
-            context.fillStyle = "#000000"
-            context.strokeStyle = "#000000"
-
-            context.clearRect(
-                0, 0,
-                context.canvas.width, context.canvas.height
-            )
-
-            this.level.render(context)
-
-            context.lineWidth = 1
-
-            var cannonX = context.canvas.width / 2
-            var cannonY = context.canvas.height / 2
-
-            var cannonPos = this.getCannonPosition()
-            cannonX += cannonPos[0]
-            cannonY += cannonPos[1]
-        
-            context.beginPath()
-            context.moveTo(
-                20 * Math.cos(2 * Math.PI * this.playerAngle) + cannonX,
-                20 * Math.sin(2 * Math.PI * this.playerAngle) + cannonY
-            )
-            context.lineTo(
-                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + cannonX,
-                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI - 0.8) + cannonY
-            )
-            context.lineTo(
-                10 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI) + cannonX,
-                10 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI) + cannonY
-            )
-            context.lineTo(
-                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + cannonX,
-                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI + 0.8) + cannonY
-            )
-            context.closePath()
-
-            context.fill()
-
-            context.beginPath()
-            context.arc(
-                cannonX, cannonY, 30, 2 * Math.PI * this.playerAngle + 0.8, 2 * Math.PI * this.playerAngle + 2 * Math.PI - 0.8
-            )
-
-            context.lineWidth = 4
-            context.stroke()
-
-            context.beginPath()
-            
-            context.arc(
-                10 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI) + cannonX,
-                10 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI) + cannonY,
-                6, 0, Math.PI * 2
-            )
-
-
-            context.fillStyle = "#780000"
-            context.fill()
-
-            if (this.bullet) {
-                context.beginPath()
-
-                context.arc(
-                    this.bullet.x + context.canvas.width / 2,
-                    this.bullet.y + context.canvas.height / 2,
-                    10,
-                    0, 2 * Math.PI
-                )
-
-                context.fillStyle = "#ffa600"
-                context.fill()
-            }
-        }
-
-        shoot() {
-            var cannonPos = this.getCannonPosition()
-
-            var bullet = new Projectile(
-                20 * Math.cos(2 * Math.PI * this.playerAngle) + cannonPos[0],
-                20 * Math.sin(2 * Math.PI * this.playerAngle) + cannonPos[1],
-                7,
-                750 * Math.cos(2 * Math.PI * this.playerAngle),
-                750 * Math.sin(2 * Math.PI * this.playerAngle)
-            )
-
-            this.bullet = bullet
-        }
-
-        start() {
-            this.level = Level.createHell()
-            this.level.advance(this.gameTime)
-
-            document.querySelector("#levelNum").textContent = this.progressionLevel
-            this.updateRecord()
-            resizeCanvas()
-        }
- 
-        updateRecord() {
-            var record = 0
-            if (localStorage.getItem("g4game_recordHell")) record = localStorage.getItem("g4game_recordHell")
-
-            if (this.progressionLevel > record) record = this.progressionLevel
-            localStorage.setItem("g4game_recordHell", record)
-
-            document.querySelector("#recordNum").textContent = record
-        }
-    }
-
-    class GameHadesMode extends Game {
-        getCannonPosition() {
-            return [
-                Math.cos(-this.playerAngle * Math.PI) * 200,
-                Math.sin(-this.playerAngle * Math.PI) * 200
-            ]
-        }
-
-        /**
-         * 
-         * @param {CanvasRenderingContext2D} context
-         */
-        render(context) {
-            context.fillStyle = "#000"
-            context.fillRect(
-                0, 0,
-                context.canvas.width, context.canvas.height
-            )
-
-            context.fillStyle = "#302f35"
-            context.strokeStyle = "#302f35"
-            this.level.render(context)
-
-            context.lineWidth = 1
-
-            var cannonX = context.canvas.width / 2
-            var cannonY = context.canvas.height / 2
-
-            var cannonPos = this.getCannonPosition()
-            cannonX += cannonPos[0]
-            cannonY += cannonPos[1]
-
-            if (!legacyMode) {
-                var spotlight = context.createRadialGradient(
-                    cannonX, cannonY, 900, cannonX, cannonY, 0
-                )
-                spotlight.addColorStop(0, "#000")
-                spotlight.addColorStop(1, "#fff")
-
-                context.globalCompositeOperation = "multiply"
-                context.fillStyle = spotlight
-                context.fillRect(
-                    0, 0,
-                    context.canvas.width, context.canvas.height
-                )
-
-                var glow = context.createRadialGradient(
-                    cannonX, cannonY, 100, cannonX, cannonY, 0
-                )
-                glow.addColorStop(0, "#000")
-                glow.addColorStop(0.6, "#111")
-                glow.addColorStop(1, "#222")
-
-                context.globalCompositeOperation = "screen"
-                context.fillStyle = glow
-                context.fillRect(
-                    0, 0,
-                    context.canvas.width, context.canvas.height
-                )
-
-                context.globalCompositeOperation = "source-over"
-            }
-        
-            context.beginPath()
-            context.moveTo(
-                20 * Math.cos(2 * Math.PI * this.playerAngle) + cannonX,
-                20 * Math.sin(2 * Math.PI * this.playerAngle) + cannonY
-            )
-            context.lineTo(
-                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI - 0.6) + cannonX,
-                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI - 0.6) + cannonY
-            )
-            context.lineTo(
-                24 * Math.cos(2 * Math.PI * this.playerAngle + Math.PI + 0.6) + cannonX,
-                24 * Math.sin(2 * Math.PI * this.playerAngle + Math.PI + 0.6) + cannonY
-            )
-            context.closePath()
-
-            context.fillStyle = "#fff"
-            context.fill()
-
-            if (this.bullet) {
-                context.beginPath()
-
-                context.arc(
-                    this.bullet.x + context.canvas.width / 2,
-                    this.bullet.y + context.canvas.height / 2,
-                    10,
-                    0, 2 * Math.PI
-                )
-
-                context.fillStyle = "#227892"
-                context.fill()
-            }
-        }
-
-        shoot() {
-            var cannonPos = this.getCannonPosition()
-
-            var bullet = new Projectile(
-                20 * Math.cos(2 * Math.PI * this.playerAngle) + cannonPos[0],
-                20 * Math.sin(2 * Math.PI * this.playerAngle) + cannonPos[1],
-                7,
-                750 * Math.cos(2 * Math.PI * this.playerAngle),
-                750 * Math.sin(2 * Math.PI * this.playerAngle)
-            )
-
-            this.bullet = bullet
-        }
-
-        start() {
-            this.level = Level.createHades()
-            this.level.advance(this.gameTime)
-
-            document.querySelector("#levelNum").textContent = this.progressionLevel
-            this.updateRecord()
-            resizeCanvas()
-        }
- 
-        updateRecord() {
-            var record = 0
-            if (localStorage.getItem("g4game_recordHades")) record = localStorage.getItem("g4game_recordHades")
-
-            if (this.progressionLevel > record) record = this.progressionLevel
-            localStorage.setItem("g4game_recordHades", record)
-
-            document.querySelector("#recordNum").textContent = record
-        }
-    }
-
-    var game = new GameNormalMode()
-
-    var gameCanvas = document.querySelector("canvas")
-    var gameCanvasContext = gameCanvas.getContext("2d")
-
-
-    game.start()
-    game.updateRecord()
-
-    setInterval(() => {
-        game.advance(1/90)
-    }, 1000/90)
-
-    function render() {
-        requestAnimationFrame(render)
-        game.render(gameCanvasContext)
-    }
-
-    addEventListener("keydown", (e) => {
-        console.log(e)
-        if (e.code == "Space" && !game.bullet)
-            game.shoot()
-        else if (e.code == "KeyS" && !game.isSlow && game.slowTime && !(game instanceof GameHellMode) && !(game instanceof GameHadesMode)) {
-            game.isSlow = true
-            document.body.classList.add("slow")
-        }
-    })
-    gameCanvas.addEventListener("click", () => {
-        if (!game.bullet) game.shoot()
-    })
-
-    function resizeCanvas() {
-        var minSize = Math.min(innerHeight - 64, innerWidth) - 24
-
-        if (!game.level.rings[2].elements.length) {
-            minSize += 150
-
-            if (!game.level.rings[1].elements.length) {
-                minSize += 80
-            }
-        }
-
-        if (minSize < 900)
-            gameCanvas.style.transform = `translate(-50%, -50%) scale(${minSize/900})`
-        else
-            gameCanvas.style.transform = `translate(-50%, -50%) scale(1)`
-    }
-
-    resizeCanvas()
-    addEventListener("resize", () => resizeCanvas())
-
-    var audio = document.querySelector("audio")
-    audio.load()
-
-    audio.addEventListener("canplaythrough", () => {
-        document.querySelector("#muteMusic").style.display = "initial"
-    })
-
-    document.querySelector("#muteMusic").addEventListener("click", function() {
-        this.classList.toggle("checked")
-
-        if (this.classList.contains("checked")) {
-            this.textContent = "Unmute"
-            audio.pause()
         } else {
-            this.textContent = "Mute"
-            audio.play()
+            this.data.levelIndex = levelIndex
+            this.data.mode = mode
+
+            this.data.rings = LevelGenerator.generateRings(mode, levelIndex)
         }
-    })
+        this.disableSlow()
 
-    // document.querySelector("#switchModes").addEventListener("click", function() {
-        // if (game instanceof GameHardMode) {
-        //     game = new Game()
-        //     game.start()
-        //     game.updateRecord()
+        this.advanceLevel(this.gameTime)
 
-        //     document.body.classList.remove("hard")
+        this.updateRecord()
+        this.updateDeaths()
+        
+        this.sendStateChange()
 
-        //     this.textContent = "Hard mode"
-        // } else {
-        //     game = new GameHardMode()
-        //     game.start()
-        //     game.updateRecord()
+        this.updateLeaderboard()
+    }
 
-        //     document.body.classList.add("hard")
+    async updateLeaderboard() {
+        await this.leaderboard.postScore(
+            this.data.mode,
+            this.data.levelIndex,
+            this.data.userDeaths
+        )
+        await this.leaderboard.updateLeaderboard(this.data.mode)
+    }
 
-        //     this.textContent = "Normal mode"
-        // }
-    // })
+    sendStateChange() {
+        window.dispatchEvent(
+            new CustomEvent(
+                "g4statechange",
+                {
+                    detail: {
+                        mode: this.data.mode,
+                        levelIndex: this.data.levelIndex,
+                        record: this.data.userRecord
+                    }
+                }
+            )
+        )
+    }
 
-    document.querySelector("#modeEasy").addEventListener("click", function() {
-        if (game instanceof GameEasyMode) return
+    nextLevel() {
+        this.data.slow.time = Math.min(this.data.slow.time + 0.2, 10)
+        this.generateLevel(
+            this.data.mode, this.data.levelIndex + 1
+        )
+    }
 
-        game = new GameEasyMode()
-        game.start()
-        game.updateRecord()
+    resetProgress() {
+        this.data.slow.time = Math.min(this.data.slow.time, 0.6)
 
-        document.body.classList.add("easy")
-        document.body.classList.remove("hard")
-        document.body.classList.remove("hell")
-        document.body.classList.remove("hades")
-        document.body.classList.remove("denise")
+        this.generateLevel(
+            this.data.mode, 0
+        )
 
-        document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
-        this.classList.add("checked")
-    })
+        this.addDeath()
 
-    document.querySelector("#modeNormal").addEventListener("click", function() {
-        if (game instanceof GameNormalMode) return
+        this.dom.classList.add("hit")
+        setTimeout(() => {
+            this.dom.classList.remove("hit")
+        }, 500)
+    }
 
-        game = new GameNormalMode()
-        game.start()
-        game.updateRecord()
+    updateDeaths() {
+        let storageKey = "g4game_deaths"
+        if (this.data.mode != "normal") {
+            let mode = this.data.mode
 
-        document.body.classList.remove("easy")
-        document.body.classList.remove("hard")
-        document.body.classList.remove("hell")
-        document.body.classList.remove("hades")
-        document.body.classList.remove("denise")
-
-        document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
-        this.classList.add("checked")
-    })
-
-    document.querySelector("#modeHard").addEventListener("click", function() {
-        if (game instanceof GameHardMode) return
-
-        game = new GameHardMode()
-        game.start()
-        game.updateRecord()
-
-        document.body.classList.remove("easy")
-        document.body.classList.add("hard")
-        document.body.classList.remove("hell")
-        document.body.classList.remove("hades")
-        document.body.classList.remove("denise")
-
-        document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
-        this.classList.add("checked")
-    })
-
-    document.querySelector("#modeHell").addEventListener("click", function() {
-        if (game instanceof GameHellMode) return
-
-        game = new GameHellMode()
-        game.start()
-        game.updateRecord()
-
-        document.body.classList.remove("easy")
-        document.body.classList.remove("hard")
-        document.body.classList.add("hell")
-        document.body.classList.remove("hades")
-        document.body.classList.remove("denise")
-
-        document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
-        this.classList.add("checked")
-    })
-
-    document.querySelector("#modeHades").addEventListener("click", function() {
-        if (game instanceof GameHadesMode) return
-
-        game = new GameHadesMode()
-        game.start()
-        game.updateRecord()
-
-        document.body.classList.remove("easy")
-        document.body.classList.remove("hard")
-        document.body.classList.remove("hell")
-        document.body.classList.add("hades")
-        document.body.classList.remove("denise")
-
-        document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
-        this.classList.add("checked")
-    })
-
-    document.querySelector("#modeDenise").addEventListener("click", function() {
-        if (game instanceof GameDeniseMode) return
-
-        game = new GameDeniseMode()
-        game.start()
-        game.updateRecord()
-
-        document.body.classList.remove("easy")
-        document.body.classList.remove("hard")
-        document.body.classList.remove("hell")
-        document.body.classList.remove("hades")
-        document.body.classList.add("denise")
-
-        document.querySelector("div#modeSwitches button.checked").classList.remove("checked")
-        this.classList.add("checked")
-    })
-
-    document.querySelector("#initSlowDown").addEventListener("click", () => {
-        if (!game.isSlow && game.slowTime) {
-            game.isSlow = true
-            document.body.classList.add("slow")
-
+            storageKey += mode[0].toUpperCase() + mode.substring(1)
         }
-    })
 
-    document.querySelector("#levelNum").addEventListener("click", () => {
-        legacyMode = !legacyMode
-    })
+        let deaths = 0
+        if (localStorage.getItem(storageKey)) deaths = localStorage.getItem(storageKey)
 
-    render()
-})()
+        localStorage[storageKey] = deaths
+
+        this.data.userDeaths = deaths
+    }
+
+    addDeath() {
+        let storageKey = "g4game_deaths"
+        if (this.data.mode != "normal") {
+            let mode = this.data.mode
+
+            storageKey += mode[0].toUpperCase() + mode.substring(1)
+        }
+
+        let deaths = 0
+        if (localStorage.getItem(storageKey)) deaths = localStorage.getItem(storageKey)
+
+        deaths++
+        localStorage[storageKey] = deaths
+
+        this.data.userDeaths = deaths
+    }
+
+    updateRecord() {
+        let storageKey = "g4game_record"
+        if (this.data.mode != "normal") {
+            let mode = this.data.mode
+
+            storageKey += mode[0].toUpperCase() + mode.substring(1)
+        }
+
+        let record = 0
+        if (localStorage.getItem(storageKey)) record = localStorage.getItem(storageKey)
+
+        if (this.data.levelIndex > record) record = this.data.levelIndex
+        localStorage[storageKey] = record
+
+        this.data.userRecord = record
+    }
+
+    /**
+     * @param {KeyboardEvent} event 
+     */
+    handleKeyboardEvent(event) {
+        if (this.isSpectated) return
+        if (event.target instanceof HTMLInputElement ||
+            event.target instanceof HTMLButtonElement) return
+
+        if (
+            (event.code == localStorage["g4input_keyboardShoot"]) &&
+            !this.data.projectile
+        )
+            this.shoot()
+        else if (event.code == localStorage["g4input_keyboardSlow"] && !this.data.slow.isSlow && this.data.slow.time) {
+            this.enableSlow()
+        }
+    }
+
+    handleGamepadEvent(event) {
+        if (this.isSpectated) return
+
+        if (
+            event.detail.button == localStorage["g4input_gamepadShoot"] &&
+            !this.data.projectile
+        ) {
+            this.shoot()
+        } else if (
+            event.detail.button == localStorage["g4input_gamepadSlow"] &&
+            !this.data.slow.isSlow && this.data.slow.time
+        ) {
+            this.enableSlow()
+        }
+    }
+
+    static modeIDToDisplayName(mode) {
+        let modeAlias = {
+            easy: "Easy",
+            normal: "Normal",
+            hard: "Hard",
+            hell: "Hell",
+            hades: "Hades",
+            denise: "Chaos",
+            reverse: "Reverse",
+            nox: "Nox"
+        }
+
+        return modeAlias[mode]
+    }
+}

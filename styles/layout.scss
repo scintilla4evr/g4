@@ -1,0 +1,147 @@
+@font-face {
+    font-family: "Poppins";
+    font-weight: 400;
+    src: url("../../res/fonts/Poppins-Regular.ttf");
+}
+
+@font-face {
+    font-family: "Poppins";
+    font-weight: 500;
+    src: url("../../res/fonts/Poppins-Medium.ttf");
+}
+
+@font-face {
+    font-family: "Poppins";
+    font-weight: 600;
+    src: url("../../res/fonts/Poppins-SemiBold.ttf");
+}
+
+@font-face {
+    font-family: "Poppins";
+    font-weight: 700;
+    src: url("../../res/fonts/Poppins-Bold.ttf");
+}
+
+@import "colors.scss";
+
+@import "game.scss";
+@import "sidebar.scss";
+
+@import "settings.scss";
+
+@import "electron.scss";
+
+:root {
+    --g4-app-typeface: "Poppins", sans-serif;
+}
+
+body {
+    background: var(--g4-app-background);
+    color: var(--g4-game-foreground);
+
+    font-family: var(--g4-app-typeface);
+
+    user-select: none;
+}
+
+body.login {
+    div.accountInfo {
+        display: flex;
+    }
+
+    button#openLoginBtn {
+        display: none;
+    }
+}
+
+button {
+    background: var(--g4-app-background);
+    color: var(--g4-app-foreground);
+
+    font-family: var(--g4-app-typeface);
+    font-weight: 500;
+    font-size: 12pt;
+    text-transform: uppercase;
+
+    padding: 4px 16px;
+    border: none;
+    border-radius: 8px;
+}
+button:hover {
+    box-shadow: inset 0px 0px 0px 4px var(--g4-app-foreground);
+}
+button:active {
+    background: var(--g4-app-foreground);
+    color: var(--g4-app-background);
+}
+
+a {
+    color: var(--g4-app-accent);
+
+    text-decoration: none;
+
+    &:hover {
+        background: var(--g4-app-accent);
+        color: var(--g4-app-background);
+    }
+}
+
+body.light {
+    div.firstTimeHint img {
+        filter: invert(0);
+    }
+
+    button.daynight {
+        div:before {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 22px;
+            height: 22px;
+
+            background: var(--g4-app-foreground);
+
+            border-radius: 0px;
+
+            transform: translate(-50%, -50%);
+
+            z-index: -1;
+        }
+
+        div:after {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 22px;
+            height: 22px;
+
+            background: var(--g4-app-foreground);
+
+            border-radius: 0px;
+
+            transform: translate(-50%, -50%) rotate(45deg);
+
+            z-index: -1;
+        }
+    }
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--g4-app-scroll-track);
+
+    border-radius: 6px;
+
+    box-shadow: inset 0px 0px 0px 3px var(--g4-app-background);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--g4-app-scroll-thumb);
+
+    border-radius: 6px;
+
+    box-shadow: inset 0px 0px 0px 3px var(--g4-app-background);
+}

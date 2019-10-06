@@ -1,14 +1,45 @@
 'use strict';
 
-const CACHE_NAME = 'static-cache-v1';
-const DATA_CACHE_NAME = 'data-cache-v1';
+const DEV_BUILD_VERSION = 21
+
+const CACHE_NAME = `static-cache-g4.6-stable${DEV_BUILD_VERSION}`;
+const DATA_CACHE_NAME = `static-cache-g4.6-stable${DEV_BUILD_VERSION}`;
 
 const FILES_TO_CACHE = [
     ' ',
     'index.html',
-    'assets/music.mp3',
+
+    'res/fonts/Poppins-Bold.ttf',
+    'res/fonts/Poppins-Medium.ttf',
+    'res/fonts/Poppins-Regular.ttf',
+    'res/fonts/Poppins-SemiBold.ttf',
+
+    'res/music/easy.ogg',
+    'res/music/normal.ogg',
+    'res/music/hard.ogg',
+    'res/music/hell.ogg',
+    'res/music/hades.ogg',
+    'res/music/reverse.ogg',
+    'res/music/denise.ogg',
+    'res/music/nox.ogg',
+
+    'res/images/gameHint.svg',
+
+    'res/themes/dark.json',
+    'res/themes/light.json',
+
+    'scripts/assets.js',
+    'scripts/coverage.js',
     'scripts/game.js',
-    'styles/styles.css',
+    'scripts/input.js',
+    'scripts/leaderboard.js',
+    'scripts/levelgen.js',
+    'scripts/main.js',
+    'scripts/theme.js',
+    'scripts/ui.js',
+    'scripts/install.js',
+
+    'styles/build/layout.css',
   ];
 
 self.addEventListener('install', (evt) => {

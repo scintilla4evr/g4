@@ -1,0 +1,106 @@
+{
+    "name": "Light",
+
+    "colors": {
+        "app": {
+            "background": "#ffffff",
+            "foreground": "#000000",
+            "headerBackground": "#ebebeb",
+            "accent": "#e63b24",
+            
+            "scrollTrack": "#f1f1f1",
+            "scrollThumb": "#949494"
+        },
+    
+        "game": {
+            "easy": {
+                "background": "#e0f3f1",
+                "damage": "#ffe4ee",
+    
+                "foreground": "#25691c",
+                "obstacle1": "#25691c",
+                "obstacle2": "#25691c",
+    
+                "cannon": "#25691c",
+                "bullet": "#07a6ce"
+            },
+            "normal": {
+                "background": "#f1ece7",
+                "damage": "#ffe4ee",
+    
+                "foreground": "#8b3716",
+                "obstacle1": "#8b3716",
+                "obstacle2": "#8b3716",
+    
+                "cannon": "#8b3716",
+                "bullet": "#ff893b"
+            },
+            "hard": {
+                "background": "#efeffa",
+                "damage": "#ffe4ee",
+    
+                "foreground": "#466281",
+                "obstacle1": "#466281",
+                "obstacle2": "#466281",
+    
+                "cannon": "#466281",
+                "bullet": "#d36307"
+            },
+            "hell": {
+                "background": "#ff2323",
+                "damage": "#a10000",
+    
+                "foreground": "#000000",
+                "obstacle1": "#000000",
+                "obstacle2": "#000000",
+    
+                "cannon": "#000000",
+                "bullet": "#f1ff34"
+            },
+            "hades": {
+                "background": "#ffffff",
+                "damage": "#fae2e2",
+    
+                "foreground": "#7b788a",
+                "obstacle1": "#7b788a",
+                "obstacle2": "#7b788a",
+    
+                "cannon": "#1155e9",
+                "bullet": "#1c1f20"
+            },
+            "denise": {
+                "background": "#dadada",
+                "damage": "#ecc7c7",
+    
+                "foreground": "#414141",
+                "obstacle1": "#414141",
+                "obstacle2": "#1c923f",
+    
+                "cannon": "#414141",
+                "bullet": "#1c923f"
+            },
+            "reverse": {
+                "background": "#d8caeb",
+                "damage": "#e6c3db",
+    
+                "foreground": "#231935",
+                "obstacle1": "#231935",
+                "obstacle2": "#231935",
+    
+                "cannon": "#1e0b8b",
+                "bullet": "#552eff"
+            },
+            "nox": {
+                "background": "#ffffff",
+                "damage": "#ffe1eb",
+    
+                "foreground": "#23ca14",
+                "obstacle1": "#23ca14",
+                "obstacle2": "#2344d3",
+    
+                "cannon": "#000000",
+                "bullet": "#ff0055"
+            }
+        }
+    }
+}
