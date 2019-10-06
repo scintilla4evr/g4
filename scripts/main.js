@@ -21,7 +21,7 @@
     window.mainGame = mainGame
 
     // Game interaction events
-    addEventListener("keyup", (e) => {
+    addEventListener("keyodwn", (e) => {
         games.forEach(game => game.handleKeyboardEvent(e))
     })
     addEventListener("g4gamepadbuttonpressed", (e) => {
