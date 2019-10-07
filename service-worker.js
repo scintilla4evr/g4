@@ -1,6 +1,6 @@
 'use strict';
 
-const DEV_BUILD_VERSION = 21
+const DEV_BUILD_VERSION = 23
 
 const CACHE_NAME = `static-cache-g4.6-stable${DEV_BUILD_VERSION}`;
 const DATA_CACHE_NAME = `static-cache-g4.6-stable${DEV_BUILD_VERSION}`;
@@ -13,6 +13,7 @@ const FILES_TO_CACHE = [
     'res/fonts/Poppins-Medium.ttf',
     'res/fonts/Poppins-Regular.ttf',
     'res/fonts/Poppins-SemiBold.ttf',
+    'res/fonts/NotoSans-Regular.ttf',
 
     'res/music/easy.ogg',
     'res/music/normal.ogg',

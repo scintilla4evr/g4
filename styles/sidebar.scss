@@ -239,6 +239,8 @@ aside {
                 }
 
                 tr {
+                    font-family: "Noto Sans";
+                    
                     td:first-child {
                         width: 15%;
     
@@ -262,6 +264,23 @@ aside {
                 tr.me {
                     background: var(--g4-app-accent);
                     color: var(--g4-app-background);
+                }
+
+                tr.verified {
+                    td.name:after {
+                        background: var(--g4-app-accent);
+                        color: var(--g4-app-background);
+                        content: "Verified Legit™";
+
+                        font-family: "Poppins";
+                        font-size: 90%;
+
+                        margin-left: 4px;
+                        padding: 0px 2px;
+                        border-radius: 2px;
+
+                        display: inline-block;
+                    }
                 }
             }
         }

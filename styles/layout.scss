@@ -22,6 +22,12 @@
     src: url("../../res/fonts/Poppins-Bold.ttf");
 }
 
+@font-face {
+    font-family: "Noto Sans";
+    font-weight: 400;
+    src: url("../../res/fonts/NotoSans-Regular.ttf");
+}
+
 @import "colors.scss";
 
 @import "game.scss";
