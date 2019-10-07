@@ -29,6 +29,14 @@
         }
     })
 
+    // Legit Verified Amirite
+    document.querySelector("input#settingVerifiedLegit").addEventListener("input", function() {
+        localStorage["g4_showLegitTM"] = this.checked ? "1": "0"
+        mainGame.leaderboard.updateLeaderboard(
+            mainGame.data.mode
+        )
+    })
+
     // Game interaction events
     addEventListener("keydown", (e) => {
         games.forEach(game => game.handleKeyboardEvent(e))

@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @font-face {
   font-family: "Poppins";
   font-weight: 400;
@@ -17,6 +18,11 @@
   font-family: "Poppins";
   font-weight: 700;
   src: url("../../res/fonts/Poppins-Bold.ttf");
+}
+@font-face {
+  font-family: "Noto Sans";
+  font-weight: 400;
+  src: url("../../res/fonts/NotoSans-Regular.ttf");
 }
 :root {
   --g4-app-background: var(--g4-theme-app-background);
@@ -463,6 +469,9 @@ aside section.leaderboard div.content table {
 aside section.leaderboard div.content table th {
   font-weight: 500;
 }
+aside section.leaderboard div.content table tr {
+  font-family: "Noto Sans";
+}
 aside section.leaderboard div.content table tr td:first-child {
   width: 15%;
   text-align: center;
@@ -479,6 +488,17 @@ aside section.leaderboard div.content table tbody tr:hover {
 aside section.leaderboard div.content table tr.me {
   background: var(--g4-app-accent);
   color: var(--g4-app-background);
+}
+aside section.leaderboard div.content table tr.verified td.name:after {
+  background: var(--g4-app-accent);
+  color: var(--g4-app-background);
+  content: "Verified Legit™";
+  font-family: "Poppins";
+  font-size: 90%;
+  margin-left: 4px;
+  padding: 0px 2px;
+  border-radius: 2px;
+  display: inline-block;
 }
 aside section.pwaInstall div.content {
   padding: 8px 16px;
