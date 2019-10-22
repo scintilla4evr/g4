@@ -173,8 +173,20 @@ class Leaderboard {
             tr.appendChild(rank)
 
             let player = document.createElement("td")
-            player.classList.add("name")
-            player.textContent = score.username
+            player.classList.add("player")
+
+            let playerName = document.createElement("span")
+            playerName.classList.add("name")
+            playerName.textContent = score.username
+            player.appendChild(playerName)
+
+            if (score.verified) {
+                let verified = document.createElement("span")
+                verified.classList.add("verified")
+                verified.textContent = "Verified Legit™"
+                player.appendChild(verified)
+            }
+
             tr.appendChild(player)
 
             let scoreText = document.createElement("td")

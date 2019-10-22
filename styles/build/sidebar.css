@@ -180,6 +180,27 @@ aside section.leaderboard div.content table tr td:last-child {
   width: 25%;
   text-align: center;
 }
+aside section.leaderboard div.content table tr td.player {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+aside section.leaderboard div.content table tr td.player span.verified {
+  background: var(--g4-app-accent);
+  color: var(--g4-app-background);
+  content: "Verified Legit™";
+  font-family: "Poppins";
+  font-weight: 600;
+  font-size: 80%;
+  margin-left: 4px;
+  padding: 0px 2px;
+  border-radius: 2px;
+}
+aside section.leaderboard div.content table tr td.player span svg {
+  width: 20px;
+  height: auto;
+  margin-left: 4px;
+}
 aside section.leaderboard div.content table tbody tr:hover {
   background: var(--g4-app-foreground);
   color: var(--g4-app-background);
@@ -188,17 +209,6 @@ aside section.leaderboard div.content table tbody tr:hover {
 aside section.leaderboard div.content table tr.me {
   background: var(--g4-app-accent);
   color: var(--g4-app-background);
-}
-aside section.leaderboard div.content table tr.verified td.name:after {
-  background: var(--g4-app-accent);
-  color: var(--g4-app-background);
-  content: "Verified Legit™";
-  font-family: "Poppins";
-  font-size: 90%;
-  margin-left: 4px;
-  padding: 0px 2px;
-  border-radius: 2px;
-  display: inline-block;
 }
 aside section.pwaInstall div.content {
   padding: 8px 16px;

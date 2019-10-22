@@ -4,8 +4,6 @@ main {
   bottom: 0;
   left: 0;
   right: 400px;
-  display: grid;
-  gap: 4px;
 }
 main div.firstTimeHint {
   position: absolute;
@@ -28,7 +26,11 @@ main div.firstTimeHint.hidden {
   opacity: 0;
 }
 main div.game {
-  position: relative;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
   background: var(--g4-game-background);
   color: var(--g4-game-foreground);
 }
@@ -137,26 +139,6 @@ main div.game.spectated footer div.progress {
 }
 main div.game.spectated footer button {
   display: none;
-}
-
-main.single {
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-}
-
-main.two {
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 1fr;
-}
-
-main.four {
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-}
-
-main.six {
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
 }
 
 body.left main {

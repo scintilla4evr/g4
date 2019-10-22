@@ -120,8 +120,6 @@ main {
   bottom: 0;
   left: 0;
   right: 400px;
-  display: grid;
-  gap: 4px;
 }
 main div.firstTimeHint {
   position: absolute;
@@ -144,7 +142,11 @@ main div.firstTimeHint.hidden {
   opacity: 0;
 }
 main div.game {
-  position: relative;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
   background: var(--g4-game-background);
   color: var(--g4-game-foreground);
 }
@@ -253,26 +255,6 @@ main div.game.spectated footer div.progress {
 }
 main div.game.spectated footer button {
   display: none;
-}
-
-main.single {
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-}
-
-main.two {
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 1fr;
-}
-
-main.four {
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-}
-
-main.six {
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
 }
 
 body.left main {
@@ -480,6 +462,27 @@ aside section.leaderboard div.content table tr td:last-child {
   width: 25%;
   text-align: center;
 }
+aside section.leaderboard div.content table tr td.player {
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+aside section.leaderboard div.content table tr td.player span.verified {
+  background: var(--g4-app-accent);
+  color: var(--g4-app-background);
+  content: "Verified Legit™";
+  font-family: "Poppins";
+  font-weight: 600;
+  font-size: 80%;
+  margin-left: 4px;
+  padding: 0px 2px;
+  border-radius: 2px;
+}
+aside section.leaderboard div.content table tr td.player span svg {
+  width: 20px;
+  height: auto;
+  margin-left: 4px;
+}
 aside section.leaderboard div.content table tbody tr:hover {
   background: var(--g4-app-foreground);
   color: var(--g4-app-background);
@@ -488,17 +491,6 @@ aside section.leaderboard div.content table tbody tr:hover {
 aside section.leaderboard div.content table tr.me {
   background: var(--g4-app-accent);
   color: var(--g4-app-background);
-}
-aside section.leaderboard div.content table tr.verified td.name:after {
-  background: var(--g4-app-accent);
-  color: var(--g4-app-background);
-  content: "Verified Legit™";
-  font-family: "Poppins";
-  font-size: 90%;
-  margin-left: 4px;
-  padding: 0px 2px;
-  border-radius: 2px;
-  display: inline-block;
 }
 aside section.pwaInstall div.content {
   padding: 8px 16px;

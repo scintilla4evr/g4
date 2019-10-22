@@ -252,6 +252,33 @@ aside {
     
                         text-align: center;
                     }
+
+                    td.player {
+                        display: flex;
+                        align-items: center;
+                        overflow: hidden;
+
+                        span.verified {
+                            background: var(--g4-app-accent);
+                            color: var(--g4-app-background);
+                            content: "Verified Legit™";
+
+                            font-family: "Poppins";
+                            font-weight: 600;
+                            font-size: 80%;
+
+                            margin-left: 4px;
+                            padding: 0px 2px;
+                            border-radius: 2px;
+                        }
+
+                        span svg {
+                            width: 20px;
+                            height: auto;
+
+                            margin-left: 4px;
+                        }
+                    }
                 }
 
                 tbody tr:hover {
@@ -264,23 +291,6 @@ aside {
                 tr.me {
                     background: var(--g4-app-accent);
                     color: var(--g4-app-background);
-                }
-
-                tr.verified {
-                    td.name:after {
-                        background: var(--g4-app-accent);
-                        color: var(--g4-app-background);
-                        content: "Verified Legit™";
-
-                        font-family: "Poppins";
-                        font-size: 90%;
-
-                        margin-left: 4px;
-                        padding: 0px 2px;
-                        border-radius: 2px;
-
-                        display: inline-block;
-                    }
                 }
             }
         }

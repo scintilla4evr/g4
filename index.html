@@ -313,6 +313,18 @@
             </dialog>
         </div>
 
+        <script src="scripts/install.js"></script>
+        <script>
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('service-worker.js')
+                        .then((reg) => {
+                            console.log('Service worker registered.', reg);
+                        });
+                });
+            }
+        </script>
+
         <script src="scripts/theme.js"></script>
 
         <script src="scripts/assets.js"></script>
@@ -324,15 +336,5 @@
         <script src="scripts/ui.js"></script>
 
         <script src="scripts/main.js"></script>
-
-        <script src="scripts/install.js"></script>
-        <script>if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-              navigator.serviceWorker.register('service-worker.js')
-                  .then((reg) => {
-                    console.log('Service worker registered.', reg);
-                  });
-            });
-          }</script>
     </body>
 </html>
