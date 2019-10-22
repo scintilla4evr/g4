@@ -294,6 +294,9 @@ aside {
   flex-direction: column;
   transition: right 0.2s;
 }
+aside > header {
+  min-height: 48px;
+}
 aside header {
   display: flex;
   flex-wrap: wrap;
