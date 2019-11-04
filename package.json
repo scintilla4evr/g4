@@ -5,26 +5,29 @@
   "main": "main.js",
   "scripts": {
     "test": "electron .",
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-packager D:\\Projects\\G4-Electron G4 --icon=D:\\Projects\\G4-Electron\\icon.ico --executable-name=G4 --appname=G4 --app-version=4.6.0"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/team-g4/base-g4.git"
   },
-  "author": "HiItsDevin_ and scintilla4evr",
-  "license": "ISC",
+  "author": "Team G4",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/team-g4/base-g4/issues"
   },
   "homepage": "https://github.com/team-g4/base-g4#readme",
   "devDependencies": {
-    "electron": "^6.0.8"
+    "electron": "^7.0.1"
   },
   "dependencies": {
-    "discord-rpc": "^3.0.2",
+    "discord-rpc": "^3.1.0",
     "electron-debug": "^3.0.1",
+    "ffi": "^2.3.0",
     "nan": "^2.14.0",
-    "node-gyp": "^5.0.3",
+    "node-gyp": "^5.0.5",
+    "path-exists": "^4.0.0",
     "windows-build-tools": "^5.2.2"
   }
 }
