@@ -1,0 +1,208 @@
+main:not(.visibleConsole) div.pluginConsole {
+    display: none;
+}
+
+div.pluginConsole {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 300px;
+
+    background: var(--g4-app-background);
+    color: var(--g4-app-foreground);
+
+    box-shadow: 0px 0px 16px #00000020;
+
+    display: flex;
+    flex-direction: column;
+
+    z-index: 1;
+
+    transition: height 0.2s;
+
+    --plugin-msg-accent: rgb(137, 150, 165);
+
+    .info {
+        --plugin-msg-accent: rgb(44, 115, 207);
+    }
+
+    .error {
+        --plugin-msg-accent: rgb(219, 38, 38);
+    }
+
+    .warning {
+        --plugin-msg-accent: rgb(214, 158, 5);
+    }
+
+    &.collapsed {
+        height: 41px;
+
+        header {
+            & > button, div.filters {
+                visibility: hidden;
+            }
+
+            span:after {
+                content: "...";
+            }
+        }
+
+        div.messages {
+            display: none;
+        }
+    }
+
+    &.collapsed header {
+        background: var(--g4-app-background);
+    }
+
+    header {
+        position: sticky;
+        top: 0;
+
+        background: var(--g4-app-header-background);
+
+        padding: 4px 8px;
+
+        display: flex;
+
+        transition: background 0.2s;
+
+        span {
+            padding: 0px 8px;
+
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+
+            cursor: pointer;
+        }
+
+        div.filters {
+            margin-right: 16px;
+            
+            display: flex;
+            align-items: center;
+
+            button {
+                --g4-app-background: var(--g4-app-header-background);
+                --g4-app-foreground: var(--plugin-msg-accent);
+
+                margin-left: 4px;
+
+                &.active {
+                    background: var(--plugin-msg-accent);
+                    color: var(--g4-app-background);
+                }
+            }
+        }
+    }
+
+    div.messages {    
+        overflow-y: auto;
+        flex-grow: 1;
+
+        &:not(.showCall) tr.call,
+        &:not(.showInfo) tr.info,
+        &:not(.showWarning) tr.warning,
+        &:not(.showError) tr.error {
+            display: none;
+        }
+
+        table {
+            max-width: 100%;
+            width: 100%;
+
+            font-size: 11pt;
+    
+            thead {
+                th {
+                    font-weight: 600;
+                    text-align: center;
+
+                    &.time {
+                        width: 70px;
+                    }
+
+                    &.plugin {
+                        width: 120px;
+                    }
+                }
+            }
+
+            tbody {
+                vertical-align: top;
+
+                td {
+                    padding: 2px 8px;
+
+                    overflow-x: auto;
+                    vertical-align: middle;
+
+                    &.plugin {
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+
+                        img {
+                            width: 16px;
+                            height: 16px;
+                        }
+                    }
+
+                    &.message {
+                        display: flex;
+
+                        &:before {
+                            min-width: 8px;
+                            width: 8px;
+
+                            background: var(--plugin-msg-accent);
+                            content: "";
+
+                            margin-right: 4px;
+                            border-radius: 6px;
+                        }
+
+                        span.funcName {
+                            font-family: "IBM Plex Mono";
+                        }
+
+                        span.string {
+                            font-family: "IBM Plex Mono";
+
+                            opacity: 0.8;
+
+                            &:before, &:after {
+                                content: "\"";
+                            }
+                        }
+
+                        span.array {
+                            &:before {
+                                content: "[";
+                            }
+
+                            &:after {
+                                content: "]";
+                            }
+                            
+                            & > *:not(:last-child):after {
+                                content: ",";
+                            }
+                        }
+
+                        pre {
+                            font-family: "IBM Plex Mono";
+                            font-size: 11pt;
+
+                            padding: 2px 16px;
+                            margin: 0px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

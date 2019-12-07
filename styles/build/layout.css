@@ -34,6 +34,16 @@
   --g4-app-scroll-thumb: var(--g4-theme-app-scrollThumb);
 }
 
+[data-mode=custom] {
+  --g4-game-background: var(--g4-game-custom-background);
+  --g4-game-damage: var(--g4-game-custom-damage);
+  --g4-game-foreground: var(--g4-game-custom-foreground);
+  --g4-game-obstacle1: var(--g4-game-custom-obstacle1);
+  --g4-game-obstacle2: var(--g4-game-custom-obstacle2);
+  --g4-game-cannon: var(--g4-game-custom-cannon);
+  --g4-game-bullet: var(--g4-game-custom-bullet);
+}
+
 [data-mode=easy] {
   --g4-game-background: var(--g4-theme-game-easy-background);
   --g4-game-damage: var(--g4-theme-game-easy-damage);
@@ -114,12 +124,65 @@
   --g4-game-bullet: var(--g4-theme-game-nox-bullet);
 }
 
+[data-mode=h] {
+  --g4-game-background: var(--g4-theme-game-nox-background);
+  --g4-game-damage: var(--g4-theme-game-nox-damage);
+  --g4-game-foreground: var(--g4-theme-game-nox-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-nox-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-nox-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-nox-cannon);
+  --g4-game-bullet: var(--g4-theme-game-nox-bullet);
+}
+
+[data-mode=nard] {
+  --g4-game-background: var(--g4-theme-game-nox-background);
+  --g4-game-damage: var(--g4-theme-game-nox-damage);
+  --g4-game-foreground: var(--g4-theme-game-nox-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-nox-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-nox-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-nox-cannon);
+  --g4-game-bullet: var(--g4-theme-game-nox-bullet);
+}
+
+[data-mode=brexit] {
+  --g4-game-background: var(--g4-theme-game-nox-background);
+  --g4-game-damage: var(--g4-theme-game-nox-damage);
+  --g4-game-foreground: var(--g4-theme-game-nox-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-nox-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-nox-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-nox-cannon);
+  --g4-game-bullet: var(--g4-theme-game-nox-bullet);
+}
+
+[data-mode=polar] {
+  --g4-game-background: var(--g4-theme-game-polar-background);
+  --g4-game-damage: var(--g4-theme-game-polar-damage);
+  --g4-game-foreground: var(--g4-theme-game-polar-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-polar-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-polar-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-polar-cannon);
+  --g4-game-bullet: var(--g4-theme-game-polar-bullet);
+}
+
+[data-mode=shook] {
+  --g4-game-background: var(--g4-theme-game-shook-background);
+  --g4-game-damage: var(--g4-theme-game-shook-damage);
+  --g4-game-foreground: var(--g4-theme-game-shook-foreground);
+  --g4-game-obstacle1: var(--g4-theme-game-shook-obstacle1);
+  --g4-game-obstacle2: var(--g4-theme-game-shook-obstacle2);
+  --g4-game-cannon: var(--g4-theme-game-shook-cannon);
+  --g4-game-bullet: var(--g4-theme-game-shook-bullet);
+}
+
 main {
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   right: 400px;
+}
+main.visibleConsole div.game {
+  margin-bottom: 41px;
 }
 main div.firstTimeHint {
   position: absolute;
@@ -149,6 +212,9 @@ main div.game {
   bottom: 0;
   background: var(--g4-game-background);
   color: var(--g4-game-foreground);
+}
+main div.game[data-mode=custom] div.stat:not(.level) {
+  display: none;
 }
 main div.game header {
   position: absolute;
@@ -186,7 +252,6 @@ main div.game header div.stat p.value {
   font-size: 16pt;
   font-weight: 500;
   text-align: center;
-  text-transform: uppercase;
   margin: 0;
 }
 main div.game header div.stat.level p.value {
@@ -204,6 +269,13 @@ main div.game canvas {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+main div.game canvas.webGLViewport {
+  pointer-events: none;
+}
+main div.game canvas.hidden {
+  visibility: hidden;
+  pointer-events: none;
 }
 main div.game footer {
   position: absolute;
@@ -281,6 +353,154 @@ body.left main {
     padding-right: 0;
   }
 }
+main:not(.visibleConsole) div.pluginConsole {
+  display: none;
+}
+
+div.pluginConsole {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 300px;
+  background: var(--g4-app-background);
+  color: var(--g4-app-foreground);
+  box-shadow: 0px 0px 16px #00000020;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  transition: height 0.2s;
+  --plugin-msg-accent: rgb(137, 150, 165);
+}
+div.pluginConsole .info {
+  --plugin-msg-accent: rgb(44, 115, 207);
+}
+div.pluginConsole .error {
+  --plugin-msg-accent: rgb(219, 38, 38);
+}
+div.pluginConsole .warning {
+  --plugin-msg-accent: rgb(214, 158, 5);
+}
+div.pluginConsole.collapsed {
+  height: 41px;
+}
+div.pluginConsole.collapsed header > button, div.pluginConsole.collapsed header div.filters {
+  visibility: hidden;
+}
+div.pluginConsole.collapsed header span:after {
+  content: "...";
+}
+div.pluginConsole.collapsed div.messages {
+  display: none;
+}
+div.pluginConsole.collapsed header {
+  background: var(--g4-app-background);
+}
+div.pluginConsole header {
+  position: sticky;
+  top: 0;
+  background: var(--g4-app-header-background);
+  padding: 4px 8px;
+  display: flex;
+  transition: background 0.2s;
+}
+div.pluginConsole header span {
+  padding: 0px 8px;
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  cursor: pointer;
+}
+div.pluginConsole header div.filters {
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+}
+div.pluginConsole header div.filters button {
+  --g4-app-background: var(--g4-app-header-background);
+  --g4-app-foreground: var(--plugin-msg-accent);
+  margin-left: 4px;
+}
+div.pluginConsole header div.filters button.active {
+  background: var(--plugin-msg-accent);
+  color: var(--g4-app-background);
+}
+div.pluginConsole div.messages {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+div.pluginConsole div.messages:not(.showCall) tr.call, div.pluginConsole div.messages:not(.showInfo) tr.info, div.pluginConsole div.messages:not(.showWarning) tr.warning, div.pluginConsole div.messages:not(.showError) tr.error {
+  display: none;
+}
+div.pluginConsole div.messages table {
+  max-width: 100%;
+  width: 100%;
+  font-size: 11pt;
+}
+div.pluginConsole div.messages table thead th {
+  font-weight: 600;
+  text-align: center;
+}
+div.pluginConsole div.messages table thead th.time {
+  width: 70px;
+}
+div.pluginConsole div.messages table thead th.plugin {
+  width: 120px;
+}
+div.pluginConsole div.messages table tbody {
+  vertical-align: top;
+}
+div.pluginConsole div.messages table tbody td {
+  padding: 2px 8px;
+  overflow-x: auto;
+  vertical-align: middle;
+}
+div.pluginConsole div.messages table tbody td.plugin {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+div.pluginConsole div.messages table tbody td.plugin img {
+  width: 16px;
+  height: 16px;
+}
+div.pluginConsole div.messages table tbody td.message {
+  display: flex;
+}
+div.pluginConsole div.messages table tbody td.message:before {
+  min-width: 8px;
+  width: 8px;
+  background: var(--plugin-msg-accent);
+  content: "";
+  margin-right: 4px;
+  border-radius: 6px;
+}
+div.pluginConsole div.messages table tbody td.message span.funcName {
+  font-family: "IBM Plex Mono";
+}
+div.pluginConsole div.messages table tbody td.message span.string {
+  font-family: "IBM Plex Mono";
+  opacity: 0.8;
+}
+div.pluginConsole div.messages table tbody td.message span.string:before, div.pluginConsole div.messages table tbody td.message span.string:after {
+  content: '"';
+}
+div.pluginConsole div.messages table tbody td.message span.array:before {
+  content: "[";
+}
+div.pluginConsole div.messages table tbody td.message span.array:after {
+  content: "]";
+}
+div.pluginConsole div.messages table tbody td.message span.array > *:not(:last-child):after {
+  content: ",";
+}
+div.pluginConsole div.messages table tbody td.message pre {
+  font-family: "IBM Plex Mono";
+  font-size: 11pt;
+  padding: 2px 16px;
+  margin: 0px;
+}
+
 aside {
   position: fixed;
   top: 0;
@@ -295,11 +515,10 @@ aside {
   transition: right 0.2s;
 }
 aside > header {
-  min-height: 48px;
+  min-height: 33px;
 }
 aside header {
   display: flex;
-  flex-wrap: wrap;
 }
 aside header div.content {
   display: flex;
@@ -346,13 +565,14 @@ aside header button:active div {
   --g4-app-foreground: var(--g4-app-background);
 }
 aside header div.accountInfo {
-  width: 100%;
-  display: none;
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
 }
 aside header div.accountInfo p {
-  font-weight: 400;
-  font-size: 15pt;
-  padding: 8px 16px;
+  font-weight: 500;
+  font-size: 12pt;
+  padding: 0px 16px;
   margin: 0px;
   flex-grow: 1;
 }
@@ -374,6 +594,12 @@ aside section {
   display: flex;
   flex-direction: column;
 }
+aside section.collapsed {
+  background: linear-gradient(var(--g4-app-header-background), transparent);
+}
+aside section.collapsed div.content {
+  display: none;
+}
 aside section header {
   font-weight: 500;
   font-size: 15pt;
@@ -384,26 +610,40 @@ aside section header {
 aside section div.content {
   flex-grow: 1;
 }
+aside section.gameMode {
+  background: transparent;
+  padding: 0px;
+  border-radius: 0px;
+}
 aside section.gameMode div.content {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+}
+aside section.gameMode div.content header {
+  font-size: 11pt;
+  font-weight: 400;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  grid-column: 1/5;
+  opacity: 0.8;
 }
 aside section.gameMode div.content button.mode {
   background: transparent;
   color: var(--g4-app-foreground);
   padding: 4px 8px;
   border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-grow: 1;
 }
-aside section.gameMode div.content button.mode p {
-  margin: 0px;
-  font-family: var(--g4-app-typeface);
-  font-weight: 500;
-  font-size: 12pt;
-  text-transform: uppercase;
+aside section.gameMode div.content button.mode img {
+  width: 20px;
+  height: 20px;
 }
 aside section.gameMode div.content button.mode:hover {
-  box-shadow: inset 0px 0px 0px 4px var(--g4-game-foreground);
+  box-shadow: inset 0px 0px 0px 2px var(--g4-game-foreground);
 }
 aside section.gameMode div.content button.mode.active {
   background: var(--g4-game-foreground);
@@ -478,8 +718,22 @@ aside section.leaderboard div.content table tr td.player span.verified {
   font-weight: 600;
   font-size: 80%;
   margin-left: 4px;
-  padding: 0px 2px;
+  padding: 0px;
   border-radius: 2px;
+}
+aside section.leaderboard div.content table tr td.player span.teamg4 {
+  color: var(--g4-app-accent);
+  font-family: "Poppins";
+  font-weight: 500;
+  font-size: 80%;
+  margin-left: 4px;
+}
+aside section.leaderboard div.content table tr td.player span.teamgt {
+  color: #0f0;
+  font-family: "Poppins";
+  font-weight: 500;
+  font-size: 80%;
+  margin-left: 4px;
 }
 aside section.leaderboard div.content table tr td.player span svg {
   width: 20px;
@@ -501,11 +755,46 @@ aside section.pwaInstall div.content {
 aside section.hidden {
   display: none;
 }
+aside div.assetProgress {
+  position: relative;
+  height: 32px;
+  min-height: 32px;
+  padding: 0px 8px;
+  display: flex;
+  align-items: center;
+}
+aside div.assetProgress.hidden {
+  display: none;
+}
+aside div.assetProgress img {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+}
+aside div.assetProgress div.bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--g4-app-accent);
+}
 aside footer {
-  height: 33px;
-  max-height: 33px;
-  min-height: 33px;
-  padding: 4px 16px;
+  height: 24px;
+  min-height: 24px;
+  display: flex;
+  justify-content: flex-end;
+}
+aside footer div.statusItem {
+  min-width: 50px;
+  padding: 0px 8px;
+  display: flex;
+  align-items: center;
+}
+aside footer div.statusItem svg {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  fill: var(--g4-app-foreground);
 }
 
 div.dialogContainer {
@@ -553,7 +842,8 @@ dialog div.content {
   padding: 16px;
   border-radius: 24px 0px 0px 0px;
   flex-grow: 1;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 dialog div.content button {
   background: var(--g4-app-header-background);
@@ -608,37 +898,123 @@ dialog.open {
   left: 0;
 }
 
+dialog#oobe div.play {
+  text-align: center;
+}
+dialog#oobe div.play button#hideOOBE {
+  font-size: 18pt;
+  text-transform: none;
+  margin-top: 16px;
+}
+
 dialog#playerStats div.content {
   padding: 8px;
+}
+dialog#playerStats div.content h1 {
+  font-size: 18pt;
+  font-weight: 600;
+  text-align: center;
+  margin: 8px;
 }
 dialog#playerStats div.content h2 {
   font-size: 16pt;
   font-weight: 400;
-  margin: 8px 8px 40px 8px;
+  margin: 16px 8px 8px 8px;
+}
+dialog#playerStats div.content div.badges {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+dialog#playerStats div.content div.badges div.badge {
+  background: var(--g4-app-foreground);
+  color: var(--g4-app-background);
+  font-size: 11pt;
+  font-weight: 500;
+  padding: 1px 8px;
+  margin: 0px 4px;
+  border-radius: 2px;
+}
+dialog#playerStats div.content div.badges div.badge.teamg4 {
+  background: linear-gradient(90deg, #FF3663, #5AC9FB);
+  color: var(--g4-app-background);
+}
+dialog#playerStats div.content div.badges div.badge.teamgt {
+  background: #0f0;
+  color: #000;
+}
+dialog#playerStats div.content div.achievement {
+  background: var(--g4-app-header-background);
+  color: var(--g4-app-foreground);
+  padding: 8px 16px;
+  margin: 0px 8px 8px 8px;
+  border-radius: 8px;
+  display: flex;
+}
+dialog#playerStats div.content div.achievement svg {
+  min-width: 48px;
+  width: 48px;
+  height: 48px;
+  margin-right: 16px;
+  --svg-color-1: var(--g4-app-accent);
+  --svg-color-2: var(--g4-app-foreground);
+}
+dialog#playerStats div.content div.achievement.game svg {
+  --svg-color-1: var(--g4-game-bullet);
+  --svg-color-2: var(--g4-game-foreground);
+}
+dialog#playerStats div.content div.achievement div.info {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  justify-content: center;
+}
+dialog#playerStats div.content div.achievement div.info p.name {
+  font-weight: 600;
+  margin: 0px;
+}
+dialog#playerStats div.content div.achievement div.info p.description {
+  font-size: 11pt;
+  margin: 0px;
 }
 dialog#playerStats div.content div.highScore {
   background: var(--g4-game-background);
-  color: var(--g4-game-cannon);
+  color: var(--g4-game-foreground);
   padding: 8px 16px;
-  margin-bottom: 8px;
-  border-radius: 24px;
+  margin: 0px 8px 8px 8px;
+  border-radius: 8px;
   box-shadow: inset 0px 0px 0px 1px var(--g4-game-foreground);
+  display: flex;
+  align-items: center;
 }
 dialog#playerStats div.content div.highScore p {
-  font-size: 14pt;
+  font-size: 12pt;
+  font-weight: 600;
+  text-transform: uppercase;
   margin: 0px;
+  flex-grow: 1;
+}
+dialog#playerStats div.content div.highScore p span {
+  background: var(--g4-game-bullet);
+  color: var(--g4-game-background);
+  padding: 2px 8px;
+  border-radius: 16px;
+  display: inline-block;
 }
 dialog#playerStats div.content div.highScore table {
-  width: 100%;
+  width: 200px;
   border-spacing: 0px;
 }
 dialog#playerStats div.content div.highScore table th {
   font-weight: 400;
+  text-transform: uppercase;
   text-align: left;
 }
 dialog#playerStats div.content div.highScore table td {
+  width: 50%;
   font-weight: 500;
   font-size: 13pt;
+  line-height: 1;
 }
 
 body.left aside {
@@ -727,11 +1103,105 @@ body.left dialog.open {
     right: unset;
   }
 }
-dialog#settings h2, dialog#settings h3, dialog#themeEditor h2, dialog#themeEditor h3 {
-  margin-bottom: 0px;
+@keyframes NotificationPop {
+  0% {
+    opacity: 0;
+    transform: translateY(40%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
 }
-dialog#settings h2:not(:first-child), dialog#themeEditor h2:not(:first-child) {
+div.notifications section.notification {
+  background: var(--g4-app-foreground);
+  color: var(--g4-app-background);
+  animation: NotificationPop 0.2s forwards;
+}
+div.notifications section.notification header {
+  justify-content: flex-start;
+  align-items: center;
+}
+div.notifications section.notification header img {
+  width: 20px;
+  height: 20px;
+}
+div.notifications section.notification header p {
+  font-size: 11pt;
+  margin: 0px 0px 0px 12px;
+  flex-grow: 1;
+}
+div.notifications section.notification header button {
+  background: var(--g4-app-foreground);
+  color: var(--g4-app-background);
+}
+div.notifications section.notification header button:hover {
+  box-shadow: inset 0px 0px 0px 2px var(--g4-app-accent);
+}
+div.notifications section.notification header button:active {
+  background: var(--g4-app-accent);
+  color: var(--g4-app-foreground);
+}
+div.notifications section.notification div.content {
+  padding: 0px 16px;
+}
+div.notifications section.notification div.content p {
+  margin: 0px 0px 4px 0px;
+}
+div.notifications section.notification div.content button {
+  background: var(--g4-app-foreground);
+  color: var(--g4-app-background);
+  box-shadow: inset 0px 0px 0px 1px var(--g4-app-background);
+}
+div.notifications section.notification div.content button:hover {
+  box-shadow: inset 0px 0px 0px 2px var(--g4-app-accent);
+}
+div.notifications section.notification div.content button:active {
+  background: var(--g4-app-accent);
+  color: var(--g4-app-foreground);
+}
+div.notifications section.notification:not(:nth-child(-n+3)) {
+  display: none;
+}
+
+dialog.settings h2, dialog.settings h3 {
+  margin-bottom: 0px !important;
+}
+dialog.settings h2:not(:first-child) {
   margin-top: 32px;
+}
+
+div.sectionLink, div.bigButton {
+  padding: 8px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+}
+div.sectionLink:hover, div.bigButton:hover {
+  background: var(--g4-app-header-background);
+}
+div.sectionLink:active, div.bigButton:active {
+  background: var(--g4-app-foreground);
+  color: var(--g4-app-background);
+}
+div.sectionLink:active svg, div.bigButton:active svg {
+  fill: var(--g4-app-background);
+}
+div.sectionLink svg, div.bigButton svg {
+  width: 32px;
+  height: 32px;
+  fill: var(--g4-app-foreground);
+}
+div.sectionLink div.info, div.bigButton div.info {
+  padding-left: 16px;
+}
+div.sectionLink div.info p, div.bigButton div.info p {
+  font-size: 11pt;
+  margin: 0px;
+}
+div.sectionLink div.info p.name, div.bigButton div.info p.name {
+  font-size: 12pt;
+  font-weight: 600;
 }
 
 div.setting {
@@ -786,6 +1256,22 @@ div.setting input[type=checkbox] + label:after {
   transform: translateY(-50%);
   transition: background 0.2s, right 0.2s;
 }
+@keyframes ChromaText {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+div.setting input[type=checkbox].chroma:checked + label {
+  background: linear-gradient(90deg, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: ChromaText 1s infinite linear;
+}
 div.setting input[type=checkbox]:checked + label:before {
   background: var(--g4-app-accent);
 }
@@ -827,13 +1313,42 @@ div.setting button.keyboardInput.waiting, div.setting button.gamepadInput.waitin
 div.themeList div.theme {
   background: var(--g4-app-header-background);
   color: var(--g4-app-foreground);
-  padding: 8px 16px;
+  padding: 0px;
   margin-top: 8px;
-  border-radius: 24px;
+  border-radius: 8px;
   display: flex;
+}
+div.themeList div.theme > div {
+  padding: 8px 16px 16px 16px;
+  display: flex;
+  flex-grow: 1;
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
+}
+div.themeList div.theme svg {
+  width: auto;
+  height: 94px;
+  margin: 2px 2px 0px 2px;
+  border-radius: 22px 0px 0px 22px;
+}
+div.themeList div.theme svg .st0 {
+  fill: var(--g4-theme-game-normal-background);
+}
+div.themeList div.theme svg .st1 {
+  fill: var(--g4-theme-app-background);
+}
+div.themeList div.theme svg .st2 {
+  fill: var(--g4-theme-game-normal-obstacle1);
+}
+div.themeList div.theme svg .st3 {
+  fill: var(--g4-theme-app-headerBackground);
+}
+div.themeList div.theme svg .st4 {
+  fill: var(--g4-theme-app-foreground);
+}
+div.themeList div.theme svg .st5 {
+  fill: var(--g4-theme-app-accent);
 }
 div.themeList div.theme p {
   width: 100%;
@@ -860,6 +1375,9 @@ div.themeList div.theme.current {
   box-shadow: inset 0px 0px 0px 2px var(--g4-app-foreground);
 }
 
+dialog#themeEditor canvas {
+  border-radius: 8px;
+}
 dialog#themeEditor input[type=text] {
   width: calc(100% - 16px);
   background: transparent;
@@ -891,7 +1409,157 @@ dialog#themeEditor div.colors div.color label {
   flex-grow: 1;
 }
 
+div.pluginList div.plugin {
+  background: var(--g4-app-header-background);
+  margin-top: 8px;
+  border-radius: 8px;
+}
+div.pluginList div.plugin p.description {
+  font-size: 11pt;
+  margin: 0px 16px;
+}
+div.pluginList div.plugin p.running {
+  color: var(--g4-app-accent);
+  font-size: 11pt;
+  font-weight: 600;
+  margin: 0px 0px 0px 16px;
+}
+div.pluginList div.plugin div.toggle {
+  position: relative;
+  padding: 16px 16px 8px 16px;
+  display: flex;
+}
+div.pluginList div.plugin div.toggle label {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+div.pluginList div.plugin div.toggle label img {
+  width: 48px;
+  height: 48px;
+}
+div.pluginList div.plugin div.toggle label p {
+  font-size: 13pt;
+  font-weight: 600;
+  margin: 0px 0px 0px 12px;
+}
+div.pluginList div.plugin div.toggle input[type=checkbox] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+div.pluginList div.plugin div.toggle input[type=checkbox]:disabled + label:after {
+  opacity: 0;
+}
+div.pluginList div.plugin div.toggle input[type=checkbox] + label:before {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  width: 36px;
+  height: 24px;
+  background: var(--g4-app-foreground);
+  content: "";
+  border-radius: 12px;
+  transform: translateY(-50%);
+  transition: all 0.2s;
+}
+div.pluginList div.plugin div.toggle input[type=checkbox] + label:after {
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background: var(--g4-app-background);
+  content: "";
+  border-radius: 10px;
+  transform: translateY(-50%);
+  transition: background 0.2s, right 0.2s;
+}
+div.pluginList div.plugin div.toggle input[type=checkbox]:checked + label:before {
+  background: var(--g4-app-accent);
+}
+div.pluginList div.plugin div.toggle input[type=checkbox]:checked + label:after {
+  right: 18px;
+  background: var(--g4-app-background);
+}
+div.pluginList div.plugin div.buttons {
+  padding: 0px 16px 16px 16px;
+  display: flex;
+}
+div.pluginList div.plugin div.buttons button {
+  background: var(--g4-app-background);
+}
+div.pluginList div.plugin div.buttons button:active {
+  background: var(--g4-app-foreground);
+  color: var(--g4-app-background);
+}
+
+div.volume {
+  background: var(--g4-app-header-background);
+  color: var(--g4-app-foreground);
+  padding: 8px 16px;
+  margin-bottom: 8px;
+  border-radius: 8px;
+}
+div.volume[data-category=master] {
+  background: var(--g4-app-foreground);
+  color: var(--g4-app-header-background);
+}
+div.volume div.info p {
+  font-size: 14pt;
+  margin: 0;
+}
+div.volume div.slider {
+  display: flex;
+  align-items: center;
+}
+div.volume div.slider input[type=range] {
+  flex-grow: 1;
+}
+div.volume div.slider p {
+  width: 40px;
+  font-size: 12pt;
+  font-weight: 600;
+  text-align: right;
+  margin: 0px 0px 0px 16px;
+}
+
+dialog#settingsAbout h1 {
+  font-size: 20pt;
+  font-weight: 200;
+  text-align: center;
+  margin: 0px;
+}
+dialog#settingsAbout h3 {
+  font-size: 14pt;
+  font-weight: 200;
+  text-align: center;
+  margin: 0px;
+}
+
+div.credit {
+  background: var(--g4-app-header-background);
+  padding: 8px 16px;
+  margin-top: 8px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+div.credit span.name {
+  background: linear-gradient(90deg, #FF3663, #5AC9FB);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 24pt;
+  text-transform: uppercase;
+}
+
 div.titleBar {
+  display: none;
+}
+
+body:not(.electron) .onlyElectron {
   display: none;
 }
 
@@ -973,12 +1641,15 @@ body {
   color: var(--g4-game-foreground);
   font-family: var(--g4-app-typeface);
   user-select: none;
+  scrollbar-width: thin;
+  scrollbar-color: var(--g4-app-scroll-thumb) var(--g4-app-scroll-track);
 }
 
-body.login div.accountInfo {
-  display: flex;
-}
 body.login button#openLoginBtn {
+  display: none;
+}
+
+body:not(.login) div.accountInfo * {
   display: none;
 }
 
@@ -991,11 +1662,12 @@ button {
   text-transform: uppercase;
   padding: 4px 16px;
   border: none;
+  outline: none;
   border-radius: 8px;
 }
 
 button:hover {
-  box-shadow: inset 0px 0px 0px 4px var(--g4-app-foreground);
+  box-shadow: inset 0px 0px 0px 2px var(--g4-app-foreground);
 }
 
 button:active {
@@ -1052,6 +1724,59 @@ body.light button.daynight div:after {
   background: var(--g4-app-scroll-thumb);
   border-radius: 6px;
   box-shadow: inset 0px 0px 0px 3px var(--g4-app-background);
+}
+
+div.loadingScreen {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--g4-app-background);
+  color: var(--g4-app-foreground);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  transition: opacity 0.3s;
+}
+div.loadingScreen.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+div.loadingScreen.loading img {
+  filter: grayscale(1);
+}
+div.loadingScreen.loading div.progressBar {
+  display: block;
+}
+div.loadingScreen.loading button {
+  display: none;
+}
+div.loadingScreen img {
+  width: 256px;
+  height: auto;
+  transition: filter 0.4s;
+}
+div.loadingScreen > div {
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+div.loadingScreen > div div.progressBar {
+  width: 200px;
+  height: 2px;
+  background: var(--g4-app-header-background);
+  display: none;
+}
+div.loadingScreen > div div.progressBar div {
+  height: 2px;
+  background: var(--g4-app-accent);
+}
+div.loadingScreen > div button {
+  padding: 8px 24px;
 }
 
 /*# sourceMappingURL=layout.css.map */

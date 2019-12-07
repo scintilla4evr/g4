@@ -1,0 +1,149 @@
+main:not(.visibleConsole) div.pluginConsole {
+  display: none;
+}
+
+div.pluginConsole {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 300px;
+  background: var(--g4-app-background);
+  color: var(--g4-app-foreground);
+  box-shadow: 0px 0px 16px #00000020;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  transition: height 0.2s;
+  --plugin-msg-accent: rgb(137, 150, 165);
+}
+div.pluginConsole .info {
+  --plugin-msg-accent: rgb(44, 115, 207);
+}
+div.pluginConsole .error {
+  --plugin-msg-accent: rgb(219, 38, 38);
+}
+div.pluginConsole .warning {
+  --plugin-msg-accent: rgb(214, 158, 5);
+}
+div.pluginConsole.collapsed {
+  height: 41px;
+}
+div.pluginConsole.collapsed header > button, div.pluginConsole.collapsed header div.filters {
+  visibility: hidden;
+}
+div.pluginConsole.collapsed header span:after {
+  content: "...";
+}
+div.pluginConsole.collapsed div.messages {
+  display: none;
+}
+div.pluginConsole.collapsed header {
+  background: var(--g4-app-background);
+}
+div.pluginConsole header {
+  position: sticky;
+  top: 0;
+  background: var(--g4-app-header-background);
+  padding: 4px 8px;
+  display: flex;
+  transition: background 0.2s;
+}
+div.pluginConsole header span {
+  padding: 0px 8px;
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  cursor: pointer;
+}
+div.pluginConsole header div.filters {
+  margin-right: 16px;
+  display: flex;
+  align-items: center;
+}
+div.pluginConsole header div.filters button {
+  --g4-app-background: var(--g4-app-header-background);
+  --g4-app-foreground: var(--plugin-msg-accent);
+  margin-left: 4px;
+}
+div.pluginConsole header div.filters button.active {
+  background: var(--plugin-msg-accent);
+  color: var(--g4-app-background);
+}
+div.pluginConsole div.messages {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+div.pluginConsole div.messages:not(.showCall) tr.call, div.pluginConsole div.messages:not(.showInfo) tr.info, div.pluginConsole div.messages:not(.showWarning) tr.warning, div.pluginConsole div.messages:not(.showError) tr.error {
+  display: none;
+}
+div.pluginConsole div.messages table {
+  max-width: 100%;
+  width: 100%;
+  font-size: 11pt;
+}
+div.pluginConsole div.messages table thead th {
+  font-weight: 600;
+  text-align: center;
+}
+div.pluginConsole div.messages table thead th.time {
+  width: 70px;
+}
+div.pluginConsole div.messages table thead th.plugin {
+  width: 120px;
+}
+div.pluginConsole div.messages table tbody {
+  vertical-align: top;
+}
+div.pluginConsole div.messages table tbody td {
+  padding: 2px 8px;
+  overflow-x: auto;
+  vertical-align: middle;
+}
+div.pluginConsole div.messages table tbody td.plugin {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+div.pluginConsole div.messages table tbody td.plugin img {
+  width: 16px;
+  height: 16px;
+}
+div.pluginConsole div.messages table tbody td.message {
+  display: flex;
+}
+div.pluginConsole div.messages table tbody td.message:before {
+  min-width: 8px;
+  width: 8px;
+  background: var(--plugin-msg-accent);
+  content: "";
+  margin-right: 4px;
+  border-radius: 6px;
+}
+div.pluginConsole div.messages table tbody td.message span.funcName {
+  font-family: "IBM Plex Mono";
+}
+div.pluginConsole div.messages table tbody td.message span.string {
+  font-family: "IBM Plex Mono";
+  opacity: 0.8;
+}
+div.pluginConsole div.messages table tbody td.message span.string:before, div.pluginConsole div.messages table tbody td.message span.string:after {
+  content: '"';
+}
+div.pluginConsole div.messages table tbody td.message span.array:before {
+  content: "[";
+}
+div.pluginConsole div.messages table tbody td.message span.array:after {
+  content: "]";
+}
+div.pluginConsole div.messages table tbody td.message span.array > *:not(:last-child):after {
+  content: ",";
+}
+div.pluginConsole div.messages table tbody td.message pre {
+  font-family: "IBM Plex Mono";
+  font-size: 11pt;
+  padding: 2px 16px;
+  margin: 0px;
+}
+
+/*# sourceMappingURL=console.css.map */

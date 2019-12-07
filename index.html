@@ -21,7 +21,7 @@
     <body class="">
         <div class="titleBar">
             <div class="title">
-                <p>G4 Electron</p>
+                <p>G4X.7</p>
             </div>
             <div class="buttons">
                 <button id="minimizeBtn">
@@ -47,38 +47,72 @@
             </div>
         </div>
 
+        <div class="loadingScreen loading">
+            <img src="res/images/updateLogo.svg">
+
+            <div>
+                <div class="progressBar">
+                    <div class="bar" style="width: 0%"></div>
+                </div>
+                <button id="openGame">Play G4</button>
+            </div>
+        </div>
+
         <main class="one">
+            <div class="pluginConsole collapsed">
+                <header>
+                    <span>Plugin console</span>
+
+                    <div class="filters">
+                        Show:
+                        <button class="call">API calls</button>
+                        <button class="info">Info</button>
+                        <button class="warning">Warnings</button>
+                        <button class="error">Errors</button>
+                    </div>
+                    <button id="clearPluginConsole">Clear console</button>
+                </header>
+                <div class="messages">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="time">Time</th>
+                                <th class="plugin">Plugin</th>
+                                <th class="message">Message</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </main>
         <aside>
             <header>
                 <div class="content">
-                    <svg id="g4logo" viewBox="0 0 400 288">
-                        <path d="M224,112V263.74a143.0544,143.0544,0,0,1-64,23.38,145.6907,145.6907,0,0,1-16,.88A144,144,0,0,1,144,0a145.6907,145.6907,0,0,1,16,.88V65.61a80,80,0,1,0,0,156.78V176H128V112Z"/>
-                        <polygon points="400 112 400 176 352 176 352 288 288 288 288 112 400 112"/>
-                        <rect x="224" width="64" height="112"/>
-                    </svg>
-                    <div style="flex-grow: 1"></div>
+                    <div class="accountInfo">
+                        <p class="username">N/A</p>
     
-                    <button id="openSettingsBtn">
-                        Settings
-                    </button>
+                        <button id="logoutBtn">Log out</button>
+                    </div>
+    
                     <button id="openLoginBtn">
                         Log in
+                    </button>
+                    <button id="openSettingsBtn">
+                        Settings
                     </button>
                 </div>
 
                 <button class="expander">
                     <div></div>
-                </button>
-
-                <div class="accountInfo">
-                    <p class="username">N/A</p>
-
-                    <button id="logoutBtn">Log out</button>
-                </div>
+                </button>                
             </header>
 
             <div class="scroller">
+                <div class="notifications">
+                </div>
+
                 <section class="pwaInstall hidden">
                     <header>
                         Install G4 locally
@@ -92,32 +126,7 @@
                 </section>
     
                 <section class="gameMode">
-                    <header>Game mode</header>
                     <div class="content">
-                        <button data-mode="easy" class="mode active">
-                            <p class="name">Easy</p>
-                        </button>
-                        <button data-mode="normal" class="mode">
-                            <p class="name">Normal</p>
-                        </button>
-                        <button data-mode="hard" class="mode">
-                            <p class="name">Hard</p>
-                        </button>
-                        <button data-mode="hell" class="mode">
-                            <p class="name">Hell</p>
-                        </button>
-                        <button data-mode="hades" class="mode">
-                            <p class="name">Hades</p>
-                        </button>
-                        <button data-mode="denise" class="mode">
-                            <p class="name">Chaos</p>
-                        </button>
-                        <button data-mode="reverse" class="mode">
-                            <p class="name">Reverse</p>
-                        </button>
-                        <button data-mode="nox" class="mode">
-                            <p class="name">Nox</p>
-                        </button>
                     </div>
                 </section>
                 
@@ -142,7 +151,16 @@
             </div>
 
             <footer>
-                G4.6 by <a href="https://g4game.wtf/" target="_blank" rel="noopener" aria-label="Team G4's website">Team G4</a> | Frame rate: <span class="fpsCounter"></span>
+                <div class="statusItem fpsCounter" style="display: none">
+                    <svg width="100%" height="100%" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                        <g transform="matrix(1,0,0,1,-2,2)">
+                            <path d="M7,2L7,3L4,3L4,6L7,6L7,7L4,7L4,10L3,10L3,2L7,2Z"/>
+                        </g>
+                        <path d="M10,9L7,9L7,12L6,12L6,4L10,4L10,9ZM9,5L7,5L7,8L9,8L9,5Z"/>
+                        <path d="M15,6L15,4L11,4L11,7.5L14,9L14,11L12,11L12,10L11,10L11,12L15,12L15,8.5L12,7L12,5L14,5L14,6L15,6Z"/>
+                    </svg>
+                    <span class="fpsCounter"></span>
+                </div>
             </footer>
         </aside>
 
@@ -165,6 +183,11 @@
                         <label for="loginPassword">Password:</label>
                         <input id="loginPassword" type="password">
                     </form>
+
+                    <div class="setting">
+                        <input type="checkbox" id="loginRemember">
+                        <label for="loginRemember">For the love of G4, remember me</label>
+                    </div>
 
                     <div class="buttons">
                         <button id="loginBtn" class="primary">Log in</button>
@@ -203,43 +226,309 @@
             <dialog id="playerStats" class="">
                 <header>
                     <button class="close">Back</button>
-                    Player stats
+                    Player info
                 </header>
 
                 <div class="content">
-                    <h2></h2>
+                    <h1></h1>
+                    <div class="badges">
+                    </div>
 
+                    <h2>Achievements</h2>
+                    <div class="achievements"></div>
+
+                    <h2>High scores</h2>
                     <div class="scores">
                     </div>
                 </div>
             </dialog>
 
-            <dialog id="settings" class="">
+            <dialog id="settings" class="settings">
                 <header>
                     <button class="close">Back</button>
                     Settings
                 </header>
 
                 <div class="content">
-                    <h2>General</h2>
-                    <div class="setting">
-                        <input type="checkbox" id="settingMusic">
-                        <label for="settingMusic" class="loading">In-game music</label>
+                    <div class="sectionLink" id="settingsGfxBtn">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+                            <path d="M56,8H40c-1.1,0-2.1,0.4-2.8,1.2l-8,8c0,0,0,0-0.1,0.1l-1.5-3C26.9,12.9,25.5,12,24,12s-2.9,0.9-3.6,2.2l-16,32
+                            C4.1,46.8,4,47.4,4,48c0,6.8,8.6,12,20,12s20-5.2,20-12c0-0.6-0.1-1.2-0.4-1.8L40.5,40H48c0.4,0,0.8-0.1,1.2-0.2
+                            c0.2-0.1,0.5-0.2,0.7-0.3c0.1-0.1,0.2-0.1,0.3-0.2c0.2-0.2,0.4-0.3,0.6-0.5l8-8c0.8-0.8,1.2-1.8,1.2-2.8V12C60,9.8,58.2,8,56,8z
+                            M24,56c-8.8,0-16-3.6-16-8l16-32l16,32C40,52.4,32.8,56,24,56z M48,36h-9.5L32,23v-3h16V36z M49,16.1C48.7,16,48.4,16,48,16H36l4-4
+                            h13.2L49,16.1z M56,28l-4,4V20c0-0.4,0-0.7-0.1-1l4.1-4.1V28z"/>
+                        </svg>
+                        <div class="info">
+                            <p class="name">Graphics</p>
+                            <!-- <p class="description">GLSL shaders</p> -->
+                        </div>
                     </div>
+                    <div class="sectionLink" id="settingsMusicBtn">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+                            <path d="M20,8c6.6,0,12,5.4,12,12s-5.4,12-12,12S8,26.6,8,20S13.4,8,20,8L20,8z M20,4C11.2,4,4,11.2,4,20s7.2,16,16,16s16-7.2,16-16
+                                S28.8,4,20,4L20,4z"/>
+                            <path d="M58,48H36v-1.3c0-3.7-3-6.7-6.7-6.7h-6.7C19,40,16,43,16,46.7V48H6c-0.5,0-1,0.2-1.4,0.6C4.2,49,4,49.5,4,50
+                                c0,1.1,0.9,2,2,2h10v1.3c0,3.7,3,6.7,6.7,6.7h6.7c3.7,0,6.7-3,6.7-6.7V52h22c0.5,0,1-0.2,1.4-0.6C59.8,51,60,50.5,60,50
+                                C60,48.9,59.1,48,58,48z M32,53.3c0,1.5-1.2,2.7-2.7,2.7h-6.7c-1.5,0-2.7-1.2-2.7-2.7v-6.7c0-1.5,1.2-2.7,2.7-2.7h6.7
+                                c1.5,0,2.7,1.2,2.7,2.7V53.3z"/>
+                            <circle cx="14" cy="18" r="2"/>
+                            <path d="M54.2,8c1,0,1.8,0.8,1.8,1.8v4.3c0,1-0.8,1.8-1.8,1.8h-8.3c-1,0-1.8-0.8-1.8-1.8V9.8c0-1,0.8-1.8,1.8-1.8H54.2L54.2,8z
+                                    M54.2,4h-8.3C42.6,4,40,6.6,40,9.8v4.3c0,3.2,2.6,5.8,5.8,5.8h8.3c3.2,0,5.8-2.6,5.8-5.8V9.8C60,6.6,57.4,4,54.2,4L54.2,4z"/>
+                            <path d="M54.2,28c1,0,1.8,0.8,1.8,1.8v0.3c0,1-0.8,1.8-1.8,1.8h-8.3c-1,0-1.8-0.8-1.8-1.8v-0.3c0-1,0.8-1.8,1.8-1.8H54.2L54.2,28z
+                                    M54.2,24h-8.3c-3.2,0-5.8,2.6-5.8,5.8v0.3c0,3.2,2.6,5.8,5.8,5.8h8.3c3.2,0,5.8-2.6,5.8-5.8v-0.3C60,26.6,57.4,24,54.2,24L54.2,24z
+                                "/>
+                        </svg>
+                        <div class="info">
+                            <p class="name">Audio</p>
+                            <p class="description">Background music and sound effects</p>
+                        </div>
+                    </div>
+                    <div class="sectionLink" id="settingsInputBtn">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+                            <path d="M28,36v4h4v-4H28z"/>
+                            <rect x="8" y="12" width="4" height="4"/>
+                            <rect x="28" y="12" width="4" height="4"/>
+                            <rect x="20" y="20" width="4" height="4"/>
+                            <rect x="20" y="12" width="4" height="4"/>
+                            <rect x="8" y="20" width="8" height="4"/>
+                            <path d="M64,12c0-4.4-3.6-8-8-8H8c-4.4,0-8,3.6-8,8v20c0,3.1,1.8,5.8,4.3,7.1L0.5,50.4c-0.9,2.6-0.7,5.4,0.6,7.9
+                                c1.2,2.5,3.4,4.3,6,5.2c1.1,0.4,2.2,0.5,3.3,0.5c4.5,0,8.4-2.8,9.8-7.1l1.1-3.3h2.2l1.1,3.3c1.4,4.2,5.3,7.1,9.8,7.1
+                                c1.1,0,2.2-0.2,3.3-0.5c2.6-0.9,4.7-2.7,5.9-5.1c2,1,4.2,1.6,6.5,1.6c6.6,0,12.4-4.7,13.7-11.2c0.2-0.9,0.3-1.9,0.3-2.8v-8
+                                c0-0.9-0.1-1.9-0.3-2.8c0-0.2-0.1-0.4-0.1-0.6c0.3-0.8,0.4-1.7,0.4-2.6V12z M36.3,59.7c-0.7,0.2-1.3,0.3-2,0.3c-2.7,0-5.1-1.7-6-4.3
+                                l-2-6h-8l-2,6c-0.9,2.7-3.4,4.3-6,4.3c-0.7,0-1.3-0.1-2-0.3c-3.3-1.1-5.1-4.7-4-8L8.2,40l1.3-4l0.8-2.3h24l0.8,2.3l0.9,2.7V46
+                                c0,0.9,0.1,1.9,0.3,2.8c0.6,2.8,2,5.3,3.9,7.2C39.5,57.7,38.2,59.1,36.3,59.7z M60,46c0,0.7-0.1,1.4-0.2,2c-0.9,4.6-5,8-9.8,8
+                                c-2,0-3.8-0.6-5.4-1.6c-2.2-1.4-3.9-3.7-4.4-6.4c-0.1-0.6-0.2-1.3-0.2-2v-8c0-0.7,0.1-1.4,0.2-2c0.5-2.4,1.9-4.5,3.8-6
+                                c1.2-0.9,2.5-1.5,4-1.8V40h4V28.2c1.5,0.3,2.8,0.9,4,1.8c1.5,1.1,2.6,2.6,3.3,4.3c0.2,0.5,0.4,1.1,0.5,1.7c0.1,0.6,0.2,1.3,0.2,2V46
+                                z M60,28.2c-2.6-2.6-6.1-4.2-10-4.2s-7.4,1.6-10,4.2c-0.9,0.9-1.7,1.9-2.3,3l-0.5-1.6H7.4l-0.9,2.7l-0.9,2.8C4.6,34.5,4,33.3,4,32
+                                V12c0-2.2,1.8-4,4-4h48c2.2,0,4,1.8,4,4V28.2z"/>
+                            <rect x="52" y="12" width="4" height="4"/>
+                            <rect x="28" y="20" width="4" height="4"/>
+                            <rect x="36" y="20" width="4" height="4"/>
+                            <rect x="44" y="20" width="4" height="4"/>
+                            <rect x="36" y="12" width="4" height="4"/>
+                            <rect x="44" y="12" width="4" height="4"/>
+                            <rect x="28" y="36" width="4" height="4"/>
+                            <rect x="28" y="44" width="4" height="4"/>
+                            <rect x="52" y="20" width="4" height="4"/>
+                            <circle cx="16" cy="40" r="4"/>
+                        </svg>
+                        <div class="info">
+                            <p class="name">Input</p>
+                            <p class="description">Controls &amp; input settings</p>
+                        </div>
+                    </div>
+                    <div class="sectionLink" id="settingsAppearanceBtn">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+                            <path d="M25,4H11c-3.8,0-7,3.1-7,7v35c0,1.2,0.2,2.4,0.4,3.5c0.1,0.2,0.1,0.5,0.2,0.7c0.1,0.2,0.1,0.4,0.2,0.7
+                                C4.9,51,5,51.2,5.1,51.4c0.1,0.3,0.2,0.5,0.4,0.8c0.1,0.1,0.1,0.3,0.2,0.4c0.1,0.2,0.2,0.4,0.3,0.6c0.1,0.2,0.3,0.4,0.4,0.6
+                                c0.1,0.2,0.2,0.3,0.4,0.5c0.4,0.5,0.8,1,1.3,1.5c0.5,0.5,1,0.9,1.5,1.3c0.2,0.1,0.3,0.2,0.5,0.4c0.2,0.1,0.4,0.3,0.6,0.4
+                                s0.4,0.2,0.6,0.3c0.1,0.1,0.3,0.1,0.4,0.2c0.3,0.1,0.5,0.3,0.8,0.4c0.2,0.1,0.4,0.2,0.6,0.3c0.2,0.1,0.4,0.2,0.7,0.2
+                                c0.2,0.1,0.4,0.1,0.7,0.2c1.1,0.3,2.3,0.4,3.5,0.4s2.4-0.2,3.5-0.4c0.2-0.1,0.5-0.1,0.7-0.2c0.2-0.1,0.4-0.1,0.7-0.2
+                                c0.2-0.1,0.4-0.2,0.6-0.3c0.3-0.1,0.5-0.2,0.8-0.4c0.1-0.1,0.3-0.1,0.4-0.2c0.2-0.1,0.4-0.2,0.6-0.3s0.4-0.3,0.6-0.4
+                                c0.2-0.1,0.4-0.2,0.5-0.4c0.5-0.4,1-0.8,1.4-1.2H18c-0.3,0-0.6,0-1,0c-0.1,0-0.1,0-0.2,0c-0.2,0-0.5-0.1-0.7-0.1c-0.1,0-0.1,0-0.1,0
+                                c-0.3-0.1-0.6-0.1-0.9-0.2c-0.2,0-0.3-0.1-0.5-0.2c-0.2-0.1-0.3-0.1-0.5-0.2c-0.1-0.1-0.3-0.1-0.4-0.2c-0.1-0.1-0.3-0.1-0.4-0.2
+                                c-0.5-0.3-1-0.6-1.5-1c-0.1-0.1-0.2-0.2-0.3-0.3c-0.1-0.1-0.3-0.3-0.4-0.4c-0.1-0.1-0.3-0.3-0.4-0.4c-0.1-0.1-0.2-0.2-0.3-0.3
+                                c-0.4-0.5-0.8-1-1-1.5c-0.1-0.1-0.2-0.3-0.2-0.4c-0.1-0.1-0.1-0.3-0.2-0.4c-0.1-0.2-0.1-0.3-0.2-0.5c-0.1-0.2-0.1-0.3-0.2-0.5
+                                c-0.1-0.3-0.2-0.6-0.2-0.9c0,0,0-0.1,0-0.1c0-0.2-0.1-0.5-0.1-0.7c0-0.1,0-0.2,0-0.2c0-0.3,0-0.6,0-1V11c0-1.6,1.3-3,3-3H25
+                                c1.6,0,3,1.3,3,3v5.2l4-4V11C32,7.1,28.9,4,25,4z M28,32v4h4v-4H28z"/>
+                            <circle cx="18" cy="46" r="2"/>
+                            <path d="M53,32H17.9c-3.8,0-7.3,1.6-9.8,4.1c0,0-0.1,0.1-0.1,0.1c-0.5,0.5-0.9,0.9-1.2,1.4c-0.1,0.2-0.2,0.3-0.4,0.5
+                                c-0.1,0.2-0.3,0.4-0.4,0.6c-0.1,0.2-0.2,0.4-0.3,0.6c-0.1,0.1-0.2,0.3-0.2,0.4c-0.1,0.3-0.3,0.5-0.4,0.8C5,40.8,4.9,41,4.8,41.2
+                                c-0.1,0.2-0.1,0.4-0.2,0.6c-0.1,0.2-0.1,0.4-0.2,0.7C4.2,43.6,4,44.8,4,46s0.2,2.4,0.4,3.5c0.1,0.2,0.1,0.5,0.2,0.7
+                                c0.1,0.2,0.1,0.4,0.2,0.7C4.9,51,5,51.2,5.1,51.4c0.1,0.3,0.2,0.5,0.4,0.8c0.1,0.1,0.1,0.3,0.2,0.4c0.1,0.2,0.2,0.4,0.3,0.6
+                                c0.1,0.2,0.3,0.4,0.4,0.6c0.1,0.2,0.2,0.3,0.4,0.5c0.4,0.5,0.8,1,1.3,1.5c0.5,0.5,1,0.9,1.5,1.3c0.2,0.1,0.3,0.2,0.5,0.4
+                                c0.2,0.1,0.4,0.3,0.6,0.4s0.4,0.2,0.6,0.3c0.1,0.1,0.3,0.1,0.4,0.2c0.3,0.1,0.5,0.3,0.8,0.4c0.2,0.1,0.4,0.2,0.6,0.3
+                                c0.2,0.1,0.4,0.2,0.7,0.2c0.2,0.1,0.4,0.1,0.7,0.2c1.1,0.3,2.3,0.4,3.5,0.4h35c3.8,0,7-3.1,7-7V39C60,35.1,56.9,32,53,32z M56,53
+                                c0,1.6-1.3,3-3,3H18c-0.3,0-0.6,0-1,0c-0.1,0-0.1,0-0.2,0c-0.2,0-0.5-0.1-0.7-0.1c-0.1,0-0.1,0-0.1,0c-0.3-0.1-0.6-0.1-0.9-0.2
+                                c-0.2,0-0.3-0.1-0.5-0.2c-0.2-0.1-0.3-0.1-0.5-0.2c-0.1-0.1-0.3-0.1-0.4-0.2c-0.1-0.1-0.3-0.1-0.4-0.2c-0.5-0.3-1-0.6-1.5-1
+                                c-0.1-0.1-0.2-0.2-0.3-0.3c-0.1-0.1-0.3-0.3-0.4-0.4c-0.1-0.1-0.3-0.3-0.4-0.4c-0.1-0.1-0.2-0.2-0.3-0.3c-0.4-0.5-0.8-1-1-1.5
+                                c-0.1-0.1-0.2-0.3-0.2-0.4c-0.1-0.1-0.1-0.3-0.2-0.4c-0.1-0.2-0.1-0.3-0.2-0.5c-0.1-0.2-0.1-0.3-0.2-0.5c-0.1-0.3-0.2-0.6-0.2-0.9
+                                c0,0,0-0.1,0-0.1c0-0.2-0.1-0.5-0.1-0.7c0-0.1,0-0.2,0-0.2c0-0.3,0-0.6,0-1s0-0.6,0-1c0-0.1,0-0.1,0-0.2c0-0.2,0.1-0.5,0.1-0.7
+                                c0,0,0-0.1,0-0.1c0.1-0.3,0.1-0.6,0.2-0.9c0-0.2,0.1-0.3,0.2-0.5c0-0.2,0.1-0.3,0.2-0.5C8.8,42,8.9,41.8,9,41.7
+                                c0.1-0.2,0.1-0.3,0.2-0.4c0.3-0.5,0.6-1,1-1.5c0.1-0.1,0.2-0.2,0.3-0.3c0.1-0.1,0.3-0.3,0.4-0.4c1.8-1.8,4.3-2.9,7.1-2.9h35
+                                c1.6,0,3,1.3,3,3V53z"/>
+                            <path d="M54.7,26.2c0,1.9-0.7,3.6-2,4.9L51.8,32h-5.7l3.7-3.7c1.2-1.1,1.2-3,0-4.2l-10-10c-0.6-0.6-1.3-0.9-2.1-0.9
+                                s-1.5,0.3-2.1,0.9L17.9,32c-3.8,0-7.3,1.6-9.8,4.1L28,16.2l4.9-4.9c1.3-1.3,3.1-2,4.9-2s3.6,0.7,4.9,2l10,10
+                                C54,22.6,54.7,24.3,54.7,26.2z"/>
+                            <path d="M27.8,56c-0.4,0.5-0.9,0.9-1.4,1.2c-0.2,0.1-0.3,0.2-0.5,0.4c-0.2,0.1-0.4,0.3-0.6,0.4s-0.4,0.2-0.6,0.3
+                                c-0.1,0.1-0.3,0.1-0.4,0.2c-0.3,0.1-0.5,0.3-0.8,0.4c-0.2,0.1-0.4,0.2-0.6,0.3c-0.2,0.1-0.4,0.2-0.7,0.2c-0.2,0.1-0.4,0.1-0.7,0.2
+                                C20.4,59.8,19.2,60,18,60s-2.4-0.2-3.5-0.4c-0.2-0.1-0.5-0.1-0.7-0.2c-0.2-0.1-0.4-0.1-0.7-0.2c-0.2-0.1-0.4-0.2-0.6-0.3
+                                c-0.3-0.1-0.5-0.2-0.8-0.4c-0.1-0.1-0.3-0.1-0.4-0.2c-0.2-0.1-0.4-0.2-0.6-0.3s-0.4-0.3-0.6-0.4c-0.2-0.1-0.4-0.2-0.5-0.4
+                                c-0.5-0.4-1-0.8-1.5-1.3c-0.5-0.5-0.9-1-1.3-1.5c-0.1-0.2-0.2-0.3-0.4-0.5c-0.1-0.2-0.3-0.4-0.4-0.6c-0.1-0.2-0.2-0.4-0.3-0.6
+                                c-0.1-0.1-0.2-0.3-0.2-0.4c-0.1-0.3-0.3-0.5-0.4-0.8C5,51.2,4.9,51,4.8,50.8c-0.1-0.2-0.1-0.4-0.2-0.7c-0.1-0.2-0.1-0.4-0.2-0.7
+                                C4.2,48.4,4,47.2,4,46s0.2-2.4,0.4-3.5c0.1-0.2,0.1-0.5,0.2-0.7c0.1-0.2,0.1-0.4,0.2-0.6C4.9,41,5,40.8,5.1,40.6
+                                c0.1-0.3,0.2-0.5,0.4-0.8c0.1-0.1,0.1-0.3,0.2-0.4c0.1-0.2,0.2-0.4,0.3-0.6c0.1-0.2,0.3-0.4,0.4-0.6c0.1-0.2,0.2-0.4,0.4-0.5
+                                c0.4-0.5,0.8-1,1.2-1.4c0,0,0.1-0.1,0.1-0.1c2.5-2.5,6-4.1,9.8-4.1l-6.9,6.9c-0.1,0.1-0.3,0.3-0.4,0.4c-0.1,0.1-0.2,0.2-0.3,0.3
+                                c-0.4,0.5-0.8,1-1,1.5C9.1,41.4,9,41.5,9,41.7c-0.1,0.1-0.1,0.3-0.2,0.4c-0.1,0.2-0.1,0.3-0.2,0.5c-0.1,0.2-0.1,0.3-0.2,0.5
+                                c-0.1,0.3-0.2,0.6-0.2,0.9c0,0,0,0.1,0,0.1c0,0.2-0.1,0.5-0.1,0.7c0,0.1,0,0.1,0,0.2c0,0.3,0,0.6,0,1s0,0.6,0,1c0,0.1,0,0.2,0,0.2
+                                c0,0.2,0.1,0.5,0.1,0.7c0,0,0,0.1,0,0.1c0.1,0.3,0.1,0.6,0.2,0.9c0,0.2,0.1,0.3,0.2,0.5c0,0.1,0.1,0.3,0.2,0.5
+                                C8.8,50,8.9,50.2,9,50.3c0.1,0.2,0.1,0.3,0.2,0.4c0.3,0.5,0.6,1.1,1,1.5c0.1,0.1,0.2,0.2,0.3,0.3c0.1,0.1,0.3,0.3,0.4,0.4
+                                c0.1,0.1,0.3,0.3,0.4,0.4c0.1,0.1,0.2,0.2,0.3,0.3c0.5,0.4,1,0.8,1.5,1c0.1,0.1,0.3,0.2,0.4,0.2c0.1,0.1,0.3,0.1,0.4,0.2
+                                c0.2,0.1,0.3,0.1,0.5,0.2c0.2,0.1,0.3,0.1,0.5,0.2c0.3,0.1,0.6,0.2,0.9,0.2c0,0,0.1,0,0.1,0c0.2,0,0.5,0.1,0.7,0.1
+                                c0.1,0,0.2,0,0.2,0c0.3,0,0.6,0,1,0H27.8z"/>
+                        </svg>
+                        <div class="info">
+                            <p class="name">Appearance</p>
+                            <p class="description">Color themes and layout</p>
+                        </div>
+                    </div>
+                    <div class="sectionLink" id="settingsLeaderboardBtn">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+                            <path d="M43.7,40.2c5-3.6,8.3-9.5,8.3-16.2c0-11-9-20-20-20s-20,9-20,20c0,6.7,3.3,12.6,8.3,16.2l-3.8,17.3c-0.3,1.5,0,3,1,4.2
+                           s2.3,1.8,3.9,1.8c0.5,0,1-0.1,1.6-0.3l9.2-3.1l9.2,3.1c0.5,0.2,1,0.3,1.6,0.3c1.5,0,2.9-0.7,3.9-1.8s1.3-2.7,1-4.2L43.7,40.2z
+                            M16,24c0-8.8,7.2-16,16-16s16,7.2,16,16c0,4.7-2,8.9-5.3,11.9c-1.1,1-2.3,1.8-3.5,2.4c-1,0.5-2.1,0.9-3.2,1.2
+                           c-1.3,0.3-2.6,0.5-4,0.5s-2.7-0.2-4-0.5c-1.1-0.3-2.2-0.7-3.2-1.2c-1.3-0.7-2.5-1.5-3.5-2.4C18,32.9,16,28.7,16,24z M21.6,59.5
+                           c-0.1,0-0.2,0-0.3,0c-0.6,0-1.1-0.5-0.9-1.1l3.6-16.1c1.3,0.6,2.7,1,4.1,1.3c0.7,0.1,1.3,0.2,2,0.3v12.8l-2,0.7L21.6,59.5z
+                            M42.7,59.5c-0.1,0-0.2,0-0.3,0L36,57.3l-2-0.7V43.9c0.7-0.1,1.3-0.2,2-0.3c1.4-0.3,2.8-0.7,4.1-1.3l3.6,16.1
+                           C43.8,59,43.3,59.5,42.7,59.5z"/>
+                        </svg>
+                        <div class="info">
+                            <p class="name">Leaderboard</p>
+                            <p class="description">Leaderboard and achievements</p>
+                        </div>
+                    </div>
+                    <div class="sectionLink" id="settingsChromaBtn">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+                            <path d="M50.3,24.7c0.1-0.9,0.2-1.7,0.2-2.6c0-10.2-8.3-18.5-18.5-18.5s-18.5,8.3-18.5,18.5c0,0.9,0.1,1.8,0.2,2.6
+                            C6.8,27.5,2,34.1,2,41.9c0,10.2,8.3,18.5,18.5,18.5c4.3,0,8.3-1.5,11.5-4c3.2,2.5,7.1,4,11.5,4c10.2,0,18.5-8.3,18.5-18.5
+                            C62,34.1,57.2,27.5,50.3,24.7z M32,7.5c8,0,14.5,6.5,14.5,14.5c0,0.5,0,1-0.1,1.5c-1-0.2-2-0.2-3-0.2c-4.3,0-8.3,1.5-11.5,4
+                            c-3.2-2.5-7.1-4-11.5-4c-1,0-2,0.1-3,0.2c-0.1-0.5-0.1-1-0.1-1.5C17.5,14.1,24,7.5,32,7.5z M45.5,27.5c-1.4,3.5-4.2,6.3-7.6,7.8
+                            c-0.7-1.9-1.7-3.6-3-5.2c2.4-1.8,5.4-2.8,8.6-2.8C44.2,27.4,44.8,27.4,45.5,27.5z M34,36.5c-0.7,0.1-1.3,0.2-2,0.2s-1.4,0-2-0.2
+                            c0.5-1.3,1.2-2.4,2-3.5C32.8,34,33.5,35.2,34,36.5z M29.1,30.2c-1.3,1.5-2.3,3.3-3,5.2c-3.4-1.5-6.2-4.4-7.6-7.8
+                            c0.7-0.1,1.3-0.1,2-0.1C23.7,27.4,26.7,28.4,29.1,30.2z M20.5,56.5c-8,0-14.5-6.5-14.5-14.5c0-5.9,3.6-11,8.7-13.3
+                            c1.8,4.8,5.7,8.7,10.5,10.6c-0.1,0.9-0.2,1.7-0.2,2.6c0,4.5,1.6,8.5,4.2,11.7C26.7,55.4,23.7,56.5,20.5,56.5z M28.9,41.9
+                            c0-0.5,0-1,0.1-1.5c1,0.2,2,0.2,3,0.2s2-0.1,3-0.2c0.1,0.5,0.1,1,0.1,1.5c0,3.4-1.2,6.5-3.1,8.9C30.1,48.4,28.9,45.3,28.9,41.9z
+                            M43.5,56.5c-3.2,0-6.2-1-8.6-2.8c2.6-3.2,4.2-7.3,4.2-11.7c0-0.9-0.1-1.8-0.2-2.6c4.8-1.9,8.6-5.8,10.5-10.6
+                            C54.4,30.9,58,36,58,41.9C58,49.9,51.5,56.5,43.5,56.5z"/>
+                        </svg>
+                        <div class="info">
+                            <p class="name">Razer Chroma (beta)</p>
+                            <p class="description">Adjust RGB lighting effects</p>
+                        </div>
+                    </div>
+                    <div class="sectionLink onlyElectron" id="settingsPluginsBtn">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+                            <path d="M18.5,44c0.8,0,1.5,0.7,1.5,1.5v9c0,0.8-0.7,1.5-1.5,1.5h-9C8.7,56,8,55.3,8,54.5v-9C8,44.7,8.7,44,9.5,44H18.5 M18.5,40h-9
+                                c-3,0-5.5,2.5-5.5,5.5v9c0,3,2.5,5.5,5.5,5.5h9c3,0,5.5-2.5,5.5-5.5v-9C24,42.5,21.5,40,18.5,40L18.5,40z"/>
+                            <path d="M42.5,44c0.8,0,1.5,0.7,1.5,1.5v9c0,0.8-0.7,1.5-1.5,1.5h-9c-0.8,0-1.5-0.7-1.5-1.5v-9c0-0.8,0.7-1.5,1.5-1.5H42.5 M42.5,40
+                                h-9c-3,0-5.5,2.5-5.5,5.5v9c0,3,2.5,5.5,5.5,5.5h9c3,0,5.5-2.5,5.5-5.5v-9C48,42.5,45.5,40,42.5,40L42.5,40z"/>
+                            <path d="M18.5,20c0.8,0,1.5,0.7,1.5,1.5v9c0,0.8-0.7,1.5-1.5,1.5h-9C8.7,32,8,31.3,8,30.5v-9C8,20.7,8.7,20,9.5,20H18.5 M18.5,16h-9
+                                c-3,0-5.5,2.5-5.5,5.5v9c0,3,2.5,5.5,5.5,5.5h9c3,0,5.5-2.5,5.5-5.5v-9C24,18.5,21.5,16,18.5,16L18.5,16z"/>
+                            <path d="M48.6,6.7c0.7,0,1.4,0.4,1.8,1.1l6.7,14.6c0.4,1,0,2.1-1,2.6l-14.6,6.7C41.2,31.9,41,32,40.7,32c-0.7,0-1.4-0.4-1.8-1.1
+                                l-6.7-14.6c-0.4-1,0-2.1,1-2.6l14.6-6.7C48,6.8,48.3,6.7,48.6,6.7 M48.6,2.7c-0.9,0-1.7,0.2-2.5,0.5L31.5,10c-3,1.4-4.3,4.9-2.9,7.9
+                                l6.7,14.6c1,2.1,3.1,3.5,5.4,3.5c0.9,0,1.7-0.2,2.5-0.5l14.6-6.7c3-1.4,4.3-4.9,2.9-7.9L54,6.2C53,4.1,50.9,2.7,48.6,2.7L48.6,2.7z"
+                                />
+                        </svg>
+                        <div class="info">
+                            <p class="name">Plugins (beta)</p>
+                            <p class="description">Add and remove plugins</p>
+                        </div>
+                    </div>
+                    <div class="sectionLink" id="settingsAboutBtn">
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                            viewBox="0 0 64 64" style="enable-background:new 0 0 64 64;" xml:space="preserve">
+                            <path d="M32,8c13.3,0,24,10.7,24,24S45.3,56,32,56S8,45.3,8,32S18.7,8,32,8 M32,4C16.6,4,4,16.6,4,32s12.6,28,28,28s28-12.6,28-28
+                                S47.4,4,32,4L32,4z"/>
+                            <path d="M32,22c-1.1,0-2-0.9-2-2v-4c0-1.1,0.9-2,2-2s2,0.9,2,2v4C34,21.1,33.1,22,32,22z"/>
+                            <path d="M32,50c-1.1,0-2-0.9-2-2V32c0-1.1,0.9-2,2-2s2,0.9,2,2v16C34,49.1,33.1,50,32,50z"/>
+                        </svg>
+                        <div class="info">
+                            <p class="name">About G4</p>
+                            <p class="description">Credits</p>
+                        </div>
+                    </div>
+                </div>
+            </dialog>
+
+            <dialog id="settingsGfx" class="settings">
+                <header>
+                    <button class="close">Back</button>
+                    Graphics
+                </header>
+
+                <div class="content">
                     <div class="setting">
-                        <input type="checkbox" id="settingLeftBar">
-                        <label for="settingLeftBar">Panel on the left side</label>
+                        <input type="checkbox" id="settingShowFPS">
+                        <label for="settingShowFPS">Show the FPS counter</label>
                     </div>
 
-                    <h2>Leaderboard</h2>
-                    The "Verified Legit™" scores are the ones that have been verified as obtained in 100% legit ways, no bots here amirite? <sub>bot scores, duh</sub>
-                    <div class="setting">
-                        <input type="checkbox" id="settingVerifiedLegit">
-                        <label for="settingVerifiedLegit">Show Verified Legit™ scores</label>
-                    </div>
+                    <!-- <h2>GLSL (beta)</h2>
+                    Enabling GLSL allows custom shaders to change the look of the game.<br>
+                    Please note that GLSL will <b>slow the game down significantly</b>, especially on high resolution displays.
 
-                    <h2>Input</h2>
-                    <h3>Keyboard controls</h3>
+                    <div class="setting">
+                        <input type="checkbox" id="settingEnableGLSL">
+                        <label for="settingEnableGLSL">Enable GLSL (restart required)</label>
+                    </div>
+                    
+                    <h2>Render passes</h2>
+                    Render passes contain additional information about the game's geometry that can be provided to the shader.<br>
+                    Please note that each enabled render pass will <b>slow the game down</b>.
+
+                    <div class="setting glsl disabled">
+                        <input type="checkbox" id="settingGLSLNormal">
+                        <label for="settingGLSLNormal">Normal pass (restart required)</label>
+                    </div>
+                    <div class="setting glsl disabled">
+                        <input type="checkbox" id="settingGLSLObject">
+                        <label for="settingGLSLObject">Object pass (restart required)</label>
+                    </div> -->
+                </div>
+            </dialog>
+
+            <dialog id="settingsMusic" class="settings">
+                <header>
+                    <button class="close">Back</button>
+                    Audio
+                </header>
+
+                <div class="content">
+                    <div class="volume" data-category="master">
+                        <div class="info">
+                            <p>Master volume</p>
+                        </div>
+                        <div class="slider">
+                            <input type="range" min="0" max="100" value="100">
+                            <p class="value">100%</p>
+                        </div>
+                    </div>
+                    <div class="volume" data-category="bgm">
+                        <div class="info">
+                            <p>Background music</p>
+                        </div>
+                        <div class="slider">
+                            <input type="range" min="0" max="100" value="100">
+                            <p class="value">100%</p>
+                        </div>
+                    </div>
+                    <div class="volume" data-category="sfx">
+                        <div class="info">
+                            <p>Sound effects</p>
+                        </div>
+                        <div class="slider">
+                            <input type="range" min="0" max="100" value="100">
+                            <p class="value">100%</p>
+                        </div>
+                    </div>
+                </div>
+            </dialog>
+
+            <dialog id="settingsInput" class="settings">
+                <header>
+                    <button class="close">Back</button>
+                    Input
+                </header>
+
+                <div class="content">
+                    <h2>Keyboard controls</h2>
+
                     <div class="setting">
                         <label>Shoot</label>
                         <button class="keyboardInput" data-control="keyboardShoot">Space</button>
@@ -248,9 +537,9 @@
                         <label>Enable slow mode</label>
                         <button class="keyboardInput" data-control="keyboardSlow">Press a key...</button>
                     </div>
-
-                    <h3>Gamepad controls</h3>
-
+    
+                    <h2>Gamepad controls</h2>
+    
                     <span id="noGamepads">No gamepads connected.</span>
                     <div class="gamepad setting disabled">
                         <label>Shoot</label>
@@ -260,6 +549,20 @@
                         <label>Enable slow mode</label>
                         <button class="gamepadInput" data-control="gamepadSlow">---</button>
                     </div>
+                </div>
+            </dialog>
+
+            <dialog id="settingsAppearance" class="settings">
+                <header>
+                    <button class="close">Back</button>
+                    Appearance
+                </header>
+
+                <div class="content">
+                    <div class="setting">
+                        <input type="checkbox" id="settingLeftBar">
+                        <label for="settingLeftBar">Panel on the left side</label>
+                    </div>
 
                     <h2>Color themes</h2>
                     Note: you cannot delete the current custom theme. Switch to a different one first.
@@ -268,7 +571,135 @@
                 </div>
             </dialog>
 
-            <dialog id="themeEditor" class="">
+            <dialog id="settingsLeaderboard" class="settings">
+                <header>
+                    <button class="close">Back</button>
+                    Leaderboard
+                </header>
+
+                <div class="content">
+                    <h2>Score filtering</h2>
+                    The "Verified Legit™" scores are the ones that have been verified as obtained in 100% legit ways, no bots here amirite? <sub>bot scores, duh</sub>
+                    <div class="setting">
+                        <input type="checkbox" id="settingVerifiedLegit">
+                        <label for="settingVerifiedLegit">Show Verified Legit™ scores</label>
+                    </div>
+                </div>
+            </dialog>
+
+            <dialog id="settingsChroma" class="settings">
+                <header>
+                    <button class="close">Back</button>
+                    Razer Chroma
+                </header>
+
+                <div class="content">
+                    <div class="setting">
+                        <input type="checkbox" id="settingEnableChroma" class="chroma">
+                        <label for="settingEnableChroma">Enable Chroma</label>
+                    </div>
+
+                    <h2>Target devices</h2>
+                    <div class="setting chroma disabled">
+                        <input type="checkbox" id="settingChromaKeyboard" class="chroma">
+                        <label for="settingChromaKeyboard">Apply on keyboards</label>
+                    </div>
+                    <div class="setting chroma disabled">
+                        <input type="checkbox" id="settingChromaMouse" class="chroma">
+                        <label for="settingChromaMouse">Apply on mice</label>
+                    </div>
+                    <div class="setting chroma disabled">
+                        <input type="checkbox" id="settingChromaMousepad" class="chroma">
+                        <label for="settingChromaMousepad">Apply on mousepads</label>
+                    </div>
+                    <div class="setting chroma disabled">
+                        <input type="checkbox" id="settingChromaHeadset" class="chroma">
+                        <label for="settingChromaHeadset">Apply on headsets</label>
+                    </div>
+                    <div class="setting chroma disabled">
+                        <input type="checkbox" id="settingChromaKeypad" class="chroma">
+                        <label for="settingChromaKeypad">Apply on keypads</label>
+                    </div>
+                    <div class="setting chroma disabled">
+                        <input type="checkbox" id="settingChromaLink" class="chroma">
+                        <label for="settingChromaLink">Apply on Chroma Link devices</label>
+                    </div>
+                </div>
+            </dialog>
+
+            <dialog id="settingsPlugins" class="settings">
+                <header>
+                    <button class="close">Back</button>
+                    Plugins
+                </header>
+
+                <div class="content">
+                    <div class="setting">
+                        <input type="checkbox" id="settingShowConsole">
+                        <label for="settingShowConsole">Show the plugin debug console</label>
+                    </div>
+
+                    <h2>Installed plugins</h2>
+                    
+                    <div class="pluginList"></div>
+                </div>
+            </dialog>
+
+            <dialog id="settingsAbout" class="settings">
+                <header>
+                    <button class="close">Back</button>
+                    About G4
+                </header>
+
+                <div class="content">
+                    <img src="res/images/updateLogo.svg">
+                    <h1>Infinite Gate 4</h1>
+                    <h3>Version 4.7</h3>
+                    
+                    <div class="links"></div>
+                    
+                    <h2>Credits</h2>
+                    <div class="credits">
+                        <div class="credit">
+                            <span class="name">Sci</span>
+                            <span class="role">Lead dev & artist</span>
+                            <a href="https://twitter.com/scintilla4evr">@scintilla4evr</a>
+                        </div>
+                        <div class="credit">
+                            <span class="name">Devin</span>
+                            <span class="role">G4X</span>
+                            <a href="https://twitter.com/HiItsDevin_">@HiItsDevin_</a>
+                        </div>
+                        <div class="credit">
+                            <span class="name">Dynamyc</span>
+                            <span class="role">G4X</span>
+                            <a href="https://twitter.com/dynamyc010">@dynamyc010</a>
+                        </div>
+                        <div class="credit">
+                            <span class="name">Link</span>
+                            <span class="role">PWA</span>
+                            <a href="https://twitter.com/LinkofHyrule89">@LinkofHyrule89</a>
+                        </div>
+                        <div class="credit">
+                            <span class="name">RadioactiveHydra</span>
+                            <span class="role">Backend tester</span>
+                            <a href="https://twitter.com/_RHydraX_">@_RHydraX_</a>
+                        </div>
+                        <div class="credit">
+                            <span class="name">Nox</span>
+                            <span class="role">Nox mode senpai</span>
+                            <a href="https://twitter.com/nokkusuu">@nokkusuu</a>
+                        </div>
+                        <div class="credit">
+                            <span class="name">Denise</span>
+                            <span class="role">Chaos mode senpai</span>
+                            <a href="https://twitter.com/denialt23">@denialt23</a>
+                        </div>
+                    </div>
+                </div>
+            </dialog>
+
+            <dialog id="themeEditor" class="settings">
                 <header>
                     <button class="close">Back</button>
                     Theme editor
@@ -283,12 +714,11 @@
 
             <dialog id="oobe" class="">
                 <header>
-                    <button class="close">Back</button>
-                    Welcome to G4
+                    Welcome to G4.7
                 </header>
 
                 <div class="content">
-                    <h2>Hi sister!<br><em>Welcome to G4!</em></h2>
+                    <h2>Hi sister!<br><em>Welcome to G4.7!</em></h2>
 
                     G4 is a game inspired by The Theorist Gateway's Gate 4 (that's why it's called "G4", fun fact).<br>
                     It started off as an "infinite version" of Gate 4, but now it could be considered a completely separate, full game.
@@ -298,16 +728,12 @@
                     Shoot through the rotating rings of obstacles. When the bullet escapes the construct, you get to the next level.<br>
                     You can use your finger, mouse, keyboard or gamepad to play the game.<br>
 
-                    <h3>Controls</h3>
+                    <h3>G4 Account</h3>
                     
-                    You can change the controls here or in the settings later.
-                    <div class="setting">
-                        <label>Shoot</label>
-                        <button class="keyboardInput" data-control="keyboardShoot">Space</button>
-                    </div>
-                    <div class="setting">
-                        <label>Enable slow mode</label>
-                        <button class="keyboardInput" data-control="keyboardSlow">Press a key...</button>
+                    Create a G4 account to get your scores on the leaderboard and collect achievements.
+
+                    <div class="play">
+                        <button id="hideOOBE">Play!</button>
                     </div>
                 </div>
             </dialog>
@@ -325,15 +751,21 @@
             }
         </script>
 
-        <script src="scripts/theme.js"></script>
+        <script src="scripts/ui/theme.js"></script>
+
+        <script src="scripts/game/coverage.js"></script>
+        <script src="scripts/game/levelgen.js"></script>
+        <script src="scripts/leaderboard.js"></script>
 
         <script src="scripts/assets.js"></script>
-        <script src="scripts/coverage.js"></script>
-        <script src="scripts/levelgen.js"></script>
-        <script src="scripts/leaderboard.js"></script>
-        <script src="scripts/game.js"></script>
+        <script src="scripts/audio.js"></script>
+
+        <script src="scripts/game/GlslCanvas.js"></script>
+        <script src="scripts/game/renderer.js"></script>
+        <script src="scripts/game/game.js"></script>
         <script src="scripts/input.js"></script>
-        <script src="scripts/ui.js"></script>
+        <script src="scripts/ui/chroma.js"></script>
+        <script src="scripts/ui/ui.js"></script>
 
         <script src="scripts/main.js"></script>
     </body>

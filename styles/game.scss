@@ -5,6 +5,10 @@ main {
     left: 0;
     right: 400px;
 
+    &.visibleConsole div.game {
+        margin-bottom: 41px;
+    }
+
     div.firstTimeHint {
         position: absolute;
 
@@ -37,7 +41,6 @@ main {
 
     div.game {
         position: absolute;
-
         left: 0;
         top: 0;
         right: 0;
@@ -45,6 +48,10 @@ main {
         
         background: var(--g4-game-background);
         color: var(--g4-game-foreground);
+
+        &[data-mode=custom] div.stat:not(.level) {
+            display: none;
+        }
 
         header {
             position: absolute;
@@ -92,7 +99,6 @@ main {
                     font-size: 16pt;
                     font-weight: 500;
                     text-align: center;
-                    text-transform: uppercase;
 
                     margin: 0;
                 }
@@ -122,6 +128,15 @@ main {
             top: 50%;
 
             transform: translate(-50%, -50%);
+
+            &.webGLViewport {
+                pointer-events: none;
+            }
+
+            &.hidden {
+                visibility: hidden;
+                pointer-events: none;
+            }
         }
 
         footer {
