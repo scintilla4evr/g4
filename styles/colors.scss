@@ -9,6 +9,16 @@
     --g4-app-scroll-thumb: var(--g4-theme-app-scrollThumb);
 }
 
+[data-mode=custom] {
+    --g4-game-background: var(--g4-game-custom-background);
+    --g4-game-damage: var(--g4-game-custom-damage);
+    --g4-game-foreground: var(--g4-game-custom-foreground);
+    --g4-game-obstacle1: var(--g4-game-custom-obstacle1);
+    --g4-game-obstacle2: var(--g4-game-custom-obstacle2);
+    --g4-game-cannon: var(--g4-game-custom-cannon);
+    --g4-game-bullet: var(--g4-game-custom-bullet);
+}
+
 [data-mode=easy] {
     --g4-game-background: var(--g4-theme-game-easy-background);
     --g4-game-damage: var(--g4-theme-game-easy-damage);
@@ -87,4 +97,54 @@
     --g4-game-obstacle2: var(--g4-theme-game-nox-obstacle2);
     --g4-game-cannon: var(--g4-theme-game-nox-cannon);
     --g4-game-bullet: var(--g4-theme-game-nox-bullet);
+}
+
+[data-mode=h] {
+    --g4-game-background: var(--g4-theme-game-nox-background);
+    --g4-game-damage: var(--g4-theme-game-nox-damage);
+    --g4-game-foreground: var(--g4-theme-game-nox-foreground);
+    --g4-game-obstacle1: var(--g4-theme-game-nox-obstacle1);
+    --g4-game-obstacle2: var(--g4-theme-game-nox-obstacle2);
+    --g4-game-cannon: var(--g4-theme-game-nox-cannon);
+    --g4-game-bullet: var(--g4-theme-game-nox-bullet);
+}
+
+[data-mode=nard] {
+    --g4-game-background: var(--g4-theme-game-nox-background);
+    --g4-game-damage: var(--g4-theme-game-nox-damage);
+    --g4-game-foreground: var(--g4-theme-game-nox-foreground);
+    --g4-game-obstacle1: var(--g4-theme-game-nox-obstacle1);
+    --g4-game-obstacle2: var(--g4-theme-game-nox-obstacle2);
+    --g4-game-cannon: var(--g4-theme-game-nox-cannon);
+    --g4-game-bullet: var(--g4-theme-game-nox-bullet);
+}
+
+[data-mode=brexit] {
+    --g4-game-background: var(--g4-theme-game-nox-background);
+    --g4-game-damage: var(--g4-theme-game-nox-damage);
+    --g4-game-foreground: var(--g4-theme-game-nox-foreground);
+    --g4-game-obstacle1: var(--g4-theme-game-nox-obstacle1);
+    --g4-game-obstacle2: var(--g4-theme-game-nox-obstacle2);
+    --g4-game-cannon: var(--g4-theme-game-nox-cannon);
+    --g4-game-bullet: var(--g4-theme-game-nox-bullet);
+}
+
+[data-mode=polar] {
+    --g4-game-background: var(--g4-theme-game-polar-background);
+    --g4-game-damage: var(--g4-theme-game-polar-damage);
+    --g4-game-foreground: var(--g4-theme-game-polar-foreground);
+    --g4-game-obstacle1: var(--g4-theme-game-polar-obstacle1);
+    --g4-game-obstacle2: var(--g4-theme-game-polar-obstacle2);
+    --g4-game-cannon: var(--g4-theme-game-polar-cannon);
+    --g4-game-bullet: var(--g4-theme-game-polar-bullet);
+}
+
+[data-mode=shook] {
+    --g4-game-background: var(--g4-theme-game-shook-background);
+    --g4-game-damage: var(--g4-theme-game-shook-damage);
+    --g4-game-foreground: var(--g4-theme-game-shook-foreground);
+    --g4-game-obstacle1: var(--g4-theme-game-shook-obstacle1);
+    --g4-game-obstacle2: var(--g4-theme-game-shook-obstacle2);
+    --g4-game-cannon: var(--g4-theme-game-shook-cannon);
+    --g4-game-bullet: var(--g4-theme-game-shook-bullet);
 }

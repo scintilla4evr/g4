@@ -1,13 +1,15 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const fs = require('fs');
 const path  = require("path");
+let win
 
 //Electron
 //--------------------------------
 function createWindow () {
-  let win = new BrowserWindow({
-    width: 1600,
-    height: 900,
+  win = new BrowserWindow({
+    'minWidth': 1280,
+    'minHeight': 720,
+    fullscreen: false,
 
     frame: false,
     icon: __dirname + '/icon.ico',
@@ -22,7 +24,7 @@ function createWindow () {
   win.webContents.on("dom-ready", () => {
     win.webContents.executeJavaScript(
         fs.readFileSync(
-            path.join(__dirname, "/scripts/discordIntegration.js"), "utf-8"
+            path.join(__dirname, "/scripts/electron/discordIntegration.js"), "utf-8"
         ), true
     )
   })

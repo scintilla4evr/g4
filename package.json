@@ -1,33 +1,30 @@
 {
-  "name": "g4-electron",
-  "version": "4.6.0",
+  "name": "g4x",
+  "version": "4.7.0",
   "description": "A distraction-less version of The Theorist Gateway gate 4 minigame.",
   "main": "main.js",
   "scripts": {
     "test": "electron .",
     "start": "electron .",
-    "build": "electron-packager D:\\Projects\\G4-Electron G4 --icon=D:\\Projects\\G4-Electron\\icon.ico --executable-name=G4 --appname=G4 --app-version=4.6.0"
+    "build": "electron-packager D:\\G4X_project G4X.7 --icon=D:\\G4X_project\\icon.ico --executable-name=G4X.7 --appname=G4X.7 --app-version=4.7.0 --ignore=.gitignore --ignore=README.md --ignore=CNAME --ignore=service-worker.js --ignore=G4X.iml --ignore=/.idea --asar --overwrite && npm start"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/team-g4/base-g4.git"
+    "url": "git+https://github.com/team-g4/g4x.git"
   },
   "author": "Team G4",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/team-g4/base-g4/issues"
+    "url": "https://github.com/team-g4/g4x/issues"
   },
-  "homepage": "https://github.com/team-g4/base-g4#readme",
+  "homepage": "https://github.com/team-g4/g4x#readme",
   "devDependencies": {
-    "electron": "^7.0.1"
+    "electron": "^7.1.2"
   },
   "dependencies": {
     "discord-rpc": "^3.1.0",
     "electron-debug": "^3.0.1",
-    "ffi": "^2.3.0",
-    "nan": "^2.14.0",
-    "node-gyp": "^5.0.5",
-    "path-exists": "^4.0.0",
-    "windows-build-tools": "^5.2.2"
+    "electron-packager": "^14.1.1",
+    "path-exists": "^4.0.0"
   }
 }

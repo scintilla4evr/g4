@@ -1,0 +1,62 @@
+@keyframes NotificationPop {
+  0% {
+    opacity: 0;
+    transform: translateY(40%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+div.notifications section.notification {
+  background: var(--g4-app-foreground);
+  color: var(--g4-app-background);
+  animation: NotificationPop 0.2s forwards;
+}
+div.notifications section.notification header {
+  justify-content: flex-start;
+  align-items: center;
+}
+div.notifications section.notification header img {
+  width: 20px;
+  height: 20px;
+}
+div.notifications section.notification header p {
+  font-size: 11pt;
+  margin: 0px 0px 0px 12px;
+  flex-grow: 1;
+}
+div.notifications section.notification header button {
+  background: var(--g4-app-foreground);
+  color: var(--g4-app-background);
+}
+div.notifications section.notification header button:hover {
+  box-shadow: inset 0px 0px 0px 2px var(--g4-app-accent);
+}
+div.notifications section.notification header button:active {
+  background: var(--g4-app-accent);
+  color: var(--g4-app-foreground);
+}
+div.notifications section.notification div.content {
+  padding: 0px 16px;
+}
+div.notifications section.notification div.content p {
+  margin: 0px 0px 4px 0px;
+}
+div.notifications section.notification div.content button {
+  background: var(--g4-app-foreground);
+  color: var(--g4-app-background);
+  box-shadow: inset 0px 0px 0px 1px var(--g4-app-background);
+}
+div.notifications section.notification div.content button:hover {
+  box-shadow: inset 0px 0px 0px 2px var(--g4-app-accent);
+}
+div.notifications section.notification div.content button:active {
+  background: var(--g4-app-accent);
+  color: var(--g4-app-foreground);
+}
+div.notifications section.notification:not(:nth-child(-n+3)) {
+  display: none;
+}
+
+/*# sourceMappingURL=notification.css.map */

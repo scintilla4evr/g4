@@ -1,0 +1,79 @@
+div.notifications {
+    @keyframes NotificationPop {
+        0% {
+            opacity: 0;
+            transform: translateY(40%);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0%);
+        }
+    }
+
+    section.notification {
+        background: var(--g4-app-foreground);
+        color: var(--g4-app-background);
+
+        animation: NotificationPop 0.2s forwards;
+
+        header {
+            justify-content: flex-start;
+            align-items: center;
+    
+            img {
+                width: 20px;
+                height: 20px;
+            }
+    
+            p {
+                font-size: 11pt;
+    
+                margin: 0px 0px 0px 12px;
+    
+                flex-grow: 1;
+            }
+
+            button {
+                background: var(--g4-app-foreground);
+                color: var(--g4-app-background);
+
+                &:hover {
+                    box-shadow: inset 0px 0px 0px 2px var(--g4-app-accent);
+                }
+
+                &:active {
+                    background: var(--g4-app-accent);
+                    color: var(--g4-app-foreground);
+                }
+            }
+        }
+    
+        div.content {
+            padding: 0px 16px;
+    
+            p {
+                margin: 0px 0px 4px 0px;
+            }
+
+            button {
+                background: var(--g4-app-foreground);
+                color: var(--g4-app-background);
+
+                box-shadow: inset 0px 0px 0px 1px var(--g4-app-background);
+
+                &:hover {
+                    box-shadow: inset 0px 0px 0px 2px var(--g4-app-accent);
+                }
+
+                &:active {
+                    background: var(--g4-app-accent);
+                    color: var(--g4-app-foreground);
+                }
+            }
+        }
+        
+        &:not(:nth-child(-n + 3)) {
+            display: none;
+        }
+    }
+}

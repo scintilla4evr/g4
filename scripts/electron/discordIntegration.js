@@ -26,7 +26,7 @@ function sleep(milliseconds) {
   }
 
 const fs = require('fs');
-const clientID = JSON.parse(fs.readFileSync(__dirname + "/discordID.json", "utf-8")).clientId
+const clientID = JSON.parse(fs.readFileSync(__dirname + "/scripts/electron/discordID.json", "utf-8")).clientId
 let path  = require("path")
 
 discord.register(clientId)

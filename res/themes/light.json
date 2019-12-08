@@ -100,6 +100,17 @@
     
                 "cannon": "#000000",
                 "bullet": "#ff0055"
+            },
+            "polar": {
+                "background": "#FFEAF9",
+                "damage": "#FFE2F1",
+    
+                "foreground": "#57423F",
+                "obstacle1": "#324A72",
+                "obstacle2": "#7D3225",
+    
+                "cannon": "#000000",
+                "bullet": "#009EFF"
             }
         }
     }

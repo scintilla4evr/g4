@@ -1,4 +1,7 @@
 g4.code-workspace
 /node_modules
 /.idea
-/.vscode
+G4X.iml
+.eslintrc.json
+CNAME
+service-worker.js
