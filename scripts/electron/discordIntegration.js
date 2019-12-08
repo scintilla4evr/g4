@@ -11,7 +11,7 @@ let username = null
 let preUsername = document.querySelector("input#loginUsername").value //will replace with cache once caching logins work
 
 if (preUsername == "") {
-    username = "an Unregistered user"
+    username = "null"
 } else {
     username = preUsername
 }
@@ -56,15 +56,28 @@ window.addEventListener("g4statechange", (e) => {
     currentScore = e.detail.levelIndex
     currentRawMode = [e.detail.mode]
 
-    let activityData = {
-        details: "Playing on: " + currentMode,
-        state: "Score: " + currentScore,
+    if(username != "null") {
+        let activityData = {
+            details: "Playing on: " + currentMode,
+            state: "Score: " + currentScore,
 
-        largeImageKey: "g4" + currentRawMode,
-        largeImageText: "Currently playing as " + username + "!",
-        smallImageKey: "g4",
+            largeImageKey: "g4" + currentRawMode,
+            largeImageText: "Currently playing as " + username + "!",
+            smallImageKey: "g4",
 
-        instance: false
+            instance: false
+        }
+    }else{
+        let activityData = {
+            details: "Playing on: " + currentMode,
+            state: "Score: " + currentScore,
+
+            largeImageKey: "g4" + currentRawMode,
+            largeImageText: "Not logged in yet.",
+            smallImageKey: "g4",
+
+            instance: false
+        }
     }
 
     rpc.setActivity(activityData)
@@ -74,7 +87,7 @@ window.addEventListener("g4login", (e) => {
     //Update username
     preUsername = e.detail.username
     if (preUsername == "") {
-        username = "an Unregistered user"
+        username = "null"
     } else {
         username = preUsername
     }
@@ -93,13 +106,14 @@ window.addEventListener("g4login", (e) => {
 })
 window.addEventListener("g4logout", (e) => {
     //Update username
-    username = "an Unregistered user"
+    username = "null"
+    
     let activityData = {
         details: "Playing on: " + currentMode,
         state: "Score: " + currentScore,
 
         largeImageKey: "g4" + currentRawMode,
-        largeImageText: "Currently playing as " + username + "!",
+        largeImageText: "Not logged in yet.",
         smallImageKey: "g4",
 
         instance: false
@@ -114,14 +128,31 @@ window.addEventListener("g4logout", (e) => {
 // SHITTY
 // PART
 
+
+
+
 function setRPC() {
+
+    let rpcLoadStrings = [
+        'Getting things ready!',
+        'Tidying up a bit...',
+        'Now loading...',
+        'discord.gg/BKB4ft2',
+        'Be sure to leave a like, sis',
+        'Merry sissmass!',
+        'Meow',
+        'get.Ready();',
+        'Shoot your balls into the air'
+    ]
+    let rpcLoadRNDNMBR = Math.floor(Math.random()*rpcLoadStrings.length);
+
     let activityData = {
 
-        details: "Playing on: " + currentMode,
-        state: "Just started playing",
+        details: "Loading...",
+        state: rpcLoadStrings[rpcLoadRNDNMBR],
 
-        largeImageKey: "g4" + currentRawMode,
-        largeImageText: "Currently playing as " + username + "!",
+        largeImageKey: "g4_logo",
+        largeImageText: "Not logged in yet.",
         smallImageKey: "g4",
 
         instance: false
