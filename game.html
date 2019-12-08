@@ -266,7 +266,7 @@
                         </svg>
                         <div class="info">
                             <p class="name">Graphics</p>
-                            <p class="description">GLSL shaders</p>
+                            <!-- <p class="description">GLSL shaders</p> -->
                         </div>
                     </div>
                     <div class="sectionLink" id="settingsMusicBtn">
@@ -464,7 +464,7 @@
                         <label for="settingShowFPS">Show the FPS counter</label>
                     </div>
 
-                    <h2>GLSL (beta)</h2>
+                    <!-- <h2>GLSL (beta)</h2>
                     Enabling GLSL allows custom shaders to change the look of the game.<br>
                     Please note that GLSL will <b>slow the game down significantly</b>, especially on high resolution displays.
 
@@ -484,7 +484,7 @@
                     <div class="setting glsl disabled">
                         <input type="checkbox" id="settingGLSLObject">
                         <label for="settingGLSLObject">Object pass (restart required)</label>
-                    </div>
+                    </div> -->
                 </div>
             </dialog>
 
@@ -729,11 +729,11 @@
             <dialog id="oobe" class="">
                 <header>
                     <button class="close">Back</button>
-                    Welcome to G4
+                    Welcome to G4.7
                 </header>
 
                 <div class="content">
-                    <h2>Hi sister!<br><em>Welcome to G4!</em></h2>
+                    <h2>Hi sister!<br><em>Welcome to G4.7!</em></h2>
 
                     G4 is a game inspired by The Theorist Gateway's Gate 4 (that's why it's called "G4", fun fact).<br>
                     It started off as an "infinite version" of Gate 4, but now it could be considered a completely separate, full game.
@@ -743,21 +743,12 @@
                     Shoot through the rotating rings of obstacles. When the bullet escapes the construct, you get to the next level.<br>
                     You can use your finger, mouse, keyboard or gamepad to play the game.<br>
 
-                    <h3>Controls</h3>
+                    <h3>G4 Account</h3>
                     
-                    You can change the controls here or in the settings later.
+                    Create a G4 account to get your scores on the leaderboard and collect achievements.
 
-                    <h3>Bug Reporting</h3>
-
-                    Please report all bugs found in this beta, and make sure to follow the template provided at the bug reporter. <br>
-                    You can find the link in Settings > Credits<br>
-                    <div class="setting">
-                        <label>Shoot</label>
-                        <button class="keyboardInput" data-control="keyboardShoot">Space</button>
-                    </div>
-                    <div class="setting">
-                        <label>Enable slow mode</label>
-                        <button class="keyboardInput" data-control="keyboardSlow">Press a key...</button>
+                    <div class="play">
+                        <button id="hideOOBE">Play!</button>
                     </div>
                 </div>
             </dialog>

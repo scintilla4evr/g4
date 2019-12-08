@@ -4,6 +4,10 @@ if (!localStorage.getItem("g4_hideHint")) {
     localStorage.setItem("g4_hideHint", true)
 }
 
+document.querySelector("#hideOOBE").addEventListener("click", () => {
+    closeWindows()
+})
+
 // Sidebar expander
 document.querySelector("button.expander").addEventListener("click", () => {
     document.querySelector("aside").classList.toggle("expanded")
@@ -340,34 +344,34 @@ document.querySelector("input#settingShowFPS").addEventListener("input", functio
 })
 
 // GLSL switches
-if (!localStorage.getItem("g4_glsl_enable")) localStorage["g4_glsl_enable"] = false
-if (localStorage["g4_glsl_enable"] == "true") {
-    document.querySelector("input#settingEnableGLSL").checked = true
-    document.querySelectorAll("div.setting.glsl").forEach(s => s.classList.remove("disabled"))
-}
+// if (!localStorage.getItem("g4_glsl_enable")) localStorage["g4_glsl_enable"] = false
+// if (localStorage["g4_glsl_enable"] == "true") {
+//     document.querySelector("input#settingEnableGLSL").checked = true
+//     document.querySelectorAll("div.setting.glsl").forEach(s => s.classList.remove("disabled"))
+// }
 
-document.querySelector("input#settingEnableGLSL").addEventListener("input", function() {
-    localStorage["g4_glsl_enable"] = this.checked
-    document.querySelectorAll("div.setting.glsl").forEach(s => s.classList.toggle("disabled", !this.checked))
-})
+// document.querySelector("input#settingEnableGLSL").addEventListener("input", function() {
+//     localStorage["g4_glsl_enable"] = this.checked
+//     document.querySelectorAll("div.setting.glsl").forEach(s => s.classList.toggle("disabled", !this.checked))
+// })
 
-if (!localStorage.getItem("g4_glsl_pass_normal")) localStorage["g4_glsl_pass_normal"] = false
-if (localStorage["g4_glsl_pass_normal"] == "true") {
-    document.querySelector("input#settingGLSLNormal").checked = true
-}
+// if (!localStorage.getItem("g4_glsl_pass_normal")) localStorage["g4_glsl_pass_normal"] = false
+// if (localStorage["g4_glsl_pass_normal"] == "true") {
+//     document.querySelector("input#settingGLSLNormal").checked = true
+// }
 
-document.querySelector("input#settingGLSLNormal").addEventListener("input", function() {
-    localStorage["g4_glsl_pass_normal"] = this.checked
-})
+// document.querySelector("input#settingGLSLNormal").addEventListener("input", function() {
+//     localStorage["g4_glsl_pass_normal"] = this.checked
+// })
 
-if (!localStorage.getItem("g4_glsl_pass_object")) localStorage["g4_glsl_pass_object"] = false
-if (localStorage["g4_glsl_pass_object"] == "true") {
-    document.querySelector("input#settingGLSLObject").checked = true
-}
+// if (!localStorage.getItem("g4_glsl_pass_object")) localStorage["g4_glsl_pass_object"] = false
+// if (localStorage["g4_glsl_pass_object"] == "true") {
+//     document.querySelector("input#settingGLSLObject").checked = true
+// }
 
-document.querySelector("input#settingGLSLObject").addEventListener("input", function() {
-    localStorage["g4_glsl_pass_object"] = this.checked
-})
+// document.querySelector("input#settingGLSLObject").addEventListener("input", function() {
+//     localStorage["g4_glsl_pass_object"] = this.checked
+// })
 
 // Razer Chroma
 if (!localStorage.getItem("g4_chroma_keyboard")) localStorage["g4_chroma_keyboard"] = false
