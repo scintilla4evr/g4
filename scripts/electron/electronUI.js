@@ -33,3 +33,7 @@ document.querySelectorAll("a").forEach(link => {
         e.preventDefault()
     })
 })
+
+window.openLink = (url) => {
+    shell.openExternal(url)
+}

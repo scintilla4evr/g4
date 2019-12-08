@@ -1175,9 +1175,16 @@ dialog.settings h2:not(:first-child) {
 
 div.sectionLink, div.bigButton {
   padding: 8px 16px;
+  margin-top: 4px;
   border-radius: 8px;
   display: flex;
   align-items: center;
+}
+div.sectionLink.bigButton, div.bigButton.bigButton {
+  background: var(--g4-app-header-background);
+}
+div.sectionLink.bigButton:hover, div.bigButton.bigButton:hover {
+  box-shadow: inset 0px 0px 0px 2px var(--g4-app-foreground);
 }
 div.sectionLink:hover, div.bigButton:hover {
   background: var(--g4-app-header-background);
@@ -1192,10 +1199,8 @@ div.sectionLink:active svg, div.bigButton:active svg {
 div.sectionLink svg, div.bigButton svg {
   width: 32px;
   height: 32px;
+  margin-right: 16px;
   fill: var(--g4-app-foreground);
-}
-div.sectionLink div.info, div.bigButton div.info {
-  padding-left: 16px;
 }
 div.sectionLink div.info p, div.bigButton div.info p {
   font-size: 11pt;

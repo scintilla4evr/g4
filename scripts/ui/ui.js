@@ -174,6 +174,9 @@ document.querySelector("#settingsAboutBtn").addEventListener("click", function()
 document.querySelector("#settingsChromaBtn").addEventListener("click", function() {
     openWindow("settingsChroma")
 })
+document.querySelector("#settingsFeedbackBtn").addEventListener("click", function() {
+    openWindow("settingsFeedback")
+})
 
 // Notifications
 /**
@@ -426,4 +429,19 @@ document.querySelectorAll("div.scroller section > header").forEach(header => {
     header.addEventListener("click", () => {
         header.parentElement.classList.toggle("collapsed")
     })
+})
+
+window.openLink = (url) => {
+    let win = window.open(url, "_blank")
+    win.focus()
+}
+
+document.querySelector("#feedbackReportGitHubBtn").addEventListener("click", () => {
+    openLink("https://github.com/Team-G4/g4x/issues")
+})
+document.querySelector("#feedbackReportTwitterBtn").addEventListener("click", () => {
+    openLink("https://twitter.com/TheG4Game")
+})
+document.querySelector("#feedbackDiscordBtn").addEventListener("click", () => {
+    openLink("https://discord.gg/BKB4ft2")
 })

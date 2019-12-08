@@ -10,10 +10,19 @@ dialog.settings {
 
 div.sectionLink, div.bigButton {
     padding: 8px 16px;
+    margin-top: 4px;
     border-radius: 8px;
 
     display: flex;
     align-items: center;
+
+    &.bigButton {
+        background: var(--g4-app-header-background);
+
+        &:hover {
+            box-shadow: inset 0px 0px 0px 2px var(--g4-app-foreground);
+        }
+    }
 
     &:hover {
         background: var(--g4-app-header-background);
@@ -32,11 +41,12 @@ div.sectionLink, div.bigButton {
         width: 32px;
         height: 32px;
 
+        margin-right: 16px;
+
         fill: var(--g4-app-foreground);
     }
 
     div.info {
-        padding-left: 16px;
 
         p {
             font-size: 11pt;
