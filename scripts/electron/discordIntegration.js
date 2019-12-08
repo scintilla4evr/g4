@@ -133,17 +133,7 @@ window.addEventListener("g4logout", (e) => {
 
 function setRPC() {
 
-    let rpcLoadStrings = [
-        'Getting things ready!',
-        'Tidying up a bit...',
-        'Now loading...',
-        'discord.gg/BKB4ft2',
-        'Be sure to leave a like, sis',
-        'Merry sissmass!',
-        'Meow',
-        'get.Ready();',
-        'Shoot your balls into the air'
-    ]
+    let rpcLoadStrings = JSON.parse(fs.readFileSync(__dirname + "/scripts/electron/discordRPCLoadStrings.json", "utf-8")).loadStrings
     let rpcLoadRNDNMBR = Math.floor(Math.random()*rpcLoadStrings.length);
 
     let activityData = {
