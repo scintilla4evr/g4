@@ -8,7 +8,7 @@ let currentRawMode = "easy"
 let currentMode = "Easy"
 let currentScore = "0"
 let username = null
-let preUsername = document.querySelector("input#loginUsername").value //will replace with cache once caching logins work
+let preUsername = document.querySelector("input#loginUsername").value
 
 if (preUsername == "") {
     username = "null"
@@ -16,6 +16,7 @@ if (preUsername == "") {
     username = preUsername
 }
 
+// Sleeping function (needed for leaving things to initialize properly)
 function sleep(milliseconds) {
     var start = new Date().getTime();
     for (var i = 0; i < 1e7; i++) {
@@ -34,7 +35,6 @@ discord.register(clientId)
 const rpc = new discord.Client({
     transport: "ipc"
 })
-
 rpc.login({
     clientId: clientId
 })
@@ -83,7 +83,6 @@ window.addEventListener("g4statechange", (e) => {
             instance: false
         }
     }
-
     rpc.setActivity(activityData)
 
 })
@@ -105,11 +104,10 @@ window.addEventListener("g4login", (e) => {
 
         instance: false
     }
-
     rpc.setActivity(activityData)
 })
 window.addEventListener("g4logout", (e) => {
-    //Update username
+    // Update username
     username = "null"
     
     let activityData = {
@@ -122,7 +120,6 @@ window.addEventListener("g4logout", (e) => {
 
         instance: false
     }
-
     rpc.setActivity(activityData)
 })
 
@@ -132,11 +129,8 @@ window.addEventListener("g4logout", (e) => {
 // SHITTY
 // PART
 
-
-
-
 function setRPC() {
-
+    // Random strings while loading (state inside the RPC)
     let rpcLoadStrings = JSON.parse(fs.readFileSync(__dirname + "/scripts/electron/discordRPCLoadStrings.json", "utf-8")).loadStrings
     let rpcLoadRNDNMBR = Math.floor(Math.random()*rpcLoadStrings.length);
 
@@ -151,11 +145,10 @@ function setRPC() {
 
         instance: false
     }
-    
     rpc.setActivity(activityData)
 }
 
-sleep(300)
-setRPC()
+sleep(300) // Sleep for 300ms - Needed to leave time for everything to initialize everything properly
+setRPC()   // Starting up RPC
 
 
