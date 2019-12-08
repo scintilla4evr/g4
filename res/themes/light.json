@@ -111,6 +111,17 @@
     
                 "cannon": "#000000",
                 "bullet": "#009EFF"
+            },
+            "shook": {
+                "background": "#e9e9e9",
+                "damage": "#eceef4",
+                
+                "foreground": "#4610ab",
+                "obstacle1": "#ff8211",
+                "obstacle2": "#5c1ef1",
+                
+                "cannon": "#ff6a22",
+                "bullet": "#8975c6"
             }
         }
     }

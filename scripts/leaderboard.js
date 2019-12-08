@@ -233,7 +233,16 @@ class Leaderboard {
         scores.scores.forEach((score, i) => {
             let tr = document.createElement("tr")
 
-            if (score.username === this.userName) tr.classList.add("me")
+            if (score.username === this.userName) {
+                tr.classList.add("me")
+            
+                if (i === 0) {
+                    this.addAchievement(
+                        `game_${mode}_leader`
+                    )
+                }
+            }
+
             if (score.verified) {
                 tr.classList.add("verified")
             } else {

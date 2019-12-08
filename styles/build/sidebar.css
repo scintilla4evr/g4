@@ -294,13 +294,6 @@ aside footer div.statusItem svg {
   margin-right: 8px;
   fill: var(--g4-app-foreground);
 }
-aside footer div.statusItem:hover {
-  background: var(--g4-app-accent);
-  color: var(--g4-app-background);
-}
-aside footer div.statusItem:hover svg {
-  fill: var(--g4-app-background);
-}
 
 div.dialogContainer {
   position: fixed;
@@ -327,6 +320,7 @@ dialog {
   box-shadow: 0px 0px 16px #00000050;
   display: flex;
   flex-direction: column;
+  visibility: hidden;
   transition: left 0.2s;
   pointer-events: all;
 }
@@ -401,6 +395,16 @@ dialog div.content div.buttons button.primary {
 
 dialog.open {
   left: 0;
+  visibility: visible;
+}
+
+dialog#oobe div.play {
+  text-align: center;
+}
+dialog#oobe div.play button#hideOOBE {
+  font-size: 18pt;
+  text-transform: none;
+  margin-top: 16px;
 }
 
 dialog#playerStats div.content {
@@ -448,6 +452,7 @@ dialog#playerStats div.content div.achievement {
   display: flex;
 }
 dialog#playerStats div.content div.achievement svg {
+  min-width: 48px;
   width: 48px;
   height: 48px;
   margin-right: 16px;

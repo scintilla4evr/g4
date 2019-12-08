@@ -1090,7 +1090,8 @@ class Game {
             denise: "Chaos",
             reverse: "Reverse",
             nox: "Nox",
-            polar: "Polar"
+            polar: "Polar",
+            shook: "Shook"
         }
 
         return modeAlias[mode]
