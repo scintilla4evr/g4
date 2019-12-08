@@ -42,6 +42,7 @@ rpc.login({
 //Updating the RPC on certain stuff
 //WARNING: Really fucking spaghetti
 window.addEventListener("g4statechange", (e) => {
+    let activityData
     let modeAlias = {
         easy: "Easy",
         normal: "Normal",
@@ -50,14 +51,17 @@ window.addEventListener("g4statechange", (e) => {
         hades: "Hades",
         denise: "Chaos",
         reverse: "Reverse",
-        nox: "Nox"
+        nox: "Nox",
+        polar: "Polar",
+        shook: "Shook",
+        custom: "Custom"
     }
     currentMode = modeAlias[e.detail.mode]
     currentScore = e.detail.levelIndex
     currentRawMode = [e.detail.mode]
 
     if(username != "null") {
-        let activityData = {
+        activityData = {
             details: "Playing on: " + currentMode,
             state: "Score: " + currentScore,
 
@@ -68,7 +72,7 @@ window.addEventListener("g4statechange", (e) => {
             instance: false
         }
     }else{
-        let activityData = {
+        activityData = {
             details: "Playing on: " + currentMode,
             state: "Score: " + currentScore,
 
@@ -142,7 +146,7 @@ function setRPC() {
         state: rpcLoadStrings[rpcLoadRNDNMBR],
 
         largeImageKey: "g4_logo",
-        largeImageText: "Not logged in yet.",
+        largeImageText: "Logging in...",
         smallImageKey: "g4",
 
         instance: false
