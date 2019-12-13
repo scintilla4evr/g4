@@ -269,18 +269,18 @@
             var level = new Level(16.25)
 
             var innerRing = new Ring(level, 1)
-            innerRing.elements = generateInnerRing(difficulties[0])
+            innerRing.elements = []
             level.rings.push(innerRing)
 
             if (difficulties[1]) {
                 var middleRing = new Ring(level, 0.5)
-                middleRing.elements = generateMiddleRing(difficulties[1])
+                middleRing.elements = []
                 level.rings.push(middleRing)
             }
 
             if (difficulties[2]) {
                 var outerRing = new Ring(level, 0.25)
-                outerRing.elements = generateOuterRing(difficulties[2])
+                outerRing.elements = []
                 level.rings.push(outerRing)
             }
 
@@ -469,7 +469,7 @@
 
         start() {
             this.level = Level.create(this.getProgression())
-            document.querySelector("#levelNum").textContent = this.progressionLevel
+            document.querySelector("#levelNum").textContent = "ARE YOU"
             this.updateRecord()
             resizeCanvas()
         }
@@ -494,9 +494,9 @@
             if (localStorage.getItem("g4game_record")) record = localStorage.getItem("g4game_record")
 
             if (this.progressionLevel > record) record = this.progressionLevel
-            localStorage.setItem("g4game_record", record)
+            localStorage.setItem("g4game_record", 0)
 
-            document.querySelector("#recordNum").textContent = record
+            document.querySelector("#recordNum").textContent = "ENTERTAINED?"
         }
     }
 
@@ -702,10 +702,10 @@
         this.classList.toggle("checked")
 
         if (this.classList.contains("checked")) {
-            this.textContent = "Unmute music"
+            this.textContent = "Unmute sounds from the heavens"
             audio.pause()
         } else {
-            this.textContent = "Mute music"
+            this.textContent = "Mute sounds from the heavens"
             audio.play()
         }
     })

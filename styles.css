@@ -1,7 +1,7 @@
 body {
     background: #1c1b1a;
     color: #dbb986;
-    font-family: "VCR OSD Mono", monospace, sans-serif;
+    font-family: "Comic Sans MS", monospace, sans-serif;
     transition: background-color 0.2s;
 }
 
@@ -49,7 +49,7 @@ button {
     color: #dbb986;
     padding: 8px 16px;
     margin-bottom: 8px;
-    font-family: "VCR OSD Mono", monospace, sans-serif;
+    font-family: "Comic Sans MS", monospace, sans-serif;
     font-size: 16pt;
     text-transform: uppercase;
     border: none;
