@@ -2,10 +2,6 @@ div.titleBar {
   display: none;
 }
 
-body:not(.electron) .onlyElectron {
-  display: none;
-}
-
 body.electron div.titleBar {
   position: fixed;
   left: 0;

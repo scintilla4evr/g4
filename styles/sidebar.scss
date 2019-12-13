@@ -15,11 +15,12 @@ aside {
     transition: right 0.2s;
 
     & > header {        
-        min-height: 33px;
+        min-height: 48px;
     }
 
     header {
         display: flex;
+        flex-wrap: wrap;
 
         div.content {
             display: flex;
@@ -79,15 +80,15 @@ aside {
         }
 
         div.accountInfo {
-            display: flex;
-            align-items: center;
-            flex-grow: 1;
+            width: 100%;
+
+            display: none;
 
             p {            
-                font-weight: 500;
-                font-size: 12pt;
+                font-weight: 400;
+                font-size: 15pt;
     
-                padding: 0px 16px;
+                padding: 8px 16px;
                 margin: 0px;
 
                 flex-grow: 1;
@@ -119,13 +120,6 @@ aside {
         display: flex;
         flex-direction: column;
 
-        &.collapsed {
-            background: linear-gradient(var(--g4-app-header-background), transparent);
-            div.content {
-                display: none;
-            }
-        }
-
         header {            
             font-weight: 500;
             font-size: 15pt;
@@ -142,26 +136,9 @@ aside {
     }
 
     section.gameMode {
-        background: transparent;
-
-        padding: 0px;
-        border-radius: 0px;
-
         div.content {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-
-            header {
-                font-size: 11pt;
-                font-weight: 400;
-                text-transform: uppercase;                
-
-                display: flex;
-                justify-content: center;
-                grid-column: 1/5;
-
-                opacity: 0.8;
-            }
 
             button.mode {
                 background: transparent;
@@ -170,18 +147,19 @@ aside {
                 padding: 4px 8px;
                 border: none;
                 
-                display: flex;
-                justify-content: center;
-                align-items: center;
                 flex-grow: 1;
 
-                img {
-                    width: 20px;
-                    height: 20px;
+                p {
+                    margin: 0px;
+
+                    font-family: var(--g4-app-typeface);
+                    font-weight: 500;
+                    font-size: 12pt;
+                    text-transform: uppercase;
                 }
             }
             button.mode:hover {
-                box-shadow: inset 0px 0px 0px 2px var(--g4-game-foreground);
+                box-shadow: inset 0px 0px 0px 4px var(--g4-game-foreground);
             }
             button.mode.active {
                 background: var(--g4-game-foreground);
@@ -294,28 +272,8 @@ aside {
                             font-size: 80%;
 
                             margin-left: 4px;
-                            padding: 0px;
+                            padding: 0px 2px;
                             border-radius: 2px;
-                        }
-
-                        span.teamg4 {
-                            color: var(--g4-app-accent);
-
-                            font-family: "Poppins";
-                            font-weight: 500;
-                            font-size: 80%;
-
-                            margin-left: 4px;
-                        }
-
-                        span.teamgt {
-                            color: #0f0;
-
-                            font-family: "Poppins";
-                            font-weight: 500;
-                            font-size: 80%;
-
-                            margin-left: 4px;
                         }
 
                         span svg {
@@ -352,60 +310,12 @@ aside {
         display: none;
     }
 
-    div.assetProgress {
-        position: relative;
-        height: 32px;
-        min-height: 32px;
-
-        padding: 0px 8px;
-
-        display: flex;
-        align-items: center;
-
-        &.hidden {
-            display: none;
-        }
-
-        img {
-            width: 16px;
-            height: 16px;
-
-            margin-right: 8px;
-        }
-
-        div.bar {
-            position: absolute;
-            left: 0;
-            bottom: 0;
-            height: 1px;
-
-            background: var(--g4-app-accent);
-        }
-    }
-
     footer {
-        height: 24px;
-        min-height: 24px;
+        height: 33px;
+        max-height: 33px;
+        min-height: 33px;
 
-        display: flex;
-        justify-content: flex-end;
-
-        div.statusItem {
-            min-width: 50px;
-            padding: 0px 8px;
-
-            display: flex;
-            align-items: center;
-
-            svg {
-                width: 16px;
-                height: 16px;
-
-                margin-right: 8px;
-
-                fill: var(--g4-app-foreground);
-            }
-        }
+        padding: 4px 16px;
     }
 }
 
@@ -467,8 +377,7 @@ dialog {
         border-radius: 24px 0px 0px 0px;
 
         flex-grow: 1;
-        overflow-x: hidden;
-        overflow-y: auto;
+        overflow: auto;
 
         button {
             background: var(--g4-app-header-background);
@@ -543,162 +452,46 @@ dialog.open {
     left: 0;
 }
 
-dialog#oobe {
-    div.play {
-        text-align: center;
-
-        button#hideOOBE {
-            font-size: 18pt;
-            text-transform: none;
-
-            margin-top: 16px;
-        }
-    }
-}
-
 dialog#playerStats {
     div.content {
         padding: 8px;
-
-        h1 {
-            font-size: 18pt;
-            font-weight: 600;
-            text-align: center;
-
-            margin: 8px;
-        }
 
         h2 {
             font-size: 16pt;
             font-weight: 400;
 
-            margin: 16px 8px 8px 8px;
-        }
-
-        div.badges {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-
-            div.badge {
-                background: var(--g4-app-foreground);
-                color: var(--g4-app-background);
-                
-                font-size: 11pt;
-                font-weight: 500;
-
-                padding: 1px 8px;
-                margin: 0px 4px;
-                border-radius: 2px;
-
-                &.teamg4 {
-                    background: linear-gradient(90deg, #FF3663, #5AC9FB);
-                    color: var(--g4-app-background);
-                }
-
-                &.teamgt {
-                    background: #0f0;
-                    color: #000;
-                }
-            }
-        }
-
-        div.achievement {
-            background: var(--g4-app-header-background);
-            color: var(--g4-app-foreground);
-            
-            padding: 8px 16px;
-            margin: 0px 8px 8px 8px;
-            border-radius: 8px;
-
-            display: flex;
-
-            svg {
-                min-width: 48px;
-                width: 48px;
-                height: 48px;
-
-                margin-right: 16px;
-
-                --svg-color-1: var(--g4-app-accent);
-                --svg-color-2: var(--g4-app-foreground);
-            }
-
-            &.game svg {
-                --svg-color-1: var(--g4-game-bullet);
-                --svg-color-2: var(--g4-game-foreground);
-            }
-
-            div.info {
-                display: flex;
-                flex-grow: 1;
-                flex-direction: column;
-                justify-content: center;
-
-                p.name {
-                    font-weight: 600;
-
-                    margin: 0px;
-                }
-
-                p.description {
-                    font-size: 11pt;
-
-                    margin: 0px;
-                }
-            }
+            margin: 8px 8px 40px 8px;
         }
 
         div.highScore {
             background: var(--g4-game-background);
-            color: var(--g4-game-foreground);
+            color: var(--g4-game-cannon);
             
             padding: 8px 16px;
-            margin: 0px 8px 8px 8px;
-            border-radius: 8px;
+            margin-bottom: 8px;
+            border-radius: 24px;
 
             box-shadow: inset 0px 0px 0px 1px var(--g4-game-foreground);
 
-            display: flex;
-            align-items: center;
-
             p {
-                font-size: 12pt;
-                font-weight: 600;
-                text-transform: uppercase;
+                font-size: 14pt;
 
                 margin: 0px;
-
-                flex-grow: 1;
-
-                span {
-                    background: var(--g4-game-bullet);
-                    color: var(--g4-game-background);
-
-                    padding: 2px 8px;
-                    border-radius: 16px;
-
-                    display: inline-block;
-                }
             }
 
             table {
-                width: 200px;
+                width: 100%;
 
                 border-spacing: 0px;
 
                 th {
                     font-weight: 400;
-                    text-transform: uppercase;
                     text-align: left;
                 }
 
                 td {
-                    width: 50%;
-
                     font-weight: 500;
                     font-size: 13pt;
-                    line-height: 1;
                 }
             }
         }
