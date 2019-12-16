@@ -1,7 +1,7 @@
 class Game {
     /**
-     * @param {GameData} gameData 
-     * @param {Boolean} isSpectated 
+     * @param {GameData} gameData
+     * @param {Boolean} isSpectated
      * @param {String} spectatedUser
      * @param {Leaderboard} leaderboard
      */
@@ -14,7 +14,7 @@ class Game {
          * @type {GameData}
          */
         this.data = gameData
-        
+
         /**
          * @type {Boolean}
          */
@@ -141,7 +141,7 @@ class Game {
     }
 
     /**
-     * @param {Number} dTime 
+     * @param {Number} dTime
      * @param {Ring} ring
      */
     advanceRing(dTime, dRawTime, ring) {
@@ -188,9 +188,9 @@ class Game {
     }
 
     /**
-     * 
-     * @param {Projectile} bullet 
-     * @param {RingElement} item 
+     *
+     * @param {Projectile} bullet
+     * @param {RingElement} item
      */
     hitTest(bullet, item) {
         let bulletX = bullet.x - item.centerX
@@ -235,8 +235,8 @@ class Game {
     }
 
     /**
-     * 
-     * @param {Projectile} bullet 
+     *
+     * @param {Projectile} bullet
      */
     hitTestLevel(bullet) {
         for (let ring of this.data.rings) {
@@ -250,7 +250,7 @@ class Game {
     }
 
     /**
-     * @param {Number} dTime 
+     * @param {Number} dTime
      */
     calculateBeatTime(dTime) {
         let beatTime = 60 / this.bpm
@@ -259,7 +259,7 @@ class Game {
     }
 
     /**
-     * @param {Number} dTime 
+     * @param {Number} dTime
      */
     advanceLevel(dTime) {
         let beatTime = this.calculateBeatTime(dTime)
@@ -272,7 +272,7 @@ class Game {
     }
 
     /**
-     * @param {Number} dTime 
+     * @param {Number} dTime
      */
     advanceCannon(dTime) {
         let beatTime = this.calculateBeatTime(dTime)
@@ -292,8 +292,8 @@ class Game {
             case "reverse":
                 this.data.cannon.angle += dTime * 0.461538461 / 2
 
-                this.data.cannon.x = -400 * Math.cos(2 * Math.PI * this.data.cannon.angle) 
-                this.data.cannon.y = -400 * Math.sin(2 * Math.PI * this.data.cannon.angle) 
+                this.data.cannon.x = -400 * Math.cos(2 * Math.PI * this.data.cannon.angle)
+                this.data.cannon.y = -400 * Math.sin(2 * Math.PI * this.data.cannon.angle)
                 break
             default:
                 this.data.cannon.x = 0
@@ -302,8 +302,8 @@ class Game {
     }
 
     /**
-     * 
-     * @param {Number} dTime 
+     *
+     * @param {Number} dTime
      */
     advance(dTime) {
         let physTime = dTime
@@ -361,7 +361,7 @@ class Game {
     }
 
     /**
-     * @param {CanvasRe} ctx 
+     * @param {CanvasRe} ctx
      */
     renderCannon(ctx) {
         let cannon = this.data.cannon
@@ -389,7 +389,7 @@ class Game {
     }
 
     /**
-     * @param {CanvasRe} ctx 
+     * @param {CanvasRe} ctx
      */
     renderProjectile(ctx) {
         let bullet = this.data.projectile
@@ -407,7 +407,7 @@ class Game {
 
 
     /**
-     * @param {CanvasRenderingContext2D} ctx 
+     * @param {CanvasRenderingContext2D} ctx
      * @param {Ring} ring
      */
     renderRing(ctx, ring) {
@@ -535,8 +535,8 @@ class Game {
     }
 
     /**
-     * @param {String} mode 
-     * @param {Number} levelIndex 
+     * @param {String} mode
+     * @param {Number} levelIndex
      */
     generateLevel(mode, levelIndex) {
         if (!this.data) {
@@ -555,7 +555,7 @@ class Game {
 
         this.updateRecord()
         this.updateDeaths()
-        
+
         this.sendStateChange()
 
         this.updateLeaderboard()
@@ -658,7 +658,7 @@ class Game {
     }
 
     /**
-     * @param {KeyboardEvent} event 
+     * @param {KeyboardEvent} event
      */
     handleKeyboardEvent(event) {
         if (this.isSpectated) return

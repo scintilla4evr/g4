@@ -19,17 +19,17 @@ div.notifications {
         header {
             justify-content: flex-start;
             align-items: center;
-    
+
             img {
                 width: 20px;
                 height: 20px;
             }
-    
+
             p {
                 font-size: 11pt;
-    
+
                 margin: 0px 0px 0px 12px;
-    
+
                 flex-grow: 1;
             }
 
@@ -47,10 +47,10 @@ div.notifications {
                 }
             }
         }
-    
+
         div.content {
             padding: 0px 16px;
-    
+
             p {
                 margin: 0px 0px 4px 0px;
             }
@@ -71,7 +71,7 @@ div.notifications {
                 }
             }
         }
-        
+
         &:not(:nth-child(-n + 3)) {
             display: none;
         }

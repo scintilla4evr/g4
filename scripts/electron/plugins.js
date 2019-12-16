@@ -310,7 +310,7 @@
                     this.debugMessages.push(
                         new PluginDebugAPICallMessage(this, "[PluginContext].registerMode", [mode])
                     )
-                    
+
                     if (!(mode instanceof CustomMode)) return false
 
                     this.objects.push(mode)
@@ -383,9 +383,9 @@
                         this.debugMessages.push(
                             new PluginDebugAPICallMessage(this, "G4.levelGen.generateRing", [type, difficulty, distance])
                         )
-    
+
                         let items = []
-    
+
                         switch (type) {
                             case 1: // type A
                                 items = LevelGenerator.generateInnerRing(difficulty, distance)
@@ -400,7 +400,7 @@
                                 items = LevelGenerator.generateDeniseRing(difficulty, distance)
                                 break
                         }
-    
+
                         return items
                     },
                     generateMode: (modeId, levelIndex) => {
@@ -435,7 +435,7 @@
 
         createVolatileObject(source, exclusions) {
             let isExpired = false
-        
+
             let volatileSpec = {
                 expire() {
                     isExpired = true
@@ -454,7 +454,7 @@
                         get(o, p) {
                             if (isExpired) return undefined
                             if (exclusions.includes(p)) return undefined
-        
+
                             return o[p]
                         },
                         ownKeys(o) {
@@ -468,15 +468,15 @@
                             if (isExpired) return false
                             if (exclusions.includes(p)) return false
                             if (!Object.getOwnPropertyDescriptor(o, p).writable) return false
-        
+
                             o[p] = v
-        
+
                             return true
                         }
                     }
                 )
             }
-            
+
             return volatileSpec
         }
 
@@ -548,12 +548,12 @@
 
             this.unregisterAssets()
             this.isRunning = false
-            
+
             updateModeButtons()
             updatePluginList()
         }
     }
-    
+
     function updatePluginList() {
         let list = document.querySelector("div.pluginList")
         list.innerHTML = ""

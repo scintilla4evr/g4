@@ -36,10 +36,10 @@ function closeWindows() {
     document.querySelectorAll("dialog.open").forEach(d => d.classList.remove("open"))
 }
 
-// G4 Account 
+// G4 Account
 /**
- * 
- * @param {Leaderboard} leaderboard 
+ *
+ * @param {Leaderboard} leaderboard
  */
 function prepG4AccountUI(leaderboard) {
     document.querySelector("button#openLoginBtn").addEventListener("click", () => {
@@ -185,23 +185,23 @@ document.querySelector("#settingsFeedbackBtn").addEventListener("click", functio
 // Notifications
 /**
  * @typedef {Object} NotificationSpec
- * 
+ *
  * @property {Object} source
- * 
+ *
  * @property {String} text
  * @property {NotificationButtonSpec[]} buttons
  */
 
 /**
  * @typedef {Object} NotificationButtonSpec
- * 
+ *
  * @property {String} text
  * @property {Function} callback
  */
 
 /**
- * 
- * @param {NotificationSpec} notif 
+ *
+ * @param {NotificationSpec} notif
  */
 function showNotification(notif) {
     if (notif.text.length > 100) notif.text = notif.text.substring(0, 98) + "..."
@@ -276,11 +276,11 @@ function showNotification(notif) {
 
 function updateModeButtons() {
     let modeButtons = document.querySelector("section.gameMode div.content")
-    
+
     modeButtons.innerHTML = ""
 
     let lastSource = null
-    
+
     gameModes.forEach(mode => {
         let button = document.createElement("button")
         button.classList.add("mode")
@@ -300,7 +300,7 @@ function updateModeButtons() {
                 button.style.setProperty("--g4-game-custom-" + color, colors[color])
             }
         }
-        
+
         if (source != lastSource) {
             let sourceHeader = document.createElement("header")
 

@@ -4,14 +4,14 @@
 let lastGamepadData = []
 
 /**
- * @param {HTMLElement} domElement 
- * @param {string} eventName 
+ * @param {HTMLElement} domElement
+ * @param {string} eventName
  */
 function promisifyEvent(domElement, eventName) {
     return new Promise((resolve, reject) => {
         let callback = (event) => {
             domElement.removeEventListener(eventName, callback)
-            
+
             resolve(event)
         }
 
@@ -20,14 +20,14 @@ function promisifyEvent(domElement, eventName) {
 }
 
 /**
- * @param {Gamepad} gamepad 
+ * @param {Gamepad} gamepad
  */
 function getLastGamepadData(gamepad) {
     return lastGamepadData.find(g => gamepad.id == g.id)
 }
 
 /**
- * @param {Gamepad} gamepad 
+ * @param {Gamepad} gamepad
  */
 function flattenGamepadData(gamepad) {
     return {
@@ -38,7 +38,7 @@ function flattenGamepadData(gamepad) {
 }
 
 /**
- * @param {Gamepad} gamepad 
+ * @param {Gamepad} gamepad
  */
 function setLastGamepadData(gamepad) {
     let index = lastGamepadData.findIndex(g => gamepad.id == g.id)
@@ -56,7 +56,7 @@ function processGamepadInputs() {
         if (!gamepad) return
 
         let last = getLastGamepadData(gamepad)
-        
+
         if (last) {
             let didChangeAxes = last.axes.some((axis, i) => axis != gamepad.axes[i])
 
@@ -143,12 +143,12 @@ document.querySelectorAll("button.keyboardInput").forEach(button => {
 
             promise = promisifyEvent(window, "keyup").then((e) => {
                 if (!button.classList.contains("waiting")) return
-                
+
                 localStorage[`g4input_${input}`] = e.code
 
-                button.classList.remove("waiting")    
+                button.classList.remove("waiting")
                 button.textContent = localStorage[`g4input_${input}`]
-    
+
                 promise = null
             })
         }
@@ -179,9 +179,9 @@ document.querySelectorAll("button.gamepadInput").forEach(button => {
 
                 localStorage[`g4input_${input}`] = e.detail.button
 
-                button.classList.remove("waiting")    
+                button.classList.remove("waiting")
                 button.textContent = localStorage[`g4input_${input}`]
-    
+
                 promise = null
             })
         }

@@ -30,8 +30,8 @@ function closeWindows() {
 
 // G4 Account
 /**
- * 
- * @param {Leaderboard} leaderboard 
+ *
+ * @param {Leaderboard} leaderboard
  */
 function prepG4AccountUI(leaderboard) {
     document.querySelector("button#openLoginBtn").addEventListener("click", () => {

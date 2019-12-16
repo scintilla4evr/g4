@@ -43,18 +43,18 @@ const FILES_TO_CACHE = [
     'res/themes/dark.json',
     'res/themes/light.json',
 
-    'scripts/assets.js',    
-    'scripts/audio.js',    
+    'scripts/assets.js',
+    'scripts/audio.js',
     'scripts/input.js',
     'scripts/leaderboard.js',
     'scripts/main.js',
-    
+
     'scripts/game/coverage.js',
     'scripts/game/game.js',
     'scripts/game/GlslCanvas.js',
     'scripts/game/renderer.js',
     'scripts/game/levelgen.js',
-    
+
     'scripts/ui/chroma.js',
     'scripts/ui/theme.js',
     'scripts/ui/ui.js',

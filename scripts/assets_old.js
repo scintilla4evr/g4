@@ -18,8 +18,8 @@ let isAudioPlaying = false
 let audioStartTime = 0
 
 /**
- * @param {AudioContext} audioCtx 
- * @param {String} audioFile 
+ * @param {AudioContext} audioCtx
+ * @param {String} audioFile
  */
 async function loadAudioBuffer(audioCtx, audioFile) {
     let data = await fetch(audioFile)

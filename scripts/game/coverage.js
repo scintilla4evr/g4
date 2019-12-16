@@ -1,7 +1,7 @@
 class CoverageRange {
     /**
-     * @param {Number} low 
-     * @param {Number} high 
+     * @param {Number} low
+     * @param {Number} high
      */
     constructor(low, high) {
         this.low = low
@@ -9,7 +9,7 @@ class CoverageRange {
     }
 
     /**
-     * @param {CoverageRange} range 
+     * @param {CoverageRange} range
      * @returns {CoverageRange}
      */
     subtract(range) {

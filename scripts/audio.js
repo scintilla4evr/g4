@@ -73,7 +73,7 @@ class AudioCategory {
     }
 
     /**
-     * @param {AudioItem} item 
+     * @param {AudioItem} item
      */
     add(item) {
         let emptySlot = this.slots.findIndex(i => !i)
