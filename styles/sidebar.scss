@@ -7,14 +7,14 @@ aside {
 
     background: var(--g4-app-background);
     color: var(--g4-app-foreground);
-    
+
     box-shadow: 0px 0px 16px #00000020;
     display: flex;
     flex-direction: column;
 
     transition: right 0.2s;
 
-    & > header {        
+    & > header {
         min-height: 33px;
     }
 
@@ -36,7 +36,7 @@ aside {
         button.expander {
             display: none;
 
-            &:not(:active) {                
+            &:not(:active) {
                 background: transparent;
             }
 
@@ -44,7 +44,7 @@ aside {
                 position: relative;
                 width: 20px;
                 height: 2px;
-                
+
                 background: transparent;
             }
 
@@ -54,7 +54,7 @@ aside {
                 top: calc(50% - 4.5px);
                 width: 14px;
                 height: 2px;
-                
+
                 background: var(--g4-app-foreground);
                 content: "";
 
@@ -67,7 +67,7 @@ aside {
                 top: calc(50% + 4.5px);
                 width: 14px;
                 height: 2px;
-                
+
                 background: var(--g4-app-foreground);
                 content: "";
 
@@ -83,10 +83,10 @@ aside {
             align-items: center;
             flex-grow: 1;
 
-            p {            
+            p {
                 font-weight: 500;
                 font-size: 12pt;
-    
+
                 padding: 0px 16px;
                 margin: 0px;
 
@@ -126,7 +126,7 @@ aside {
             }
         }
 
-        header {            
+        header {
             font-weight: 500;
             font-size: 15pt;
 
@@ -154,7 +154,7 @@ aside {
             header {
                 font-size: 11pt;
                 font-weight: 400;
-                text-transform: uppercase;                
+                text-transform: uppercase;
 
                 display: flex;
                 justify-content: center;
@@ -169,7 +169,7 @@ aside {
 
                 padding: 4px 8px;
                 border: none;
-                
+
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -302,16 +302,16 @@ aside {
 
                 tr {
                     font-family: "Noto Sans";
-                    
+
                     td:first-child {
                         width: 15%;
-    
+
                         text-align: center;
                     }
-    
+
                     td:last-child {
                         width: 25%;
-    
+
                         text-align: center;
                     }
 
@@ -474,7 +474,7 @@ dialog {
     margin: 0px;
     padding: 0px;
     border: none;
-    
+
     box-shadow: 0px 0px 16px #00000050;
     display: flex;
     flex-direction: column;
@@ -488,7 +488,7 @@ dialog {
     header {
         top: 0;
         min-height: 33px;
-        
+
         font-weight: 500;
         font-size: 15pt;
 
@@ -558,7 +558,7 @@ dialog {
 
                 font-family: var(--g4-app-typeface);
                 font-size: 12pt;
-                
+
                 padding: 4px 8px;
 
                 border: 1px solid var(--g4-app-accent);
@@ -626,7 +626,7 @@ dialog#playerStats {
             div.badge {
                 background: var(--g4-app-foreground);
                 color: var(--g4-app-background);
-                
+
                 font-size: 11pt;
                 font-weight: 500;
 
@@ -649,7 +649,7 @@ dialog#playerStats {
         div.achievement {
             background: var(--g4-app-header-background);
             color: var(--g4-app-foreground);
-            
+
             padding: 8px 16px;
             margin: 0px 8px 8px 8px;
             border-radius: 8px;
@@ -695,7 +695,7 @@ dialog#playerStats {
         div.highScore {
             background: var(--g4-game-background);
             color: var(--g4-game-foreground);
-            
+
             padding: 8px 16px;
             margin: 0px 8px 8px 8px;
             border-radius: 8px;
@@ -765,7 +765,7 @@ body.left {
     }
 
     aside.expanded {
-        button.expander {    
+        button.expander {
             div:before {
                 top: calc(50% + 4.5px);
             }
@@ -775,12 +775,12 @@ body.left {
             }
         }
     }
-    
+
     div.dialogContainer {
         left: 0;
         right: unset;
     }
-    
+
     dialog {
         left: unset;
         right: 432px;
@@ -819,7 +819,7 @@ body.left {
                 position: relative;
                 width: 20px;
                 height: 2px;
-                
+
                 background: var(--g4-app-foreground);
             }
 
@@ -829,7 +829,7 @@ body.left {
                 top: -6px;
                 width: 20px;
                 height: 2px;
-                
+
                 background: var(--g4-app-foreground);
                 content: "";
 
@@ -842,7 +842,7 @@ body.left {
                 top: 8px;
                 width: 20px;
                 height: 2px;
-                
+
                 background: var(--g4-app-foreground);
                 content: "";
 

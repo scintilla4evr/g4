@@ -359,7 +359,7 @@ class Leaderboard {
         document.querySelector("dialog#playerStats h1").textContent = username
 
         let container = document.querySelector("dialog#playerStats div.scores")
-        container.innerHTML = ""        
+        container.innerHTML = ""
 
         let achContainer = document.querySelector("dialog#playerStats div.achievements")
         achContainer.innerHTML = ""
@@ -382,7 +382,7 @@ class Leaderboard {
 
             achDiv.classList.add("achievement")
             achDiv.classList.add(achType)
-            
+
             if (achType == "game") achDiv.setAttribute("data-mode", achMode)
             let modeName = Game.modeIDToDisplayName(achMode)
 
@@ -476,7 +476,7 @@ class Leaderboard {
 
     async processScoreStack() {
         if (!this.scoreStack.length) return
-        
+
         let req = this.scoreStack[0]
         this.scoreStack.splice(0, 1)
 

@@ -51,7 +51,7 @@ div.sectionLink, div.bigButton {
         p {
             font-size: 11pt;
             margin: 0px;
-            
+
             &.name {
                 font-size: 12pt;
                 font-weight: 600;
@@ -88,7 +88,7 @@ div.setting {
 
         font-family: var(--g4-app-typeface);
         font-size: 14pt;
-        
+
         padding: 4px 8px;
 
         border: 1px solid var(--g4-app-accent);
@@ -106,10 +106,10 @@ div.setting {
             top: 50%;
             width: 36px;
             height: 24px;
-    
+
             background: var(--g4-app-foreground);
             content: "";
-    
+
             border-radius: 12px;
 
             transform: translateY(-50%);
@@ -123,10 +123,10 @@ div.setting {
             top: 50%;
             width: 20px;
             height: 20px;
-    
+
             background: var(--g4-app-background);
             content: "";
-    
+
             border-radius: 10px;
 
             transform: translateY(-50%);
@@ -159,7 +159,7 @@ div.setting {
 
         &:checked + label:after {
             right: 2px;
-    
+
             background: var(--g4-app-background);
         }
 
@@ -230,7 +230,7 @@ div.themeList {
         svg {
             width: auto;
             height: 94px;
-            
+
             margin: 2px 2px 0px 2px;
             border-radius: 22px 0px 0px 22px;
 
@@ -266,7 +266,7 @@ div.themeList {
             margin: 0px;
             flex-grow: 1;
         }
-        
+
         &.current p:after {
             content: " current";
 
@@ -298,7 +298,7 @@ dialog#themeEditor {
     canvas {
         border-radius: 8px;
     }
-    
+
     input[type=text] {
         width: calc(100% - 16px);
 
@@ -307,7 +307,7 @@ dialog#themeEditor {
 
         font-family: var(--g4-app-typeface);
         font-size: 14pt;
-        
+
         padding: 4px 8px;
 
         border: 1px solid var(--g4-app-accent);
@@ -340,9 +340,9 @@ dialog#themeEditor {
 
             label {
                 position: relative;
-        
+
                 font-size: 13pt;
-        
+
                 flex-grow: 1;
             }
         }
@@ -377,7 +377,7 @@ div.pluginList {
             padding: 16px 16px 8px 16px;
 
             display: flex;
-            
+
             label {
                 display: flex;
                 align-items: center;
@@ -399,54 +399,54 @@ div.pluginList {
             input[type=checkbox] {
                 position: absolute;
                 opacity: 0;
-        
+
                 pointer-events: none;
 
                 &:disabled + label:after {
                     opacity: 0;
                 }
-        
+
                 & + label:before {
                     position: absolute;
                     right: 16px;
                     top: 50%;
                     width: 36px;
                     height: 24px;
-            
+
                     background: var(--g4-app-foreground);
                     content: "";
-            
+
                     border-radius: 12px;
-        
+
                     transform: translateY(-50%);
-        
+
                     transition: all 0.2s;
                 }
-        
+
                 & + label:after {
                     position: absolute;
                     right: 30px;
                     top: 50%;
                     width: 20px;
                     height: 20px;
-            
+
                     background: var(--g4-app-background);
                     content: "";
-            
+
                     border-radius: 10px;
-        
+
                     transform: translateY(-50%);
-        
+
                     transition: background 0.2s, right 0.2s;
                 }
-        
+
                 &:checked + label:before {
                     background: var(--g4-app-accent);
                 }
-        
+
                 &:checked + label:after {
                     right: 18px;
-            
+
                     background: var(--g4-app-background);
                 }
             }
@@ -518,7 +518,7 @@ dialog#settingsAbout {
 
         margin: 0px;
     }
-    
+
     h3 {
         font-size: 14pt;
         font-weight: 200;

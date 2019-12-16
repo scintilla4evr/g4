@@ -27,7 +27,7 @@ function saveBeforeInstallPromptEvent(evt) {
 function installPWA(evt) {
   deferredInstallPrompt.prompt();
   installPWASection.classList.add("hidden")
-  
+
   deferredInstallPrompt.userChoice
   .then((choice) => {
     if (choice.outcome === 'accepted') {

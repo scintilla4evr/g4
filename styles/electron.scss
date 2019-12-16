@@ -37,7 +37,7 @@ body.electron {
 
         div.buttons {
             min-width: 144px;
-            
+
             display: flex;
             justify-content: flex-end;
 
@@ -72,7 +72,7 @@ body.electron {
         header {
             top: 40px;
         }
-        
+
         canvas {
             top: calc(50% + 40px);
         }
@@ -80,7 +80,7 @@ body.electron {
 
     aside, dialog {
         height: calc(100% - 40px);
-        
+
         padding-top: 40px;
     }
 }

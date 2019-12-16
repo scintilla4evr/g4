@@ -19,7 +19,7 @@ class Chroma {
             }
         })
         var data = await res.json()
-        
+
         if ("sessionid" in data && "uri" in data) {
             this.sessionId = data.sessionid
             this.sessionURL = data.uri
@@ -47,10 +47,10 @@ class Chroma {
 
         this.initialized = false
     }
-    
+
     async putEffect(device, effectType, effectParam) {
         if (!this.initialized) return
-        
+
         var res = await fetch(this.sessionURL + "/" + device, {
             method: "PUT",
             body: JSON.stringify({
@@ -72,7 +72,7 @@ class RGBColor {
     }
 
     /**
-     * @param {RGBColor} dest 
+     * @param {RGBColor} dest
      * @returns {RGBColor}
      */
     blend(dest) {
@@ -85,9 +85,9 @@ class RGBColor {
     }
 
     /**
-     * @param {Number} x 
-     * @param {RGBColor} c1 
-     * @param {RGBColor} c2 
+     * @param {Number} x
+     * @param {RGBColor} c1
+     * @param {RGBColor} c2
      */
     static lerp(x, c1, c2) {
         return new RGBColor(
@@ -117,8 +117,8 @@ class RGBEffect {
     }
 
     /**
-     * @param {Number} x 
-     * @param {Number} y 
+     * @param {Number} x
+     * @param {Number} y
      * @returns {RGBColor}
      */
     getColorAt(x, y) {
@@ -171,7 +171,7 @@ class RGBStack {
     }
 
     /**
-     * @param {RGBEffect} effect 
+     * @param {RGBEffect} effect
      */
     push(effect) {
         this.effectStack.push(effect)
@@ -185,8 +185,8 @@ class RGBStack {
     }
 
     /**
-     * @param {Number} x 
-     * @param {Number} y 
+     * @param {Number} x
+     * @param {Number} y
      * @returns {RGBColor}
      */
     getColorAt(x, y) {
@@ -215,8 +215,8 @@ class RGBHandler {
     async unInit() {}
 
     /**
-     * 
-     * @param {String} event 
+     *
+     * @param {String} event
      */
     handleEvent(event) {}
 
@@ -232,7 +232,7 @@ class RGBHandler {
     }
 
     /**
-     * @param {HTMLDivElement} gameDOM 
+     * @param {HTMLDivElement} gameDOM
      */
     updateGameColors(gameDOM) {
         let computedStyles = getComputedStyle(gameDOM.querySelector("canvas"))
@@ -284,13 +284,13 @@ class RazerChromaRGBHandler extends RGBHandler {
     }
 
     /**
-     * @param {RGBColor} color 
+     * @param {RGBColor} color
      */
     rgbColorToBGR(color) {
         let r = Math.floor(color.r * 255)
         let g = Math.floor(color.g * 255)
         let b = Math.floor(color.b * 255)
-        
+
         return r | (g << 8) | (b << 16)
     }
 

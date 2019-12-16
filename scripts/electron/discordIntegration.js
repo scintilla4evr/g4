@@ -126,7 +126,7 @@ function setRPC() {
 
         instance: false
     }
-    
+
     rpc.setActivity(activityData)
 }
 

@@ -73,7 +73,7 @@ function forEach(list, iterator, context) {
     if (arguments.length < 3) {
         context = this;
     }
-    
+
     if (toString$1.call(list) === '[object Array]')
         forEachArray$1(list, iterator, context);
     else if (typeof list === 'string')

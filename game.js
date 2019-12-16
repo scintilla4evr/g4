@@ -12,8 +12,8 @@
         }
 
         /**
-         * 
-         * @param {Number} time 
+         *
+         * @param {Number} time
          */
         advance(time) {
             this.x += this.veloX * time
@@ -23,7 +23,7 @@
 
     class Collider {
         /**
-         * @param {Projectile} projectile 
+         * @param {Projectile} projectile
          * @returns {Boolean}
          */
         hitTest(projectile) {
@@ -33,20 +33,20 @@
 
     class RingElement extends Collider {
         /**
-         * 
+         *
          * @param {CanvasRenderingContext2D} context
          */
         render(context) {}
 
         /**
-         * 
-         * @param {Number} dAngle 
+         *
+         * @param {Number} dAngle
          */
         rotate(dAngle) {}
 
         /**
-         * 
-         * @param {Number} time 
+         *
+         * @param {Number} time
          */
         advance(time) {}
     }
@@ -61,7 +61,7 @@
         }
 
         /**
-         * @param {Projectile} projectile 
+         * @param {Projectile} projectile
          * @returns {Boolean}
          */
         hitTest(projectile) {
@@ -116,7 +116,7 @@
         }
 
         /**
-         * @param {Projectile} projectile 
+         * @param {Projectile} projectile
          * @returns {Boolean}
          */
         hitTest(projectile) {
@@ -168,7 +168,7 @@
     class RingMarqueeBar extends RingBar {
         constructor(angleStart, angleLength, distance, radius, sweepFreq) {
             super(angleStart, angleLength, distance, radius)
-        
+
             this.sweepFreq = sweepFreq
             this.sweepTime = 0
 
@@ -178,7 +178,7 @@
 
         advance(dTime) {
             this.sweepTime += dTime
-            
+
             var sin = Math.sin(this.sweepTime * 2 * Math.PI * this.sweepFreq) / 2 + 0.5
             this.angleLength = sin * (this.baseEnd - this.baseStart)
             this.angleStart = (this.baseStart + this.baseEnd) / 2 - this.angleLength / 2
@@ -219,7 +219,7 @@
             this.elements = []
         }
         /**
-         * 
+         *
          * @param {CanvasRenderingContext2D} context
          */
         render(context) {
@@ -235,8 +235,8 @@
         }
 
         /**
-         * 
-         * @param {Projectile} projectile 
+         *
+         * @param {Projectile} projectile
          * @returns {RingElement}
          */
         getCollidingObject(projectile) {
@@ -295,7 +295,7 @@
         }
 
         /**
-         * 
+         *
          * @param {CanvasRenderingContext2D} context
          */
         render(context) {
@@ -303,8 +303,8 @@
         }
 
         /**
-         * 
-         * @param {Projectile} projectile 
+         *
+         * @param {Projectile} projectile
          * @returns {RingElement}
          */
         getCollidingObject(projectile) {
@@ -389,14 +389,14 @@
                 }
             }
 
-            if (this.bullet) 
+            if (this.bullet)
                 this.bullet.advance(time)
 
             this.playerAngle -= time * 0.461538461
         }
 
         /**
-         * 
+         *
          * @param {CanvasRenderingContext2D} context
          */
         render(context) {

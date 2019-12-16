@@ -41,7 +41,7 @@ async function loadDefaultThemes(replace) {
 
     if (replace) {
         let storedThemes = JSON.parse(localStorage["g4_themes"])
-        
+
         themes.forEach((t, i) => storedThemes[i] = t)
 
         localStorage["g4_themes"] = JSON.stringify(storedThemes)
@@ -118,7 +118,7 @@ function createThemeDOM(dom, obj, theme, id) {
 
                 updateTheme(id, theme)
             })
-        
+
             dom.appendChild(div)
         } else {
             let div = document.createElement("div")
@@ -130,7 +130,7 @@ function createThemeDOM(dom, obj, theme, id) {
             div.appendChild(h2)
 
             createThemeDOM(div, value, theme, id)
-        
+
             dom.appendChild(div)
         }
     }
@@ -215,7 +215,7 @@ function updateThemeList() {
             let editBtn = document.createElement("button")
             editBtn.textContent = "Edit"
             div.appendChild(editBtn)
-    
+
             editBtn.addEventListener("click", (e) => {
                 editTheme(themeId)
 
@@ -226,7 +226,7 @@ function updateThemeList() {
                 let deleteBtn = document.createElement("button")
                 deleteBtn.textContent = "Delete"
                 div.appendChild(deleteBtn)
-        
+
                 deleteBtn.addEventListener("click", (e) => {
                     deleteTheme(themeId)
 

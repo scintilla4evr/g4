@@ -40,7 +40,7 @@ waitForAssetLoad(loadDefaultAssets()).then(() => {
 
     let initChroma = async () => {
         await chroma.init()
-            
+
         chromaInterval = setInterval(async () => {
             chroma.updateGameColors(mainGame.dom)
             await chroma.render()
@@ -137,7 +137,7 @@ waitForAssetLoad(loadDefaultAssets()).then(() => {
         document.querySelectorAll("dialog.open div.game.modePreview").forEach(gameDOM => {
             // previews have dom.game attrs
             gameDOM.game.advance(1 / 90)
-            gameDOM.game.render()            
+            gameDOM.game.render()
         })
 
         previousTimestamp = timestamp
@@ -172,7 +172,7 @@ waitForAssetLoad(loadDefaultAssets()).then(() => {
             time: 0,
             isSlow: false
         }
-        
+
         if (mode instanceof NativeMode) {
             let bgmAsset = getAsset(null, `g4mode_${mainGame.currentMode.modeId}_bgm`)
             getAudioCategory("bgm").replace(
@@ -193,7 +193,7 @@ waitForAssetLoad(loadDefaultAssets()).then(() => {
                     }
                 }
             }
-            
+
             getAudioCategory("bgm").replace(
                 0,
                 new AudioItem(bgmAsset, "looped")

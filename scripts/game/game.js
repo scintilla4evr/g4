@@ -1,7 +1,7 @@
 class Game {
     /**
-     * @param {GameData} gameData 
-     * @param {Boolean} isSpectated 
+     * @param {GameData} gameData
+     * @param {Boolean} isSpectated
      * @param {String} spectatedUser
      * @param {Leaderboard} leaderboard
      */
@@ -14,7 +14,7 @@ class Game {
          * @type {GameData}
          */
         this.data = gameData
-        
+
         /**
          * @type {Boolean}
          */
@@ -157,7 +157,7 @@ class Game {
     }
 
     /**
-     * @param {Number} dTime 
+     * @param {Number} dTime
      * @param {Ring} ring
      */
     advanceRing(dTime, dRawTime, ring, ringIndex) {
@@ -221,9 +221,9 @@ class Game {
     }
 
     /**
-     * 
-     * @param {Projectile} bullet 
-     * @param {RingElement} item 
+     *
+     * @param {Projectile} bullet
+     * @param {RingElement} item
      */
     hitTest(bullet, item) {
         let bulletX = bullet.x - item.centerX
@@ -271,12 +271,12 @@ class Game {
     }
 
     /**
-     * 
-     * @param {Projectile} bullet 
+     *
+     * @param {Projectile} bullet
      */
     hitTestLevel(bullet) {
         if (!bullet) return false
-        
+
         for (let ring of this.data.rings) {
             if (ring.isDistraction) continue
             for (let item of ring.items) {
@@ -288,7 +288,7 @@ class Game {
     }
 
     /**
-     * @param {Number} dTime 
+     * @param {Number} dTime
      */
     calculateBeatTime(dTime) {
         let beatTime = 60 / this.bpm
@@ -297,7 +297,7 @@ class Game {
     }
 
     /**
-     * @param {Number} dTime 
+     * @param {Number} dTime
      */
     advanceLevel(dTime) {
         let beatTime = this.calculateBeatTime(dTime)
@@ -310,7 +310,7 @@ class Game {
     }
 
     /**
-     * @param {Number} dTime 
+     * @param {Number} dTime
      */
     advanceCannon(dTime) {
         let beatTime = this.calculateBeatTime(dTime)
@@ -339,8 +339,8 @@ class Game {
             case "reverse":
                 this.data.cannon.angle += dTime * 0.461538461 / 2
 
-                this.data.cannon.x = -400 * Math.cos(2 * Math.PI * this.data.cannon.angle) 
-                this.data.cannon.y = -400 * Math.sin(2 * Math.PI * this.data.cannon.angle) 
+                this.data.cannon.x = -400 * Math.cos(2 * Math.PI * this.data.cannon.angle)
+                this.data.cannon.y = -400 * Math.sin(2 * Math.PI * this.data.cannon.angle)
                 break
             default:
                 this.data.cannon.x = 0
@@ -365,8 +365,8 @@ class Game {
     }
 
     /**
-     * 
-     * @param {Number} dTime 
+     *
+     * @param {Number} dTime
      */
     advance(dTime) {
         let physTime = dTime
@@ -427,7 +427,7 @@ class Game {
     }
 
     /**
-     * @param {CanvasRe} ctx 
+     * @param {CanvasRe} ctx
      */
     renderCannon(ctx) {
         if (this.currentMode instanceof CustomMode && "renderCannon" in this.currentMode) {
@@ -438,14 +438,14 @@ class Game {
             )
             return
         }
-        
+
         ctx.fill(
             LevelRenderer.getCannonPath(this.data.cannon)
         )
     }
 
     /**
-     * @param {CanvasRe} ctx 
+     * @param {CanvasRe} ctx
      */
     renderProjectile(ctx) {
         if (this.currentMode instanceof CustomMode && "renderProjectile" in this.currentMode) {
@@ -472,7 +472,7 @@ class Game {
 
 
     /**
-     * @param {CanvasRenderingContext2D} ctx 
+     * @param {CanvasRenderingContext2D} ctx
      * @param {Ring} ring
      */
     renderRing(ctx, ring, ringIndex, levelScale) {
@@ -486,7 +486,7 @@ class Game {
             if (isFulfilled) return
         }
 
-        ring.items.forEach(item => {                
+        ring.items.forEach(item => {
             this.resetTransform(ctx, levelScale)
 
             if (this.currentMode instanceof CustomMode && "renderElement" in this.currentMode) {
@@ -692,7 +692,7 @@ class Game {
         let levelRadius = this.getLevelRadius()
         let levelScale = (minWidth / 2) / levelRadius
         levelScale = Math.min(levelScale, 1.2)
-        
+
         objCtx.setTransform(1, 0, 0, 1, 0, 0)
 
         objCtx.fillStyle = "#000000"
@@ -825,9 +825,9 @@ class Game {
                 let property = "--g4-game-obstacle" + ((i % 2) + 1)
                 ctx.fillStyle = computedStyles.getPropertyValue(property)
                 ctx.strokeStyle = computedStyles.getPropertyValue(property)
-    
+
                 ctx.globalAlpha = ring.isDistraction ? 0.4 : 1
-    
+
                 this.renderRing(ctx, ring, i, levelScale)
             })
         }
@@ -835,13 +835,13 @@ class Game {
         ctx.globalAlpha = 1
 
         ctx.fillStyle = computedStyles.getPropertyValue("--g4-game-cannon")
-        
+
         this.resetTransform(ctx, levelScale)
         this.renderCannon(ctx)
 
         if (this.data.projectile) {
             ctx.fillStyle = computedStyles.getPropertyValue("--g4-game-bullet")
-            
+
             this.resetTransform(ctx, levelScale)
             this.renderProjectile(ctx)
         }
@@ -857,8 +857,8 @@ class Game {
     }
 
     /**
-     * @param {Mode} modeObj 
-     * @param {Number} levelIndex 
+     * @param {Mode} modeObj
+     * @param {Number} levelIndex
      */
     async generateLevel(modeObj, levelIndex) {
         let mode = "custom"
@@ -884,7 +884,7 @@ class Game {
 
         this.updateRecord()
         this.updateDeaths()
-        
+
         this.sendStateChange()
 
         document.querySelector("section.leaderboard").style.display = (this.currentMode instanceof CustomMode) ? "none" : "flex"
@@ -945,7 +945,7 @@ class Game {
 
                 if (this.leaderboard.userName) {
                     let scores = await this.leaderboard.getLeaderboard(this.currentMode.modeId, "all", 0)
-                    
+
                     if (scores.scores[0].username === this.leaderboard.userName || this.data.levelIndex === scores.scores[0].score) {
                         this.addAchievement(
                             `game_${this.currentMode.modeId}_leader`
@@ -1049,13 +1049,13 @@ class Game {
     }
 
     /**
-     * @param {KeyboardEvent} event 
+     * @param {KeyboardEvent} event
      */
     handleKeyboardEvent(event) {
         if (this.isSpectated) return
         if (event.target instanceof HTMLInputElement ||
             event.target instanceof HTMLButtonElement) return
-            
+
         if (this.currentMode instanceof CustomMode && "handleKeyPress" in this.currentMode) {
             let isFulfilled = this.currentMode.handleKeyPress(
                 event.code
@@ -1108,7 +1108,7 @@ class Game {
     }
 }
 
-class ModePreviewGame extends Game {    
+class ModePreviewGame extends Game {
     constructor(
     ) {
         super(null, true, "", null)

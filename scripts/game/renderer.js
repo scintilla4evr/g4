@@ -25,7 +25,7 @@ class Viewport {
 
 class LevelRenderer {
     /**
-     * @param {RingElement} element 
+     * @param {RingElement} element
      * @returns {Path2D}
      */
     static getElementPath(item) {
@@ -98,12 +98,12 @@ class LevelRenderer {
     }
 
     /**
-     * @param {HTMLCanvasElement} canvas 
+     * @param {HTMLCanvasElement} canvas
      * @returns {Viewport}
      */
     static createViewportFromCanvas(canvas) {
         let ctx = canvas.getContext("2d")
-    
+
         let viewport = {
             get width() { return canvas.width },
             get height() { return canvas.height },
@@ -127,7 +127,7 @@ class LevelRenderer {
                 ctx.stroke(path)
             },
 
-            
+
             drawImage: (asset, x, y, w, h) => {
                 if (asset instanceof AssetLink) asset = getAssetFromLink(asset)
                 if (!(asset instanceof ImageAsset)) return
@@ -157,9 +157,9 @@ class LevelRenderer {
             get blendMode() { return ctx.globalCompositeOperation },
             set blendMode(m) { ctx.globalCompositeOperation = m }
         }
-    
+
         Object.setPrototypeOf(viewport, Viewport.prototype)
-    
+
         return viewport
     }
 }

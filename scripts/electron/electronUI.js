@@ -47,7 +47,7 @@ window.openLink = (url) => {
     let version = JSON.parse(
         fs.readFileSync(versionPath, "utf-8")
     )
-    
+
     if (version.justUpdated) {
         openWindow("changelog")
 
