@@ -1,10 +1,62 @@
-dialog#settings, dialog#themeEditor {
+dialog.settings {
     h2, h3 {
-        margin-bottom: 0px;
+        margin-bottom: 0px !important;
     }
 
     h2:not(:first-child) {
         margin-top: 32px;
+    }
+}
+
+div.sectionLink, div.bigButton {
+    padding: 8px 16px;
+    margin-top: 4px;
+    border-radius: 8px;
+
+    display: flex;
+    align-items: center;
+
+    &.bigButton {
+        background: var(--g4-app-header-background);
+
+        &:hover {
+            box-shadow: inset 0px 0px 0px 2px var(--g4-app-foreground);
+        }
+    }
+
+    &:hover {
+        background: var(--g4-app-header-background);
+    }
+
+    &:active {
+        background: var(--g4-app-foreground);
+        color: var(--g4-app-background);
+
+        svg {
+            fill: var(--g4-app-background);
+        }
+    }
+
+    svg {
+        width: 32px;
+        height: 32px;
+
+        margin-right: 16px;
+
+        fill: var(--g4-app-foreground);
+    }
+
+    div.info {
+
+        p {
+            font-size: 11pt;
+            margin: 0px;
+            
+            &.name {
+                font-size: 12pt;
+                font-weight: 600;
+            }
+        }
     }
 }
 
@@ -82,6 +134,25 @@ div.setting {
             transition: background 0.2s, right 0.2s;
         }
 
+        @keyframes ChromaText {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+
+
+        &.chroma:checked + label {
+            background: linear-gradient(90deg, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00, #f00, #ff0, #0f0, #0ff, #00f, #f0f, #f00);
+            background-size: 200% 100%;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: ChromaText 1s infinite linear;
+        }
+
         &:checked + label:before {
             background: var(--g4-app-accent);
         }
@@ -140,14 +211,53 @@ div.themeList {
         background: var(--g4-app-header-background);
         color: var(--g4-app-foreground);
 
-        padding: 8px 16px;
+        padding: 0px;
         margin-top: 8px;
-        border-radius: 24px;
+        border-radius: 8px;
 
         display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: flex-end;
+
+        & > div {
+            padding: 8px 16px 16px 16px;
+
+            display: flex;
+            flex-grow: 1;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        svg {
+            width: auto;
+            height: 94px;
+            
+            margin: 2px 2px 0px 2px;
+            border-radius: 22px 0px 0px 22px;
+
+            .st0 {
+                fill: var(--g4-theme-game-normal-background);
+            }
+
+            .st1 {
+                fill: var(--g4-theme-app-background);
+            }
+
+            .st2 {
+                fill: var(--g4-theme-game-normal-obstacle1);
+            }
+
+            .st3 {
+                fill: var(--g4-theme-app-headerBackground);
+            }
+
+            .st4 {
+                fill: var(--g4-theme-app-foreground);
+            }
+
+            .st5 {
+                fill: var(--g4-theme-app-accent);
+            }
+        }
 
         p {
             width: 100%;
@@ -185,6 +295,10 @@ div.themeList {
 }
 
 dialog#themeEditor {
+    canvas {
+        border-radius: 8px;
+    }
+    
     input[type=text] {
         width: calc(100% - 16px);
 
@@ -232,5 +346,206 @@ dialog#themeEditor {
                 flex-grow: 1;
             }
         }
+    }
+}
+
+div.pluginList {
+    div.plugin {
+        background: var(--g4-app-header-background);
+
+        margin-top: 8px;
+        border-radius: 8px;
+
+        p.description {
+            font-size: 11pt;
+
+            margin: 0px 16px;
+        }
+
+        p.running {
+            color: var(--g4-app-accent);
+
+            font-size: 11pt;
+            font-weight: 600;
+
+            margin: 0px 0px 0px 16px;
+        }
+
+        div.toggle {
+            position: relative;
+
+            padding: 16px 16px 8px 16px;
+
+            display: flex;
+            
+            label {
+                display: flex;
+                align-items: center;
+                flex-grow: 1;
+
+                img {
+                    width: 48px;
+                    height: 48px;
+                }
+
+                p {
+                    font-size: 13pt;
+                    font-weight: 600;
+
+                    margin: 0px 0px 0px 12px;
+                }
+            }
+
+            input[type=checkbox] {
+                position: absolute;
+                opacity: 0;
+        
+                pointer-events: none;
+
+                &:disabled + label:after {
+                    opacity: 0;
+                }
+        
+                & + label:before {
+                    position: absolute;
+                    right: 16px;
+                    top: 50%;
+                    width: 36px;
+                    height: 24px;
+            
+                    background: var(--g4-app-foreground);
+                    content: "";
+            
+                    border-radius: 12px;
+        
+                    transform: translateY(-50%);
+        
+                    transition: all 0.2s;
+                }
+        
+                & + label:after {
+                    position: absolute;
+                    right: 30px;
+                    top: 50%;
+                    width: 20px;
+                    height: 20px;
+            
+                    background: var(--g4-app-background);
+                    content: "";
+            
+                    border-radius: 10px;
+        
+                    transform: translateY(-50%);
+        
+                    transition: background 0.2s, right 0.2s;
+                }
+        
+                &:checked + label:before {
+                    background: var(--g4-app-accent);
+                }
+        
+                &:checked + label:after {
+                    right: 18px;
+            
+                    background: var(--g4-app-background);
+                }
+            }
+        }
+
+        div.buttons {
+            padding: 0px 16px 16px 16px;
+
+            display: flex;
+
+            button {
+                background: var(--g4-app-background);
+            }
+
+            button:active {
+                background: var(--g4-app-foreground);
+                color: var(--g4-app-background);
+            }
+        }
+    }
+}
+
+div.volume {
+    background: var(--g4-app-header-background);
+    color: var(--g4-app-foreground);
+
+    padding: 8px 16px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+
+    &[data-category=master] {
+        background: var(--g4-app-foreground);
+        color: var(--g4-app-header-background);
+    }
+
+    div.info {
+        p {
+            font-size: 14pt;
+
+            margin: 0;
+        }
+    }
+
+    div.slider {
+        display: flex;
+        align-items: center;
+
+        input[type=range] {
+            flex-grow: 1;
+        }
+
+        p {
+            width: 40px;
+
+            font-size: 12pt;
+            font-weight: 600;
+            text-align: right;
+
+            margin: 0px 0px 0px 16px;
+        }
+    }
+}
+
+dialog#settingsAbout {
+    h1 {
+        font-size: 20pt;
+        font-weight: 200;
+        text-align: center;
+
+        margin: 0px;
+    }
+    
+    h3 {
+        font-size: 14pt;
+        font-weight: 200;
+        text-align: center;
+
+        margin: 0px;
+    }
+}
+
+div.credit {
+    background: var(--g4-app-header-background);
+
+    padding: 8px 16px;
+    margin-top: 8px;
+    border-radius: 8px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    span.name {
+        background: linear-gradient(90deg, #FF3663, #5AC9FB);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        font-size: 24pt;
+        text-transform: uppercase;
     }
 }

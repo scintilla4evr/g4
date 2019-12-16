@@ -31,8 +31,10 @@
 @import "colors.scss";
 
 @import "game.scss";
+@import "console.scss";
 @import "sidebar.scss";
 
+@import "notification.scss";
 @import "settings.scss";
 
 @import "electron.scss";
@@ -48,14 +50,19 @@ body {
     font-family: var(--g4-app-typeface);
 
     user-select: none;
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--g4-app-scroll-thumb) var(--g4-app-scroll-track);
 }
 
 body.login {
-    div.accountInfo {
-        display: flex;
-    }
-
     button#openLoginBtn {
+        display: none;
+    }
+}
+
+body:not(.login) {
+    div.accountInfo * {
         display: none;
     }
 }
@@ -71,10 +78,11 @@ button {
 
     padding: 4px 16px;
     border: none;
+    outline: none;
     border-radius: 8px;
 }
 button:hover {
-    box-shadow: inset 0px 0px 0px 4px var(--g4-app-foreground);
+    box-shadow: inset 0px 0px 0px 2px var(--g4-app-foreground);
 }
 button:active {
     background: var(--g4-app-foreground);
@@ -150,4 +158,77 @@ body.light {
     border-radius: 6px;
 
     box-shadow: inset 0px 0px 0px 3px var(--g4-app-background);
+}
+
+div.loadingScreen {
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+
+    background: var(--g4-app-background);
+    color: var(--g4-app-foreground);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 2000;
+
+    transition: opacity 0.3s;
+
+    &.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    &.loading {
+        img {
+            filter: grayscale(1);
+        }
+
+        div.progressBar {
+            display: block;
+        }
+
+        button {
+            display: none;
+        }
+    }
+
+    img {
+        width: 256px;
+        height: auto;
+
+        transition: filter 0.4s;
+    }
+
+    & > div {
+        height: 40px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+
+        div.progressBar {
+            width: 200px;
+            height: 2px;
+
+            background: var(--g4-app-header-background);
+
+            display: none;
+
+            div {
+                height: 2px;
+
+                background: var(--g4-app-accent);
+            }
+        }
+
+        button {
+            padding: 8px 24px;
+        }
+    }
 }

@@ -927,7 +927,7 @@ class Game {
         this.data.slow.time = Math.min(this.data.slow.time + 0.2, 10)
         this.generateLevel(
             this.currentMode, this.data.levelIndex + 1
-        ).then(() => {
+        ).then(async () => {
             if (this.currentMode instanceof NativeMode) {
                 if (this.data.levelIndex == 1) {
                     this.addAchievement(
@@ -941,6 +941,16 @@ class Game {
                     this.addAchievement(
                         `game_${this.currentMode.modeId}_ninenine`
                     )
+                }
+
+                if (this.leaderboard.userName) {
+                    let scores = await this.leaderboard.getLeaderboard(this.currentMode.modeId, "all", 0)
+                    
+                    if (scores.scores[0].username === this.leaderboard.userName || this.data.levelIndex === scores.scores[0].score) {
+                        this.addAchievement(
+                            `game_${this.currentMode.modeId}_leader`
+                        )
+                    }
                 }
             }
         })

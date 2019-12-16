@@ -7,6 +7,9 @@ if (!localStorage.getItem("g4_hideHint")) {
 document.querySelector("#hideOOBE").addEventListener("click", () => {
     closeWindows()
 })
+document.querySelector("#hideUpdate").addEventListener("click", () => {
+    closeWindows()
+})
 
 // Sidebar expander
 document.querySelector("button.expander").addEventListener("click", () => {
@@ -174,6 +177,9 @@ document.querySelector("#settingsAboutBtn").addEventListener("click", function()
 })
 document.querySelector("#settingsChromaBtn").addEventListener("click", function() {
     openWindow("settingsChroma")
+})
+document.querySelector("#settingsFeedbackBtn").addEventListener("click", function() {
+    openWindow("settingsFeedback")
 })
 
 // Notifications
@@ -427,4 +433,19 @@ document.querySelectorAll("div.scroller section > header").forEach(header => {
     header.addEventListener("click", () => {
         header.parentElement.classList.toggle("collapsed")
     })
+})
+
+window.openLink = (url) => {
+    let win = window.open(url, "_blank")
+    win.focus()
+}
+
+document.querySelector("#feedbackReportGitHubBtn").addEventListener("click", () => {
+    openLink("https://github.com/Team-G4/base-g4/issues")
+})
+document.querySelector("#feedbackReportTwitterBtn").addEventListener("click", () => {
+    openLink("https://twitter.com/TheG4Game")
+})
+document.querySelector("#feedbackDiscordBtn").addEventListener("click", () => {
+    openLink("https://discord.gg/BKB4ft2")
 })

@@ -349,7 +349,7 @@ function updateThemes() {
 
     if (themes.length < 3) return
 
-    for (let i = 2; i < themes.length; i++) {
+    for (let i = 1; i < themes.length; i++) {
         fillGaps(themes[0], themes[i])
     }
 

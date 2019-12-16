@@ -1,100 +1,183 @@
-/**
- * @type {Map<String, AudioBuffer>}
- */
-let audioBuffers = new Map()
-/**
- * @type {AudioContext}
- */
-let audioCtx = new AudioContext()
-/**
- * @type {AudioBufferSourceNode}
- */
-let currentSourceNode = null
-/**
- * @type {BiquadFilterNode}
- */
-let currentBiquadNode = null
-let isAudioPlaying = false
-let audioStartTime = 0
+let mainAudioContext = new AudioContext()
 
-/**
- * @param {AudioContext} audioCtx 
- * @param {String} audioFile 
- */
-async function loadAudioBuffer(audioCtx, audioFile) {
-    let data = await fetch(audioFile)
-    let arrayBuf = await data.arrayBuffer()
+class Asset {
+    constructor(source, name, filePath) {
+        this.source = source
+        this.filePath = filePath
+        this.name = name
 
-    return await audioCtx.decodeAudioData(arrayBuf)
-}
-
-function stopAudio() {
-    currentSourceNode.disconnect(currentBiquadNode)
-    currentBiquadNode.disconnect(audioCtx.destination)
-    currentSourceNode.stop()
-}
-
-function enableSlowAudioEffect() {
-    currentBiquadNode.frequency.linearRampToValueAtTime(1000, 1)
-    currentSourceNode.playbackRate.linearRampToValueAtTime(0.5, 1)
-}
-
-function disableSlowAudioEffect() {
-    currentBiquadNode.frequency.linearRampToValueAtTime(20000, 1)
-    currentSourceNode.playbackRate.linearRampToValueAtTime(1, 1)
-}
-
-function playAudio(mode, fresh) {
-    if (!isAudioPlaying) return
-    if (currentSourceNode && !fresh) stopAudio()
-
-    let buffer = audioBuffers.get(mode)
-    if (!buffer) return
-
-    let sourceNode = audioCtx.createBufferSource()
-    sourceNode.buffer = buffer
-
-    sourceNode.loop = true
-    sourceNode.loopStart = 0
-    sourceNode.loopEnd = buffer.duration
-
-    let biquadNode = audioCtx.createBiquadFilter()
-
-    biquadNode.type = "lowpass"
-    biquadNode.frequency.value = 20000
-
-    sourceNode.connect(biquadNode)
-    biquadNode.connect(audioCtx.destination)
-
-    let offset = 0
-
-    if (currentSourceNode) {
-        offset = (audioCtx.currentTime - audioStartTime) % currentSourceNode.buffer.duration
+        this.isLoaded = false
     }
 
-    sourceNode.start(
-        audioCtx.currentTime,
-        offset, 10e60
-    )
-    audioStartTime = audioCtx.currentTime - offset
+    async load() {
+        this.isLoaded = true
+        dispatchEvent(new CustomEvent(
+            "g4assetloaded",
+            {
+                detail: {
+                    asset: this
+                }
+            }
+        ))
+    }
 
-    currentSourceNode = sourceNode
-    currentBiquadNode = biquadNode
+    dispose() {}
 }
 
-async function loadAssets() {
-    let modes = [
-        "easy", "normal", "hard", "hell",
-        "hades", "reverse", "denise", "nox"
-    ]
+class AudioAsset extends Asset {
+    constructor(source, name, filePath) {
+        super(source, name, filePath)
 
-    // Load the default music
-    for (let mode of modes) {
-        audioBuffers.set(
-            mode,
-            await loadAudioBuffer(
-                audioCtx, `res/music/${mode}.ogg`
-            )
+        /**
+         * @type {AudioBuffer}
+         */
+        this.audioBuffer = null
+    }
+
+    async load() {
+        let data = await fetch(this.filePath)
+        let arrayBuf = await data.arrayBuffer()
+
+        this.audioBuffer = await mainAudioContext.decodeAudioData(arrayBuf)
+
+        super.load()
+    }
+
+    dispose() {
+        delete this.audioBuffer
+    }
+}
+
+class ImageAsset extends Asset {
+    constructor(source, name, filePath) {
+        super(source, name, filePath)
+
+        /**
+         * @type {HTMLImageElement}
+         */
+        this.image = null
+    }
+
+    asyncImgLoad() {
+        return new Promise((resolve, reject) => {
+            let listener = () => {
+                this.image.removeEventListener("load", listener)
+                resolve()
+            }
+
+            this.image.addEventListener("load", listener)
+            this.image.src = this.filePath
+        })
+    }
+
+    async load() {
+        this.image = new Image()
+
+        await this.asyncImgLoad()
+
+        super.load()
+    }
+
+    dispose() {
+        delete this.image
+    }
+}
+
+class AssetLink {
+    constructor(id) {
+        this.id = id
+    }
+}
+
+/**
+ * @type {Asset[]}
+ */
+let gameAssets = []
+let baseLoadedCount = 0
+
+function getAssetLink(asset) {
+    return new AssetLink(gameAssets.indexOf(asset))
+}
+
+function getAssetFromLink(link) {
+    return gameAssets[link.id]
+}
+
+function getAssetCount() {
+    return gameAssets.filter(a => a instanceof Asset).length
+}
+
+function getLoadedAssetCount() {
+    return gameAssets.filter(a => a instanceof Asset && a.isLoaded).length
+}
+
+function updateAssetProgress() {
+    let loaded = getLoadedAssetCount()
+    let all = getAssetCount()
+    let fraction = (loaded - baseLoadedCount) / (all - baseLoadedCount)
+
+    document.querySelector("div.loadingScreen").classList.toggle("loading", loaded != all)
+
+    document.querySelector("div.loadingScreen div.bar").style.width = `${100 * fraction}%`
+
+    if (loaded == all) {
+        baseLoadedCount = loaded
+    }
+}
+
+function registerAsset(asset) {
+    let index = gameAssets.push(asset)
+
+    updateAssetProgress()
+    asset.load().then(() => updateAssetProgress())
+
+    return index
+}
+
+function areAssetsLoaded(assets) {
+    return getLoadedAssetCount() == getAssetCount()
+}
+
+function waitForAssetLoad(assets) {
+    return new Promise((resolve, reject) => {
+        if (areAssetsLoaded(assets)) resolve()
+
+        let listener = () => {
+            if (areAssetsLoaded(assets)) {
+                removeEventListener("g4assetloaded", listener)
+                resolve()
+            }
+        }
+
+        addEventListener("g4assetloaded", listener)
+    })
+}
+
+function getAsset(source, name) {
+    return gameAssets.find(a => a instanceof Asset && a.source == source && a.name == name)
+}
+
+function loadDefaultAssets() {
+    let assets = [
+        new ImageAsset(null, "g4img_ballNormalMap", "res/images/normals/ball.png"),
+        new ImageAsset(null, "g4img_slope1NormalMap", "res/images/normals/slope1.png"),
+        new ImageAsset(null, "g4img_slope2NormalMap", "res/images/normals/slope2.png"),
+        
+        new AudioAsset(
+            null, "g4sfx_damage",
+            "res/sfx/damage.ogg"
+        ),
+        new AudioAsset(
+            null, "g4sfx_shoot",
+            "res/sfx/shoot.ogg"
+        ),
+        new AudioAsset(
+            null, "g4sfx_succ",
+            "res/sfx/succ.ogg"
         )
-    }
+    ]
+    assets.forEach(a => registerAsset(a))
+    return assets
 }
+
+updateAssetProgress()
